@@ -1,0 +1,309 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ seller.username }} | Profile | Refind Market</title>
+    
+    <style>
+        :root {
+            --bg-main: #e2edf5ff; 
+            --nav-glass: rgba(255, 255, 255, 0.7);
+            --text-dark: #1a1a1b;
+            --text-muted: #6e6d7a;
+            --accent-blue: #007bff;
+            --accent-orange: #f39c12; 
+            --accent-success: #28a745;
+            --accent-star: #ffc107;
+            --navy-blue: #1c2e4a;     
+            --card-shadow: 0 20px 40px -10px rgba(0,0,0,0.05);
+            --radius-lg: 28px;
+            --radius-sm: 18px;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            -webkit-font-smoothing: antialiased;
+            color: var(--text-dark);
+        }
+
+        /* NAVIGATION - Standardized */
+        nav {
+            background: var(--nav-glass);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            position: sticky;
+            top: 20px; 
+            z-index: 1000;
+            margin: 0 24px;
+            padding: 10px 0;
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 32px;
+            flex-wrap: wrap;
+        }
+
+        .logo-box { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .rf-icon {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: white; font-weight: 900; font-size: 1.5rem;
+            width: 52px; height: 52px; display: flex;
+            align-items: center; justify-content: center;
+            border-radius: 14px; box-shadow: 0 6px 15px rgba(243, 156, 18, 0.35);
+        }
+        .logo-text { display: flex; flex-direction: column; line-height: 1; }
+        .logo-text .brand { font-size: 1.6rem; font-weight: 900; color: var(--navy-blue); letter-spacing: -1px; text-transform: uppercase; }
+        .logo-text .subtext { font-size: 0.7rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 3px; margin-top: 4px; }
+
+        /* HAMBURGER */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+        .menu-toggle span { width: 25px; height: 3px; background: var(--navy-blue); border-radius: 3px; }
+
+        .nav-links { display: flex; align-items: center; gap: 20px; }
+        .nav-links a { text-decoration: none; color: var(--text-muted); font-weight: 600; font-size: 0.9rem; transition: 0.2s; }
+
+        /* DROPDOWN STYLES */
+        .user-dropdown-container { position: relative; display: inline-block; }
+        .user-trigger {
+            display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 8px 16px; border-radius: 12px;
+            background: rgba(0,0,0,0.03); transition: 0.2s; color: var(--navy-blue);
+        }
+        .dropdown-menu {
+            display: none; position: absolute; right: 0; top: 120%; background: white; min-width: 220px;
+            border-radius: var(--radius-sm); box-shadow: 0 15px 35px rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.05);
+            padding: 10px 0; z-index: 2000;
+        }
+        .dropdown-menu.show { display: block; }
+        .dropdown-menu a, .logout-item {
+            display: flex; justify-content: space-between; align-items: center; padding: 12px 20px;
+            text-decoration: none; color: var(--text-dark); font-size: 0.85rem; font-weight: 600;
+        }
+        .logout-item { width: 100%; background: none; border: none; font-family: inherit; cursor: pointer; color: #ff4d4d !important; text-align: left; }
+        .nav-badge { background: var(--accent-orange); color: white; font-size: 0.7rem; font-weight: 900; padding: 2px 6px; border-radius: 6px; }
+
+        /* PROFILE CONTENT */
+        .profile-container { max-width: 1100px; margin: 60px auto; padding: 0 32px; }
+        .profile-hero {
+            background: white; padding: 40px; border-radius: var(--radius-lg);
+            box-shadow: var(--card-shadow); display: flex; justify-content: space-between;
+            align-items: center; border: 1px solid rgba(0,0,0,0.02);
+        }
+
+        .user-meta h1 { font-size: 2.8rem; font-weight: 900; margin: 0; letter-spacing: -1.5px; color: var(--navy-blue); }
+        .user-meta p { color: var(--text-muted); margin: 8px 0; font-weight: 500; }
+
+        .verification-badge {
+            display: inline-flex; align-items: center; background: #e9f7ef; color: var(--accent-success);
+            padding: 8px 16px; border-radius: 12px; font-size: 0.75rem; font-weight: 800;
+            text-transform: uppercase; margin-top: 15px;
+        }
+
+        .rating-score { text-align: center; padding-left: 40px; border-left: 2px solid #f1f1f1; }
+        .score-val { font-size: 3.5rem; font-weight: 900; color: var(--accent-star); line-height: 1; }
+
+        /* GRID CONTENT */
+        .content-grid { display: grid; grid-template-columns: 350px 1fr; gap: 40px; margin-top: 40px; }
+        .section-title {
+            font-size: 1.1rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
+            color: var(--navy-blue); margin-bottom: 25px; padding-bottom: 12px;
+            border-bottom: 3px solid var(--accent-blue); display: inline-block;
+        }
+
+        /* MINI ADS */
+        .mini-ad-card {
+            background: white; border-radius: var(--radius-sm); overflow: hidden;
+            margin-bottom: 20px; box-shadow: var(--card-shadow); text-decoration: none;
+            color: inherit; display: block; transition: 0.3s;
+        }
+        .mini-ad-card:hover { transform: translateY(-5px); }
+        .mini-ad-img { width: 100%; height: 160px; object-fit: cover; }
+        .mini-ad-body { padding: 15px; }
+        .mini-ad-body strong { display: block; font-size: 1.1rem; margin-bottom: 5px; }
+        .mini-ad-body span { color: var(--accent-success); font-weight: 800; }
+
+        /* REVIEWS */
+        .review-card {
+            background: white; padding: 25px; border-radius: var(--radius-sm);
+            margin-bottom: 20px; box-shadow: var(--card-shadow); border-left: 6px solid var(--accent-star);
+        }
+        .review-header { display: flex; justify-content: space-between; margin-bottom: 15px; }
+        .review-user { font-weight: 800; font-size: 1.1rem; color: var(--navy-blue); }
+        .review-stars { color: var(--accent-star); font-weight: 900; }
+        .review-comment { font-style: italic; color: #444; line-height: 1.6; font-size: 1rem; margin: 0; }
+        .review-footer { margin-top: 15px; font-size: 0.8rem; color: #999; display: flex; justify-content: space-between; font-weight: 600; }
+
+        /* MOBILE RESPONSIVE OVERRIDES */
+        @media (max-width: 768px) {
+            nav { margin: 10px 15px; }
+            .menu-toggle { display: flex; }
+            .nav-links { display: none; width: 100%; flex-direction: column; padding: 20px 0; gap: 15px; align-items: flex-start; }
+            .nav-links.active { display: flex; }
+            .dropdown-menu { position: static; box-shadow: none; border: none; width: 100%; padding: 0; }
+            .logo-text .subtext { display: none; }
+            
+            .profile-container { padding: 0 15px; margin-top: 20px; }
+            .profile-hero { flex-direction: column; text-align: center; padding: 30px 20px; }
+            .rating-score { border-left: none; border-top: 2px solid #f1f1f1; padding-left: 0; padding-top: 25px; margin-top: 25px; width: 100%; }
+            .content-grid { grid-template-columns: 1fr; gap: 30px; }
+            .user-meta h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-content">
+            <a href="{% url 'item_list' %}" class="logo-box">
+                <img src="{% static 'images/Re-Find_logo.jpg' %}" alt="" 
+                     style="height: 52px; width: auto; display: block;"
+                     onerror="this.style.display='none'; document.getElementById('css-logo').style.display='flex';">
+                
+                <div id="css-logo" style="display:none; align-items:center; gap:14px;">
+                    <div class="rf-icon">RF</div>
+                    <div class="logo-text">
+                        <span class="brand">RE-FIND</span>
+                        <span class="subtext">MARKET</span>
+                    </div>
+                </div>
+            </a>
+
+            <div class="menu-toggle" onclick="toggleNav()">
+                <span></span><span></span><span></span>
+            </div>
+
+            <div class="nav-links" id="navLinks">
+                <a href="{% url 'item_list' %}">Marketplace</a>
+                {% if user.is_authenticated %}
+                    <div class="user-dropdown-container">
+                        <div class="user-trigger" onclick="toggleDropdown(event)">
+                            <strong>@{{ user.username }}</strong>
+                            <span style="font-size: 0.6rem; opacity: 0.5;">▼</span>
+                        </div>
+                        <div id="userDropdown" class="dropdown-menu">
+                            <a href="{% url 'profile' %}">👤 My Account</a>
+                            <a href="{% url 'inbox' %}">📩 Inbox</a>
+                            <a href="{% url 'my_listings' %}">📢 My Ads</a>
+                            <div style="height:1px; background:#eee; margin:8px 0;"></div>
+                            <form action="{% url 'logout' %}" method="post" style="margin: 0;">
+                                {% csrf_token %}
+                                <button type="submit" class="logout-item">🚪 Logout</button>
+                            </form>
+                        </div>
+                    </div>
+                    <a href="{% url 'item_create' %}" style="background: var(--accent-blue); color:white; padding: 10px 20px; border-radius: 12px; font-weight:700;">Sell</a>
+                {% else %}
+                    <a href="{% url 'login' %}">Login</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <div class="profile-container">
+        <div class="profile-hero">
+            <div class="user-meta">
+                <h1>{{ seller.username }}</h1>
+                <p>Member since {{ seller.date_joined|date:"F Y" }}</p>
+                
+                {% if seller.is_dha_verified %}
+                    <div class="verification-badge">
+                        <span style="margin-right: 8px;">✔</span> DHA IDENTITY VERIFIED
+                    </div>
+                {% else %}
+                    <div class="verification-badge" style="background: #f1f5f9; color: #64748b;">
+                        Standard Community Seller
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="rating-score">
+                <div class="score-val">
+                    {% if rating_value > 0 %}{{ rating_value }}{% else %}--{% endif %}
+                </div>
+                <div style="color: var(--accent-star); font-size: 1.4rem; letter-spacing: 2px;">★★★★★</div>
+                <div style="font-weight: 800; font-size: 0.8rem; color: #cbd5e1; text-transform: uppercase; margin-top: 5px;">
+                    {{ reviews.count }} Verified Reviews
+                </div>
+            </div>
+        </div>
+
+        <div class="content-grid">
+            <div>
+                <span class="section-title">Active Ads</span>
+                {% for item in listings %}
+                    <a href="{% url 'item_detail' item.id %}" class="mini-ad-card">
+                        {% if item.image %}
+                            <img src="{{ item.image.url }}" class="mini-ad-img">
+                        {% else %}
+                            <div class="mini-ad-img" style="background: #eee;"></div>
+                        {% endif %}
+                        <div class="mini-ad-body">
+                            <strong>{{ item.title }}</strong>
+                            <span>R{{ item.price }}</span>
+                        </div>
+                    </a>
+                {% empty %}
+                    <p style="color: var(--text-muted); font-style: italic;">No active ads found.</p>
+                {% endfor %}
+            </div>
+
+            <div>
+                <span class="section-title" style="border-color: var(--accent-star);">Buyer Feedback</span>
+                {% for review in reviews %}
+                    <div class="review-card">
+                        <div class="review-header">
+                            <span class="review-user">{{ review.reviewer.username }}</span>
+                            <span class="review-stars">{{ review.rating }} ★</span>
+                        </div>
+                        <p class="review-comment">"{{ review.comment }}"</p>
+                        <div class="review-footer">
+                            <span>Item: {{ review.order.item.title }}</span>
+                            <span>{{ review.created_at|date:"d M Y" }}</span>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div style="text-align: center; padding: 60px; background: white; border-radius: var(--radius-sm); box-shadow: var(--card-shadow);">
+                        <p style="color: var(--text-muted); font-weight: 600;">This seller hasn't received any reviews yet.</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleNav() {
+            document.getElementById("navLinks").classList.toggle("active");
+        }
+        function toggleDropdown(event) {
+            event.stopPropagation();
+            document.getElementById("userDropdown").classList.toggle("show");
+        }
+        window.onclick = function(event) {
+            if (!event.target.closest('.user-dropdown-container')) {
+                var dropdowns = document.getElementsByClassName("dropdown-menu");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    dropdowns[i].classList.remove('show');
+                }
+            }
+        }
+    </script>
+</body>
+</html>

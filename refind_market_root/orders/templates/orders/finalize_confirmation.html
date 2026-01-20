@@ -1,0 +1,234 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Final Review | Re-Find Market</title>
+    
+    <style>
+        :root {
+            --bg-main: #e2edf5ff; 
+            --nav-glass: rgba(255, 255, 255, 0.7);
+            --text-dark: #1a1a1b;
+            --text-muted: #6e6d7a;
+            --accent-blue: #007bff;
+            --accent-orange: #f39c12; 
+            --accent-danger: #ff4d4d;
+            --accent-success: #28a745;
+            --navy-blue: #1c2e4a;     
+            --card-shadow: 0 20px 40px -10px rgba(0,0,0,0.05);
+            --radius-lg: 28px;
+            --radius-sm: 18px;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            -webkit-font-smoothing: antialiased;
+            color: var(--text-dark);
+        }
+
+        /* NAVIGATION - CONSISTENT BRANDING */
+        nav {
+            background: var(--nav-glass);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            position: sticky;
+            top: 20px; 
+            z-index: 1000;
+            margin: 0 24px;
+            padding: 10px 0;
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 32px;
+            flex-wrap: wrap;
+        }
+
+        .logo-box { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+        .rf-icon {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: white; font-weight: 900; font-size: 1.5rem;
+            width: 46px; height: 46px; display: flex;
+            align-items: center; justify-content: center;
+            border-radius: 12px; box-shadow: 0 6px 15px rgba(243, 156, 18, 0.35);
+        }
+        .logo-text { display: flex; flex-direction: column; line-height: 1; }
+        .logo-text .brand { font-size: 1.3rem; font-weight: 900; color: var(--navy-blue); letter-spacing: -1px; text-transform: uppercase; }
+        .logo-text .subtext { font-size: 0.6rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+        .menu-toggle span { width: 25px; height: 3px; background: var(--navy-blue); border-radius: 3px; }
+
+        .nav-links { display: flex; align-items: center; gap: 20px; }
+        .nav-links a { text-decoration: none; color: var(--text-muted); font-weight: 600; font-size: 0.9rem; }
+
+        /* DROPDOWN STYLES */
+        .user-dropdown-container { position: relative; display: inline-block; }
+        .user-trigger {
+            display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 8px 16px; border-radius: 12px;
+            background: rgba(0,0,0,0.03); color: var(--navy-blue);
+        }
+        .dropdown-menu {
+            display: none; position: absolute; right: 0; top: 120%; background: white; min-width: 220px;
+            border-radius: var(--radius-sm); box-shadow: 0 15px 35px rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.05);
+            padding: 10px 0; z-index: 2000;
+        }
+        .dropdown-menu.show { display: block; }
+        .dropdown-menu a, .logout-item {
+            display: flex; justify-content: space-between; align-items: center; padding: 12px 20px;
+            text-decoration: none; color: var(--text-dark); font-size: 0.85rem; font-weight: 600;
+        }
+        .logout-item { width: 100%; background: none; border: none; font-family: inherit; cursor: pointer; color: var(--accent-danger) !important; text-align: left; }
+        .nav-badge { background: var(--accent-orange); color: white; font-size: 0.7rem; font-weight: 900; padding: 2px 6px; border-radius: 6px; }
+
+        /* FINAL REVIEW CARD */
+        .review-container { padding: 60px 20px; }
+        .glass-card {
+            max-width: 500px; margin: 0 auto; padding: 40px; background: white; 
+            border-radius: 28px; box-shadow: var(--card-shadow); border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .btn-confirm {
+            background: var(--accent-success); color: white; border: none; padding: 18px; 
+            border-radius: 18px; font-weight: 800; width: 100%; cursor: pointer; 
+            font-size: 1.1rem; box-shadow: 0 8px 20px rgba(40, 167, 69, 0.2); transition: 0.3s;
+        }
+        .btn-confirm:hover { transform: translateY(-2px); box-shadow: 0 12px 25px rgba(40, 167, 69, 0.3); }
+
+        /* MOBILE RESPONSIVE */
+        @media (max-width: 768px) {
+            nav { margin: 10px 15px; }
+            .menu-toggle { display: flex; }
+            .nav-links { display: none; width: 100%; flex-direction: column; padding-top: 20px; gap: 15px; align-items: flex-start; }
+            .nav-links.active { display: flex; }
+            .dropdown-menu { position: static; box-shadow: none; border: none; width: 100%; }
+            .logo-text .subtext { display: none; }
+            .review-container { padding: 30px 15px; }
+            .glass-card { padding: 30px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-content">
+            <a href="{% url 'item_list' %}" class="logo-box">
+                <div class="rf-icon">RF</div>
+                <div class="logo-text">
+                    <span class="brand">RE-FIND</span>
+                    <span class="subtext">MARKET</span>
+                </div>
+            </a>
+
+            <div class="menu-toggle" onclick="toggleNav()">
+                <span></span><span></span><span></span>
+            </div>
+
+            <div class="nav-links" id="navLinks">
+                <a href="{% url 'timeline_feed' %}">🏘️ Town Square</a>
+                <a href="{% url 'item_list' %}">🛒 Marketplace</a>
+
+                {% if user.is_authenticated %}
+                    <div class="user-dropdown-container">
+                        <div class="user-trigger" onclick="toggleDropdown(event)">
+                            <strong>@{{ user.username }}</strong>
+                            <span style="font-size: 0.6rem; opacity: 0.5;">▼</span>
+                        </div>
+
+                        <div id="userDropdown" class="dropdown-menu">
+                            <a href="{% url 'profile' %}">👤 My Account</a>
+                            <a href="{% url 'inbox' %}">📩 Inbox {% if unread_count > 0 %}<span class="nav-badge">{{ unread_count }}</span>{% endif %}</a>
+                            <a href="{% url 'my_listings' %}">📢 My Ads {% if pending_requests_count > 0 %}<span class="nav-badge">{{ pending_requests_count }}</span>{% endif %}</a>
+                            <a href="{% url 'my_purchases' %}">🛍️ Purchases {% if accepted_purchases_count > 0 %}<span class="nav-badge">{{ accepted_purchases_count }}</span>{% endif %}</a>
+                            <form action="{% url 'logout' %}" method="post" style="margin: 0;">
+                                {% csrf_token %}
+                                <button type="submit" class="logout-item">🚪 Logout</button>
+                            </form>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <div class="review-container">
+        <div class="glass-card">
+            <div style="text-align: left; margin-bottom: 25px;">
+                <h2 style="color: var(--navy-blue); font-weight: 900; margin: 0; letter-spacing: -1px;">Final Review</h2>
+                <p style="color: var(--text-muted); margin-top: 5px; font-size: 0.9rem;">Please confirm your order details below.</p>
+            </div>
+            
+            <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #f1f5f9; text-align: left;">
+                {% if order.item.image1 %}
+                    <img src="{{ order.item.image1.url }}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 12px;">
+                {% endif %}
+                <div>
+                    <strong style="display: block; color: var(--navy-blue);">{{ order.item.title }}</strong>
+                    <small style="color: var(--text-muted);">Qty: {{ order.quantity }}</small>
+                </div>
+            </div>
+
+            <div style="background: #f8fafc; padding: 25px; border-radius: 22px; margin-bottom: 30px; text-align: left;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.95rem; color: var(--text-muted);">
+                    <span>Item Subtotal:</span><span>R{{ order.amount }}</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.95rem; color: var(--text-muted);">
+                    <span>Shipping ({{ order.bobgo_service_code }}):</span><span>R{{ order.shipping_cost }}</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-weight: 900; border-top: 2px dashed #e2e8f0; padding-top: 15px; font-size: 1.3rem; color: var(--navy-blue);">
+                    <span>Total Payout:</span><span>R{{ order.total_with_shipping }}</span>
+                </div>
+            </div>
+
+            <form method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn-confirm">
+                    Confirm & Pay
+                </button>
+            </form>
+
+            <div style="margin-top: 20px; text-align: center;">
+                <a href="{% url 'shipping_to' order.id %}" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; font-weight: 700; transition: 0.2s;">
+                    ← Back to Shipping Selection
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleNav() {
+            document.getElementById("navLinks").classList.toggle("active");
+        }
+        function toggleDropdown(event) {
+            event.stopPropagation();
+            document.getElementById("userDropdown").classList.toggle("show");
+        }
+        window.onclick = function(event) {
+            if (!event.target.closest('.user-dropdown-container')) {
+                var dropdowns = document.getElementsByClassName("dropdown-menu");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    dropdowns[i].classList.remove('show');
+                }
+            }
+        }
+    </script>
+</body>
+</html>

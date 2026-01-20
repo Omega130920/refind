@@ -1,0 +1,355 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ item.title }} | Re-Find Market</title>
+    
+    <style>
+        :root {
+            --bg-main: #e2edf5ff; 
+            --nav-glass: rgba(255, 255, 255, 0.7);
+            --text-dark: #1a1a1b;
+            --text-muted: #6e6d7a;
+            --accent-blue: #007bff;
+            --accent-orange: #f39c12; 
+            --accent-danger: #ff4d4d;
+            --accent-success: #28a745;
+            --navy-blue: #1c2e4a;     
+            --card-shadow: 0 20px 40px -10px rgba(0,0,0,0.05);
+            --radius-lg: 28px;
+            --radius-sm: 18px;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            -webkit-font-smoothing: antialiased;
+            color: var(--text-dark);
+        }
+
+        /* NAVIGATION */
+        nav {
+            background: var(--nav-glass);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            position: sticky;
+            top: 20px; 
+            z-index: 1000;
+            margin: 0 24px;
+            padding: 10px 0;
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 32px;
+            flex-wrap: wrap;
+        }
+
+        .logo-box { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+        .rf-icon {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: white; font-weight: 900; font-size: 1.5rem;
+            width: 46px; height: 46px; display: flex;
+            align-items: center; justify-content: center;
+            border-radius: 12px; box-shadow: 0 6px 15px rgba(243, 156, 18, 0.35);
+        }
+        .logo-text { display: flex; flex-direction: column; line-height: 1; }
+        .logo-text .brand { font-size: 1.3rem; font-weight: 900; color: var(--navy-blue); letter-spacing: -1px; text-transform: uppercase; }
+        .logo-text .subtext { font-size: 0.6rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; }
+
+        /* HAMBURGER */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+        .menu-toggle span {
+            width: 25px; height: 3px; background: var(--navy-blue); border-radius: 3px;
+        }
+
+        .nav-links { display: flex; align-items: center; gap: 20px; }
+        .nav-links a { 
+            text-decoration: none; color: var(--text-muted); font-weight: 600; 
+            font-size: 0.9rem; display: flex; align-items: center; gap: 5px;
+        }
+
+        /* USER DROPDOWN */
+        .user-dropdown-container { position: relative; display: inline-block; }
+        .user-trigger {
+            display: flex; align-items: center; gap: 8px; cursor: pointer;
+            padding: 8px 16px; border-radius: 12px; background: rgba(0,0,0,0.03);
+            color: var(--navy-blue);
+        }
+        .dropdown-menu {
+            display: none; position: absolute; right: 0; top: 120%;
+            background: white; min-width: 220px; border-radius: var(--radius-sm);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.05);
+            padding: 10px 0; z-index: 2000;
+        }
+        .dropdown-menu.show { display: block; }
+        .dropdown-menu a, .logout-item {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 12px 20px; text-decoration: none; color: var(--text-dark);
+            font-size: 0.85rem; font-weight: 600;
+        }
+        .logout-item { width: 100%; background: none; border: none; font-family: inherit; cursor: pointer; color: var(--accent-danger) !important; text-align: left; }
+        .dropdown-divider { height: 1px; background: #eee; margin: 8px 0; }
+        .nav-badge { background: var(--accent-orange); color: white; font-size: 0.7rem; font-weight: 900; padding: 2px 6px; border-radius: 6px; }
+        .notification-dot { width: 8px; height: 8px; background: var(--accent-orange); border-radius: 50%; display: inline-block; }
+
+        /* DETAIL LAYOUT */
+        .detail-container { max-width: 1100px; margin: 20px auto 60px; padding: 0 32px; }
+        .back-link { display: inline-block; text-decoration: none; color: var(--accent-blue); font-weight: 700; font-size: 0.9rem; margin-bottom: 15px; }
+
+        .grid-layout { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 30px; 
+            align-items: start; 
+        }
+
+        /* GALLERY */
+        .image-gallery { flex: 1.1; min-width: 350px; background: white; padding: 12px; border-radius: var(--radius-lg); box-shadow: var(--card-shadow); position: relative; }
+        .slider-container { position: relative; width: 100%; height: 480px; border-radius: var(--radius-sm); overflow: hidden; background: #f8f9fa; }
+        .gallery-slide { width: 100%; height: 100%; object-fit: cover; display: none; cursor: pointer; }
+        .gallery-slide.active { display: block; }
+
+        .nav-arrow {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.9); border: none; width: 40px; height: 40px;
+            border-radius: 50%; cursor: pointer; font-weight: bold; display: flex;
+            align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); z-index: 10;
+        }
+        .prev-arrow { left: 15px; } .next-arrow { right: 15px; }
+        .expand-btn { position: absolute; bottom: 15px; right: 15px; background: var(--navy-blue); color: white; border: none; padding: 8px 14px; border-radius: 8px; font-size: 0.7rem; font-weight: 800; cursor: pointer; z-index: 10; }
+        .photo-index { position: absolute; top: 15px; left: 15px; background: rgba(0, 0, 0, 0.5); color: white; padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; }
+
+        /* INFO CARD */
+        .info-card { flex: 1; min-width: 350px; background: white; padding: 30px; border-radius: var(--radius-lg); box-shadow: var(--card-shadow); position: sticky; top: 100px; }
+        .category-tag { display: inline-block; background: #f1f5f9; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-bottom: 10px; }
+        .title { font-size: 1.8rem; font-weight: 900; margin: 0 0 4px 0; line-height: 1.1; }
+        .location-subtitle { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px; display: flex; align-items: center; gap: 4px; }
+        .price { font-size: 1.6rem; font-weight: 900; color: var(--accent-success); margin-bottom: 10px; }
+        .inventory-status { display: inline-block; font-size: 0.8rem; font-weight: 700; padding: 4px 10px; border-radius: 6px; margin-bottom: 20px; background: #eef2f7; color: var(--navy-blue); }
+        .low-stock { background: #fff3cd; color: #856404; }
+
+        /* INTERACTION ELEMENTS */
+        .quantity-box { background: #f8fafc; padding: 15px; border-radius: var(--radius-sm); margin-bottom: 20px; border: 1px solid #edf2f7; display: flex; align-items: center; justify-content: space-between; }
+        .quantity-select { padding: 8px 12px; border-radius: 8px; border: 2px solid #ddd; font-weight: 700; outline: none; background: white; cursor: pointer; min-width: 80px; }
+        .btn-buy { width: 100%; padding: 16px; background: var(--accent-blue); color: white; border: none; border-radius: 14px; font-size: 1rem; font-weight: 800; cursor: pointer; transition: opacity 0.2s; }
+        .btn-msg { display: block; text-align: center; width: 100%; margin-top: 12px; padding: 14px; background: white; color: var(--accent-blue); border: 2px solid var(--accent-blue); border-radius: 14px; text-decoration: none; font-weight: 800; font-size: 0.95rem; }
+
+        /* RESPONSIVE BREAKPOINTS */
+        @media (max-width: 768px) {
+            nav { margin: 10px 15px; }
+            .menu-toggle { display: flex; }
+            .nav-links {
+                display: none; width: 100%; flex-direction: column;
+                padding-top: 20px; gap: 15px; align-items: flex-start;
+            }
+            .nav-links.active { display: flex; }
+            .user-dropdown-container { width: 100%; }
+            .dropdown-menu { position: static; box-shadow: none; width: 100%; border: none; }
+            .logo-text .subtext { display: none; }
+
+            .detail-container { padding: 0 15px; }
+            .grid-layout { flex-direction: column; }
+            .image-gallery, .info-card { min-width: 100%; flex: none; }
+            .info-card { position: relative; top: 0; }
+            .slider-container { height: 320px; }
+        }
+
+        /* LIGHTBOX SYSTEM */
+        #lightbox { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.95); z-index: 2000; justify-content: center; align-items: center; overflow: hidden; }
+        #lightbox-img-container { transition: transform 0.3s ease; cursor: zoom-in; display: flex; justify-content: center; align-items: center; }
+        #lightbox-img { max-width: 85%; max-height: 85vh; border-radius: 8px; }
+        .zoomed { transform: scale(2); cursor: zoom-out !important; }
+        .close-lightbox { position: absolute; top: 30px; right: 30px; color: white; font-size: 2.5rem; cursor: pointer; z-index: 2010; }
+        .lightbox-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255, 255, 255, 0.15); color: white; border: 1px solid rgba(255,255,255,0.2); width: 50px; height: 50px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 2010; }
+        .lightbox-prev { left: 20px; } .lightbox-next { right: 20px; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-content">
+            <a href="{% url 'item_list' %}" class="logo-box">
+                <div class="rf-icon">RF</div>
+                <div class="logo-text">
+                    <span class="brand">RE-FIND</span>
+                    <span class="subtext">MARKET</span>
+                </div>
+            </a>
+
+            <div class="menu-toggle" onclick="toggleNav()">
+                <span></span><span></span><span></span>
+            </div>
+
+            <div class="nav-links" id="navLinks">
+                <a href="{% url 'timeline_feed' %}">🏘️ Town Square</a>
+                <a href="{% url 'item_list' %}">🛒 Marketplace</a>
+                <a href="{% url 'vendor_list' %}" style="color: var(--navy-blue); font-weight: 800;">🏪 Vendors</a>
+
+                {% if user.is_authenticated %}
+                    <div class="user-dropdown-container">
+                        <div class="user-trigger" onclick="toggleDropdown(event)">
+                            <strong>@{{ user.username }}</strong>
+                            {% if unread_count > 0 or pending_requests_count > 0 or accepted_purchases_count > 0 %}
+                                <span class="notification-dot"></span>
+                            {% endif %}
+                            <span style="font-size: 0.6rem; opacity: 0.5;">▼</span>
+                        </div>
+                        <div id="userDropdown" class="dropdown-menu">
+                            <a href="{% url 'profile' %}">👤 My Account</a>
+                            <a href="{% url 'inbox' %}">📩 Inbox {% if unread_count > 0 %}<span class="nav-badge">{{ unread_count }}</span>{% endif %}</a>
+                            <a href="{% url 'my_listings' %}">📢 My Ads {% if pending_requests_count > 0 %}<span class="nav-badge">{{ pending_requests_count }}</span>{% endif %}</a>
+                            <a href="{% url 'my_purchases' %}">🛍️ Purchases {% if accepted_purchases_count > 0 %}<span class="nav-badge">{{ accepted_purchases_count }}</span>{% endif %}</a>
+                            <div class="dropdown-divider"></div>
+                            <form action="{% url 'logout' %}" method="post" style="margin: 0;">
+                                {% csrf_token %}
+                                <button type="submit" class="logout-item">🚪 Logout</button>
+                            </form>
+                        </div>
+                    </div>
+                {% else %}
+                    <a href="{% url 'login' %}" style="color: var(--accent-blue); font-weight: 800;">Login</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <div class="detail-container">
+        <a href="{% url 'item_list' %}" class="back-link">← Back to Marketplace</a>
+
+        <div class="grid-layout">
+            <div class="image-gallery">
+                <div class="slider-container" id="slider">
+                    {% if item.images.all %}
+                        {% for img in item.images.all %}
+                            <img src="{{ img.image.url }}" class="gallery-slide {% if forloop.first %}active{% endif %}" onclick="openLightbox()">
+                        {% endfor %}
+                        {% if item.images.count > 1 %}
+                            <button class="nav-arrow prev-arrow" onclick="moveSlide(-1)">❮</button>
+                            <button class="nav-arrow next-arrow" onclick="moveSlide(1)">❯</button>
+                            <div class="photo-index" id="photo-index">1 / {{ item.images.count }}</div>
+                        {% endif %}
+                        <button class="expand-btn" onclick="openLightbox()">FULLSCREEN ⤢</button>
+                    {% else %}
+                        <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:#ccc;">No Images</div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="info-card">
+                <span class="category-tag">{{ item.get_category_display }}</span>
+                <h1 class="title">{{ item.title }}</h1>
+                <div class="location-subtitle">📍 {{ item.city|default:item.region|default:"Local" }}</div>
+                <div id="unit-price" class="price" data-base-price="{{ item.display_price }}">R{{ item.display_price }}</div>
+                
+                <div class="inventory-status {% if item.remaining_stock == 1 %}low-stock{% endif %}">
+                    {% if item.remaining_stock == 1 %}🔥 Only 1 Left!{% else %}{{ item.remaining_stock }} Units Available{% endif %}
+                </div>
+
+                {% if item.seller != user %}
+                    <form action="{% url 'checkout' item.id %}" method="POST">
+                        {% csrf_token %}
+                        {% if item.remaining_stock > 1 %}
+                        <div class="quantity-box">
+                            <label for="requested_quantity">Quantity</label>
+                            <select name="requested_quantity" id="requested_quantity" class="quantity-select"></select>
+                        </div>
+                        {% else %}
+                            <input type="hidden" name="requested_quantity" value="1">
+                        {% endif %}
+                        <button type="submit" class="btn-buy">Request to Buy</button>
+                    </form>
+                    <a href="{% url 'chat' item.id item.seller.id %}" class="btn-msg">Message Seller</a>
+                {% else %}
+                    <a href="{% url 'item_edit' item.id %}" class="btn-buy" style="display: block; text-decoration: none; text-align: center;">Edit Listing</a>
+                {% endif %}
+
+                <div class="description-box">
+                    <h3>Description</h3>
+                    <p style="line-height: 1.5; color: #4a4a4a; margin: 0; font-size: 0.9rem;">{{ item.description|linebreaks }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="lightbox" onclick="handleLightboxClick(event)">
+        <span class="close-lightbox" onclick="closeLightbox()">&times;</span>
+        <button class="lightbox-nav lightbox-prev" onclick="moveSlide(-1); event.stopPropagation();">❮</button>
+        <div id="lightbox-img-container"><img id="lightbox-img" src="" onclick="toggleZoom(event)"></div>
+        <button class="lightbox-nav lightbox-next" onclick="moveSlide(1); event.stopPropagation();">❯</button>
+    </div>
+
+    <script>
+        function toggleNav() { document.getElementById("navLinks").classList.toggle("active"); }
+        function toggleDropdown(event) { event.stopPropagation(); document.getElementById("userDropdown").classList.toggle("show"); }
+
+        // Quantity selector logic
+        (function() {
+            const select = document.getElementById('requested_quantity');
+            const priceDisplay = document.getElementById('unit-price');
+            if (select) {
+                const maxStock = parseInt("{{ item.remaining_stock }}") || 1;
+                const basePrice = parseFloat(priceDisplay.dataset.basePrice) || 0;
+                for (let i = 1; i <= maxStock; i++) {
+                    const opt = document.createElement('option'); opt.value = i; opt.textContent = i; select.appendChild(opt);
+                }
+                select.addEventListener('change', function() {
+                    priceDisplay.textContent = 'R' + (basePrice * parseInt(this.value)).toLocaleString(undefined, {minimumFractionDigits: 2});
+                });
+            }
+        })();
+
+        // Gallery & Lightbox logic
+        let currentIndex = 0; let isZoomed = false;
+        const slides = document.querySelectorAll('.gallery-slide');
+        const photoIndexDisplay = document.getElementById('photo-index');
+
+        function moveSlide(step) {
+            if (slides.length === 0) return;
+            slides[currentIndex].classList.remove('active');
+            currentIndex = (currentIndex + step + slides.length) % slides.length;
+            slides[currentIndex].classList.add('active');
+            if(photoIndexDisplay) photoIndexDisplay.innerText = `${currentIndex + 1} / ${slides.length}`;
+            if (document.getElementById('lightbox').style.display === 'flex') {
+                document.getElementById('lightbox-img').src = slides[currentIndex].src;
+                resetZoom();
+            }
+        }
+
+        function openLightbox() {
+            document.getElementById('lightbox-img').src = slides[currentIndex].src;
+            document.getElementById('lightbox').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').style.display = 'none';
+            document.body.style.overflow = 'auto';
+            resetZoom();
+        }
+
+        function handleLightboxClick(event) { if (event.target !== document.getElementById('lightbox-img') && !event.target.classList.contains('lightbox-nav')) closeLightbox(); }
+        function toggleZoom(event) { event.stopPropagation(); isZoomed = !isZoomed; document.getElementById('lightbox-img-container').classList.toggle('zoomed', isZoomed); }
+        function resetZoom() { isZoomed = false; document.getElementById('lightbox-img-container').classList.remove('zoomed'); }
+        
+        window.onclick = function(event) { if (!event.target.closest('.user-dropdown-container')) document.querySelectorAll(".dropdown-menu").forEach(d => d.classList.remove('show')); }
+    </script>
+</body>
+</html>

@@ -1,0 +1,235 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post by @{{ post.author.username }} | Re-Find Market</title>
+    
+    <style>
+        :root {
+            --bg-main: #e2edf5ff; 
+            --nav-glass: rgba(255, 255, 255, 0.7);
+            --text-dark: #1a1a1b;
+            --text-muted: #6e6d7a;
+            --accent-blue: #007bff;
+            --accent-orange: #f39c12; 
+            --accent-danger: #ff4d4d;
+            --accent-success: #28a745;
+            --navy-blue: #1c2e4a;     
+            --card-shadow: 0 8px 24px -10px rgba(0,0,0,0.08);
+            --radius-lg: 28px;
+            --radius-sm: 18px;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            -webkit-font-smoothing: antialiased;
+            color: var(--text-dark);
+        }
+
+        /* NAVIGATION BAR */
+        nav {
+            background: var(--nav-glass);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            position: sticky;
+            top: 20px; 
+            z-index: 1000;
+            margin: 0 24px;
+            padding: 10px 0;
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 32px;
+            flex-wrap: wrap;
+        }
+
+        .logo-box { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+        .rf-icon {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: white; font-weight: 900; font-size: 1.5rem;
+            width: 46px; height: 46px; display: flex;
+            align-items: center; justify-content: center;
+            border-radius: 12px;
+        }
+        .logo-text { display: flex; flex-direction: column; line-height: 1; }
+        .logo-text .brand { font-size: 1.3rem; font-weight: 900; color: var(--navy-blue); letter-spacing: -1px; text-transform: uppercase; }
+        .logo-text .subtext { font-size: 0.6rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; }
+
+        /* HAMBURGER */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+        .menu-toggle span { width: 25px; height: 3px; background: var(--navy-blue); border-radius: 3px; }
+
+        .nav-links { display: flex; align-items: center; gap: 20px; }
+        .nav-links a { 
+            text-decoration: none; color: var(--text-muted); 
+            font-weight: 600; font-size: 0.9rem; transition: 0.2s;
+        }
+
+        /* DETAIL LAYOUT */
+        .main-container { max-width: 580px; margin: 30px auto 100px; padding: 0 15px; }
+
+        .post-card {
+            background: white; border-radius: 20px; padding: 20px;
+            box-shadow: var(--card-shadow); border: 1px solid rgba(0,0,0,0.02);
+            margin-bottom: 20px;
+        }
+
+        .back-link-container { display: flex; justify-content: center; width: 100%; margin-bottom: 40px; }
+        .back-link {
+            display: inline-flex; align-items: center; gap: 8px;
+            color: var(--text-muted); text-decoration: none; font-size: 0.85rem; font-weight: 800;
+            padding: 8px 16px; border-radius: 12px; transition: all 0.2s; background: rgba(255, 255, 255, 0.5);
+        }
+
+        .loc-badge { font-size: 0.65rem; color: var(--accent-blue); font-weight: 800; background: #f0f7ff; padding: 2px 8px; border-radius: 6px; text-transform: uppercase; }
+        .comment-item { padding: 12px 0; border-bottom: 1px solid #f8fafc; }
+        .comment-meta { display: flex; gap: 12px; margin-top: 4px; font-size: 0.65rem; color: var(--text-muted); font-weight: 700; }
+        .comment-input { flex-grow: 1; border: none; border-radius: 20px; padding: 10px 18px; font-size: 0.85rem; outline: none; background: #f3f4f6; }
+        .action-btn { background: none; border: none; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.9rem; font-weight: 700; color: var(--text-muted); }
+
+        /* MOBILE RESPONSIVE OVERRIDES */
+        @media (max-width: 768px) {
+            nav { margin: 10px 15px; }
+            .menu-toggle { display: flex; }
+            .nav-links {
+                display: none; width: 100%; flex-direction: column;
+                padding-top: 20px; gap: 15px; align-items: flex-start;
+            }
+            .nav-links.active { display: flex; }
+            .logo-text .subtext { display: none; }
+            .main-container { margin-top: 20px; }
+            .post-card { padding: 15px; }
+            .comment-input { padding: 10px 12px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-content">
+            <a href="{% url 'item_list' %}" class="logo-box">
+                <div class="rf-icon">RF</div>
+                <div class="logo-text">
+                    <span class="brand">RE-FIND</span>
+                    <span class="subtext">MARKET</span>
+                </div>
+            </a>
+
+            <div class="menu-toggle" onclick="toggleNav()">
+                <span></span><span></span><span></span>
+            </div>
+
+            <div class="nav-links" id="navLinks">
+                <a href="{% url 'timeline_feed' %}">🏘️ Town Square</a>
+                <a href="{% url 'item_list' %}">🛒 Marketplace</a>
+                <a href="{% url 'vendor_list' %}">🏪 Vendors</a>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'profile' %}">👤 <strong>@{{ user.username }}</strong></a>
+                {% else %}
+                    <a href="{% url 'login' %}">Login</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div class="post-card">
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 15px;">
+                <div style="width: 44px; height: 44px; background: var(--navy-blue); border-radius: 50%; overflow: hidden;">
+                    {% if post.author.vendor_profile.logo %}
+                        <img src="{{ post.author.vendor_profile.logo.url }}" style="width: 100%; height: 100%; object-fit: cover;">
+                    {% else %}
+                        <div style="color: white; display: flex; align-items: center; justify-content: center; height: 100%; font-weight: 900;">{{ post.author.username|slice:":1"|upper }}</div>
+                    {% endif %}
+                </div>
+                <div>
+                    <h4 style="margin: 0; font-size: 0.95rem; font-weight: 800; color: var(--navy-blue);">
+                        {{ post.author.vendor_profile.business_name|default:post.author.username }}
+                        {% if post.author.vendor_profile %}<span style="color: var(--accent-orange);">✔</span>{% endif %}
+                    </h4>
+                    <span class="loc-badge">📍 {{ post.author.city|default:"Local" }}</span>
+                </div>
+            </div>
+
+            <p style="font-size: 1rem; line-height: 1.5; color: var(--text-dark); margin-bottom: 15px; white-space: pre-wrap;">{{ post.content }}</p>
+
+            {% if post.image %}
+                <img src="{{ post.image.url }}" style="width:100%; border-radius:15px; margin-bottom:15px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+            {% endif %}
+
+            <div style="padding: 12px 0; border-top: 1px solid #f1f5f9; border-bottom: 1px solid #f1f5f9; display: flex; gap: 25px;">
+                <form action="{% url 'toggle_like_post' post.id %}" method="POST" style="margin: 0;">
+                    {% csrf_token %}
+                    <button type="submit" class="action-btn" style="color: {% if user in post.likes.all %}var(--accent-danger){% endif %};">
+                        <span>{% if user in post.likes.all %}❤️{% else %}🤍{% endif %}</span>
+                        <span>{{ post.likes.count }} Likes</span>
+                    </button>
+                </form>
+                <div class="action-btn">
+                    <span>💬</span>
+                    <span>{{ post.comments.count }} Comments</span>
+                </div>
+            </div>
+
+            <div style="margin-top: 20px;">
+                <h5 style="margin: 0 0 15px; font-size: 0.9rem; font-weight: 800; color: var(--navy-blue);">Conversation</h5>
+                
+                {% for comment in post.comments.all|dictsortreversed:"created_at" %}
+                <div class="comment-item">
+                    <strong style="color: var(--navy-blue);">@{{ comment.author.username }}</strong> 
+                    <span style="font-size: 0.9rem;">{{ comment.text }}</span>
+                    <div class="comment-meta">
+                        <span>{{ comment.created_at|timesince }} ago</span>
+                        <form action="{% url 'toggle_comment_like' comment.id %}" method="POST" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" style="background:none; border:none; padding:0; font-weight:800; font-size:0.65rem; color:{% if user in comment.comment_likes.all %}var(--accent-danger){% else %}var(--text-muted){% endif %}; cursor:pointer;">
+                                {% if user in comment.comment_likes.all %}Liked{% else %}Like{% endif %} ({{ comment.comment_likes.count }})
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                {% empty %}
+                <p style="color: var(--text-muted); font-size: 0.85rem; text-align: center; padding: 20px 0;">No comments yet.</p>
+                {% endfor %}
+
+                <form action="{% url 'add_comment' post.id %}" method="POST" style="display: flex; gap: 10px; margin-top: 20px; position: sticky; bottom: 0; background: white; padding: 10px 0;">
+                    {% csrf_token %}
+                    <input type="text" name="text" placeholder="Write a reply..." required class="comment-input">
+                    <button type="submit" style="background: var(--accent-blue); border: none; color: white; padding: 0 20px; border-radius: 20px; font-weight: 800; font-size: 0.85rem; cursor: pointer;">Reply</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="back-link-container">
+            <a href="{% url 'timeline_feed' %}#post-{{ post.id }}" class="back-link">
+                ✕ Close and Return
+            </a>
+        </div>
+    </div>
+
+    <script>
+        function toggleNav() {
+            document.getElementById("navLinks").classList.toggle("active");
+        }
+    </script>
+</body>
+</html>

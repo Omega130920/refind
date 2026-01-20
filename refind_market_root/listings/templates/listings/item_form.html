@@ -1,0 +1,468 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post a Listing | Re-Find Market</title>
+    
+    <style>
+        :root {
+            --bg-main: #e2edf5ff; 
+            --nav-glass: rgba(255, 255, 255, 0.7);
+            --text-dark: #1a1a1b;
+            --text-muted: #6e6d7a;
+            --accent-blue: #007bff;
+            --accent-orange: #f39c12; 
+            --accent-danger: #ff4d4d;
+            --accent-success: #28a745;
+            --navy-blue: #1c2e4a;     
+            --card-shadow: 0 20px 40px -10px rgba(0,0,0,0.05);
+            --radius-lg: 28px;
+            --radius-sm: 18px;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            -webkit-font-smoothing: antialiased;
+            color: var(--text-dark);
+        }
+
+        /* NAVIGATION: Global Floating Glass */
+        nav {
+            background: var(--nav-glass);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            position: sticky;
+            top: 20px; 
+            z-index: 1000;
+            margin: 0 24px;
+            padding: 10px 0;
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 32px;
+            flex-wrap: wrap;
+        }
+
+        .logo-box { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+        .rf-icon {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: white; font-weight: 900; font-size: 1.5rem;
+            width: 52px; height: 52px; display: flex;
+            align-items: center; justify-content: center;
+            border-radius: 14px; box-shadow: 0 6px 15px rgba(243, 156, 18, 0.35);
+        }
+        .logo-text { display: flex; flex-direction: column; line-height: 1; }
+        .logo-text .brand { font-size: 1.6rem; font-weight: 900; color: var(--navy-blue); letter-spacing: -1px; text-transform: uppercase; }
+        .logo-text .subtext { font-size: 0.7rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 3px; margin-top: 4px; }
+
+        .menu-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+        .menu-toggle span { width: 25px; height: 3px; background: var(--navy-blue); border-radius: 3px; }
+
+        .nav-links { display: flex; align-items: center; gap: 18px; }
+        .nav-links a { text-decoration: none; color: var(--text-muted); font-weight: 600; font-size: 0.85rem; display: flex; align-items: center; gap: 5px; transition: 0.2s; }
+        .nav-badge { background: var(--accent-orange); color: white; font-size: 0.7rem; font-weight: 900; padding: 2px 6px; border-radius: 6px; }
+
+        /* DROPDOWN STYLES */
+        .user-dropdown-container { position: relative; display: inline-block; }
+        .user-trigger {
+            display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 8px 16px; border-radius: 12px;
+            background: rgba(0,0,0,0.03); transition: 0.2s; color: var(--navy-blue);
+        }
+        .dropdown-menu {
+            display: none; position: absolute; right: 0; top: 120%; background: white; min-width: 220px;
+            border-radius: var(--radius-sm); box-shadow: 0 15px 35px rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.05);
+            padding: 10px 0; z-index: 2000;
+        }
+        .dropdown-menu.show { display: block; }
+        .dropdown-menu a, .logout-item {
+            display: flex; justify-content: space-between; align-items: center; padding: 12px 20px;
+            text-decoration: none; color: var(--text-dark); font-size: 0.85rem; font-weight: 600;
+        }
+        .logout-item { width: 100%; background: none; border: none; font-family: inherit; cursor: pointer; color: var(--accent-danger) !important; text-align: left; }
+
+        /* FORM LAYOUT */
+        .form-container { max-width: 700px; margin: 60px auto; padding: 0 24px; }
+        .form-card { background: white; padding: 50px 40px; border-radius: var(--radius-lg); box-shadow: var(--card-shadow); }
+        h2 { font-size: 2.2rem; font-weight: 900; letter-spacing: -1px; margin: 0 0 10px 0; color: var(--navy-blue); }
+        .subtitle { color: var(--text-muted); margin-bottom: 35px; font-weight: 500; }
+
+        .alert { padding: 15px; margin-bottom: 20px; border-radius: 12px; font-weight: 600; font-size: 0.9rem; }
+        .alert-error { background-color: #fee2e2; color: #dc2626; border: 1px solid #fecaca; }
+
+        .field-group { margin-bottom: 25px; }
+        .field-group label { display: block; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; color: var(--navy-blue); margin-bottom: 10px; letter-spacing: 0.5px; }
+        
+        .visibility-control-box {
+            background: linear-gradient(135deg, #fffcf4, #ffffff);
+            padding: 25px; border-radius: 22px; border: 2px solid var(--accent-orange);
+            margin: 30px 0; display: flex; align-items: flex-start; gap: 15px;
+            box-shadow: 0 10px 25px rgba(243, 156, 18, 0.08);
+        }
+        .visibility-control-box input[type="checkbox"] { width: 24px; height: 24px; cursor: pointer; accent-color: var(--accent-orange); margin-top: 4px; flex-shrink: 0; }
+        .visibility-text h4 { margin: 0; font-size: 1rem; color: var(--navy-blue); font-weight: 900; display: flex; align-items: center; gap: 8px; }
+        .visibility-text p { margin: 5px 0 0; font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; }
+        .exclusive-badge { background: var(--accent-orange); color: white; font-size: 0.65rem; font-weight: 800; padding: 2px 8px; border-radius: 5px; text-transform: uppercase; }
+
+        .location-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; background: #fdfdfd; padding: 20px; border-radius: 18px; border: 1px solid #f1f1f1; }
+        .location-grid .field-group { margin-bottom: 0; }
+        .location-grid label { font-size: 0.65rem; color: var(--text-muted); }
+
+        input, select, textarea { width: 100%; padding: 14px 18px; border-radius: 14px; border: 2px solid #f1f1f1; font-size: 1rem; background: #fafafa; }
+        input:focus, textarea:focus, select:focus { outline: none; border-color: var(--accent-blue); background: white; box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.05); }
+
+        .quantity-wrapper { display: flex; align-items: center; gap: 15px; background: #fdfdfd; padding: 15px 20px; border-radius: 18px; border: 1px solid #f1f1f1; }
+        #id_total_quantity { width: 100px; text-align: center; font-weight: 800; color: var(--navy-blue); }
+        .quantity-hint { font-size: 0.8rem; color: var(--text-muted); font-weight: 500; }
+
+        .image-uploader-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 10px; margin-bottom: 25px; }
+        .upload-slot { aspect-ratio: 1/1; background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 12px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; cursor: pointer; transition: 0.2s; }
+        .upload-slot img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; z-index: 50; display: none; }
+        .remove-img { position: absolute; top: 8px; right: 8px; background: rgba(255, 77, 77, 0.9); color: white; border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; z-index: 60; display: none; align-items: center; justify-content: center; font-weight: bold; }
+        .upload-slot.has-img img { display: block !important; }
+        .upload-slot.has-img .remove-img { display: flex !important; }
+
+        /* PRICE FIELD FIX: Ensures R is fixed on the left inside the box */
+        .price-input-wrapper { position: relative; display: block; margin-bottom: 10px; }
+        .currency-symbol { 
+            position: absolute; 
+            left: 18px; 
+            top: 50%; 
+            transform: translateY(-50%); 
+            font-weight: 900; 
+            color: var(--navy-blue); 
+            z-index: 5;
+            pointer-events: none;
+        }
+        #id_price { padding-left: 40px !important; }
+
+/* SOFT SOCIAL STYLE BREAKDOWN */
+.breakdown-box { 
+    margin-top: 25px; 
+    padding: 20px; 
+    background: #f8fafc; /* Very light soft blue */
+    border-radius: 20px; 
+    border: none; /* Removed the hard border */
+    display: none; 
+}
+
+.breakdown-row { 
+    display: flex; 
+    justify-content: space-between; 
+    padding: 10px 0;
+    font-size: 0.9rem;
+}
+
+/* Give the labels more weight and the numbers a "pill" background */
+.breakdown-row span:first-child {
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+.breakdown-row span:last-child {
+    font-weight: 800;
+    color: var(--navy-blue);
+    background: white; /* Put the price in a little white pill */
+    padding: 4px 12px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+}
+
+.total-row { 
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.total-row span:last-child {
+    background: var(--accent-success); /* Final price pops in green */
+    color: white !important;
+    font-size: 1.1rem;
+}
+
+        .breakdown-hint {
+            font-size: 0.85rem; 
+            color: var(--text-muted); 
+            margin-top: 25px; 
+            line-height: 1.6; 
+            font-weight: 500;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+        /* --- END OF UPDATED SECTION --- */
+
+        .submit-btn { width: 100%; padding: 20px; background: var(--accent-success); color: white; border: none; border-radius: 18px; font-size: 1.1rem; font-weight: 800; cursor: pointer; transition: 0.3s; margin-top: 25px; box-shadow: 0 8px 20px rgba(40, 167, 69, 0.2); }
+        .cancel-btn { display: block; text-align: center; margin-top: 20px; color: var(--text-muted); text-decoration: none; font-weight: 700; font-size: 0.9rem; }
+
+        @media (max-width: 768px) {
+            nav { margin: 10px 15px; }
+            .menu-toggle { display: flex; }
+            .nav-links { display: none; width: 100%; flex-direction: column; padding: 20px 0; gap: 15px; align-items: flex-start; }
+            .nav-links.active { display: flex; }
+            .dropdown-menu { position: static; box-shadow: none; border: none; width: 100%; padding: 0; }
+            .logo-text .subtext { display: none; }
+            .form-container { margin: 20px auto; }
+            .location-grid { grid-template-columns: 1fr; }
+            .image-uploader-grid { grid-template-columns: repeat(2, 1fr); }
+            .breakdown-box { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-content">
+            <a href="{% url 'item_list' %}" class="logo-box">
+                <div class="rf-icon">RF</div>
+                <div class="logo-text">
+                    <span class="brand">RE-FIND</span>
+                    <span class="subtext">MARKET</span>
+                </div>
+            </a>
+
+            <div class="menu-toggle" onclick="toggleNav()">
+                <span></span><span></span><span></span>
+            </div>
+
+            <div class="nav-links" id="navLinks">
+                <a href="{% url 'timeline_feed' %}">🏠 Town Square</a>
+                <a href="{% url 'item_list' %}">🛍️ Marketplace</a>
+                {% if user.is_authenticated %}
+                    <div class="user-dropdown-container">
+                        <div class="user-trigger" onclick="toggleDropdown(event)">
+                            <strong>@{{ user.username }}</strong>
+                            <span style="font-size: 0.6rem; opacity: 0.5;">▼</span>
+                        </div>
+                        <div id="userDropdown" class="dropdown-menu">
+                            <a href="{% url 'profile' %}">👤 My Account</a>
+                            <a href="{% url 'inbox' %}">📩 Inbox</a>
+                            <a href="{% url 'my_listings' %}">📢 My Ads</a>
+                            <div style="height:1px; background:#eee; margin:8px 0;"></div>
+                            <form action="{% url 'logout' %}" method="post" style="margin: 0;">
+                                {% csrf_token %}
+                                <button type="submit" class="logout-item">🚪 Logout</button>
+                            </form>
+                        </div>
+                    </div>
+                    <a href="{% url 'item_list' %}" class="btn-sell-nav" style="background: var(--accent-danger); color: white !important;">Cancel</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <div class="form-container">
+        <div class="form-card">
+            <h2>Post a Listing</h2>
+            <p class="subtitle">Complete the fields below to showcase your item.</p>
+
+            <form method="POST" enctype="multipart/form-data" id="post-form">
+                {% csrf_token %}
+                
+                {% for field in form %}
+                    {% if field.name not in "price,total_quantity,region,city,suburb,show_on_marketplace,image1,image2,image3,image4,image5,image6" %}
+                        <div class="field-group">
+                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.errors %}
+                                <div style="color:red; font-size:0.8rem; margin-top:5px;">{{ field.errors }}</div>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+
+                {% if not form.show_on_marketplace.is_hidden %}
+                <div class="visibility-control-box">
+                    {{ form.show_on_marketplace }}
+                    <div class="visibility-text">
+                        <h4>List on Main Marketplace <span class="exclusive-badge">Vendor Feature</span></h4>
+                        <p>Keep this checked to reach everyone. Uncheck to make this a <strong>Storefront Exclusive</strong> (only visible via your shop link).</p>
+                    </div>
+                </div>
+                {% else %}
+                    {{ form.show_on_marketplace }}
+                {% endif %}
+
+                <div class="field-group">
+                    <label for="{{ form.total_quantity.id_for_label }}">Quantity Available</label>
+                    <div class="quantity-wrapper">
+                        {{ form.total_quantity }}
+                        <div class="quantity-hint">How many identical units are you listing?</div>
+                    </div>
+                    {% if form.total_quantity.errors %}
+                        <div style="color:red; font-size:0.8rem; margin-top:5px;">{{ form.total_quantity.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="field-group">
+                    <label>Item Location Details</label>
+                    <div class="location-grid">
+                        <div class="field-group">
+                            <label for="{{ form.region.id_for_label }}">Region</label>
+                            {{ form.region }}
+                        </div>
+                        <div class="field-group">
+                            <label for="{{ form.city.id_for_label }}">City</label>
+                            {{ form.city }}
+                        </div>
+                        <div class="field-group">
+                            <label for="{{ form.suburb.id_for_label }}">Suburb</label>
+                            {{ form.suburb }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field-group">
+                    <label>Product Gallery (Max 6 Images)</label>
+                    <div class="image-uploader-grid">
+                        {% for i in "123456" %}
+                        <div class="upload-slot" id="slot-{{forloop.counter}}" onclick="triggerUpload({{forloop.counter}})">
+                            <span class="plus-icon" id="plus-{{forloop.counter}}" style="color: #94a3b8; font-size: 1.5rem; z-index: 1;">+</span>
+                            <img id="preview-{{forloop.counter}}" src="" alt="Preview">
+                            <button type="button" class="remove-img" id="remove-{{forloop.counter}}" onclick="removeImage(event, {{forloop.counter}})">✕</button>
+                        </div>
+                        <input type="file" name="image{{forloop.counter}}" id="file-{{forloop.counter}}" accept="image/*" style="display: none;" onchange="handleFileSelect(this, {{forloop.counter}})">
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="field-group" style="background: #fdfdfd; padding: 25px; border-radius: 22px; border: 1px solid #f1f1f1; margin-top: 40px;">
+                    <label for="id_price">Your Payout (Base Price)</label>
+                    <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">Set the amount you wish to receive.</div>
+                    <div class="price-input-wrapper">
+                        <span class="currency-symbol">R</span>
+                        <input type="number" id="id_price" name="price" step="0.01" required value="{{ form.price.value|default:'' }}">
+                    </div>
+
+                    <div id="price-breakdown" class="breakdown-box">
+                        <div class="breakdown-row">
+                            <span style="color: var(--text-muted)">Your Net Earnings:</span>
+                            <span id="payout-amount">R0.00</span>
+                        </div>
+                        <div class="breakdown-row" style="color: var(--accent-blue)">
+                            <span>Market Protection Fee (7.5%):</span>
+                            <span id="fee-amount">+ R0.00</span>
+                        </div>
+                        <div class="breakdown-row total-row">
+                            <span>Listing Price (Buyer Sees):</span>
+                            <span id="total-listed">R0.00</span>
+                        </div>
+                        <p class="breakdown-hint">
+                            This fee ensures a safe marketplace through DHA Identity Verification and secure payment holding.
+                        </p>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submit-btn-text">Publish to Marketplace</button>
+                <a href="{% url 'item_list' %}" class="cancel-btn">Back to Marketplace</a>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function toggleNav() {
+            document.getElementById("navLinks").classList.toggle("active");
+        }
+        function toggleDropdown(event) {
+            event.stopPropagation();
+            document.getElementById("userDropdown").classList.toggle("show");
+        }
+        window.onclick = function(event) {
+            if (!event.target.closest('.user-dropdown-container')) {
+                var dropdowns = document.getElementsByClassName("dropdown-menu");
+                for (var i = 0; i < dropdowns.length; i++) { dropdowns[i].classList.remove('show'); }
+            }
+        }
+
+        const visibilityToggle = document.getElementById('id_show_on_marketplace');
+        const submitBtnText = document.getElementById('submit-btn-text');
+
+        function updateButtonText() {
+            if (visibilityToggle && !visibilityToggle.checked) {
+                submitBtnText.innerText = "Publish to Storefront Only";
+            } else {
+                submitBtnText.innerText = "Publish to Marketplace";
+            }
+        }
+
+        if(visibilityToggle) {
+            visibilityToggle.addEventListener('change', updateButtonText);
+            window.addEventListener('load', updateButtonText);
+        }
+
+        function triggerUpload(index) { document.getElementById('file-' + index).click(); }
+
+        function handleFileSelect(input, index) {
+            const slot = document.getElementById('slot-' + index);
+            const preview = document.getElementById('preview-' + index);
+            const plus = document.getElementById('plus-' + index);
+            const remove = document.getElementById('remove-' + index);
+
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                    plus.style.display = 'none';
+                    remove.style.display = 'flex';
+                    slot.classList.add('has-img');
+                    slot.style.border = '2px solid #007bff';
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function removeImage(event, index) {
+            event.stopPropagation();
+            const input = document.getElementById('file-' + index);
+            const slot = document.getElementById('slot-' + index);
+            const preview = document.getElementById('preview-' + index);
+            const plus = document.getElementById('plus-' + index);
+            const remove = document.getElementById('remove-' + index);
+            
+            if (input) input.value = ''; 
+            if (preview) { preview.src = ''; preview.style.display = 'none'; }
+            if (plus) plus.style.display = 'block';
+            if (remove) remove.style.display = 'none';
+            if (slot) { slot.classList.remove('has-img'); slot.style.border = '2px dashed #cbd5e1'; }
+        }
+
+        const priceInput = document.getElementById('id_price');
+        const breakdownDiv = document.getElementById('price-breakdown');
+        const payoutText = document.getElementById('payout-amount');
+        const feeText = document.getElementById('fee-amount');
+        const totalText = document.getElementById('total-listed');
+
+        function updatePrice() {
+            const val = parseFloat(priceInput.value);
+            if (!isNaN(val) && val > 0) {
+                const fee = val * 0.075;
+                const total = val + fee;
+                breakdownDiv.style.display = 'block';
+                payoutText.innerText = 'R' + val.toFixed(2);
+                feeText.innerText = '+ R' + fee.toFixed(2);
+                totalText.innerText = 'R' + total.toFixed(2);
+            } else {
+                breakdownDiv.style.display = 'none';
+            }
+        }
+        
+        if(priceInput) {
+            priceInput.addEventListener('input', updatePrice);
+            window.addEventListener('load', updatePrice);
+        }
+    </script>
+</body>
+</html>

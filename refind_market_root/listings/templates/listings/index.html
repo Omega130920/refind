@@ -1,0 +1,334 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Re-Find Market | Secure Verified Trading</title>
+    
+    <style>
+        :root {
+            --bg-main: #e2edf5ff; 
+            --nav-glass: rgba(255, 255, 255, 0.7);
+            --text-dark: #1a1a1b;
+            --text-muted: #6e6d7a;
+            --accent-blue: #007bff;
+            --accent-orange: #f39c12; 
+            --accent-danger: #ff4d4d;
+            --accent-success: #28a745;
+            --navy-blue: #1c2e4a;     
+            --card-shadow: 0 20px 40px -10px rgba(0,0,0,0.05);
+            --radius-lg: 28px;
+            --radius-sm: 18px;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            -webkit-font-smoothing: antialiased;
+            color: var(--text-dark);
+            scroll-behavior: smooth;
+        }
+
+        /* NAVIGATION */
+        nav {
+            background: var(--nav-glass);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            position: sticky;
+            top: 20px; 
+            z-index: 1000;
+            margin: 0 24px;
+            padding: 10px 0;
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 32px;
+            flex-wrap: wrap; /* Allows menu to wrap on toggle */
+        }
+
+        .logo-box { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+        .rf-icon {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: white; font-weight: 900; font-size: 1.5rem;
+            width: 46px; height: 46px; display: flex;
+            align-items: center; justify-content: center;
+            border-radius: 12px; box-shadow: 0 6px 15px rgba(243, 156, 18, 0.35);
+        }
+        .logo-text { display: flex; flex-direction: column; line-height: 1; }
+        .logo-text .brand { font-size: 1.3rem; font-weight: 900; color: var(--navy-blue); letter-spacing: -1px; text-transform: uppercase; }
+        .logo-text .subtext { font-size: 0.6rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; }
+
+        /* HAMBURGER TOGGLE */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+        .menu-toggle span {
+            width: 25px; height: 3px; background: var(--navy-blue); border-radius: 3px;
+            transition: 0.3s ease;
+        }
+
+        /* ACTIONS CONTAINER */
+        .nav-actions-container {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .nav-links-left { display: flex; gap: 20px; align-items: center; }
+        .nav-link { text-decoration: none; color: var(--text-muted); font-weight: 700; font-size: 0.85rem; transition: 0.2s; }
+        .nav-link:hover { color: var(--navy-blue); }
+
+        .btn-outline { text-decoration: none; color: var(--navy-blue); font-weight: 700; font-size: 0.85rem; padding: 10px 0; }
+        .btn-primary { background: var(--accent-blue); color: white !important; padding: 10px 24px; border-radius: 12px; font-weight: 700; text-decoration: none; transition: 0.3s; }
+
+        /* RESPONSIVE NAV */
+        @media (max-width: 768px) {
+            nav { margin: 10px 15px; }
+            .menu-toggle { display: flex; }
+            
+            .nav-actions-container {
+                display: none; /* Hide by default */
+                width: 100%;
+                flex-direction: column;
+                align-items: flex-start;
+                padding-top: 20px;
+                gap: 15px;
+            }
+
+            .nav-actions-container.active { display: flex; }
+            
+            .nav-links-left { flex-direction: column; align-items: flex-start; width: 100%; }
+            .nav-auth-group { width: 100%; display: flex; flex-direction: column; gap: 10px; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 15px; }
+            
+            .logo-text .subtext { display: none; }
+            .hero h1 { font-size: 3rem; }
+        }
+
+        /* TOAST MESSAGES */
+        .toast-container { position: fixed; top: 100px; right: 40px; z-index: 3000; }
+        .toast {
+            background: white; padding: 16px 24px; border-radius: 16px; box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            border-left: 5px solid var(--accent-success); display: flex; align-items: center; gap: 12px;
+            font-weight: 700; color: var(--navy-blue);
+        }
+
+        /* HERO & SECTIONS */
+        .hero { min-height: 60vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 80px 24px; }
+        .trust-tag { background: white; padding: 6px 16px; border-radius: 50px; font-size: 0.7rem; font-weight: 800; color: var(--accent-blue); margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); letter-spacing: 1px; }
+        .hero h1 { font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: 900; color: var(--navy-blue); line-height: 0.95; letter-spacing: -2px; margin: 0; }
+        .hero p { max-width: 550px; font-size: 1.05rem; color: var(--text-muted); margin: 20px 0 30px; line-height: 1.4; }
+        .hero-btns { display: flex; gap: 15px; align-items: center; flex-wrap: wrap; justify-content: center; }
+
+        .features { max-width: 1100px; margin: 0 auto 60px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; padding: 0 18px; }
+        .f-card { background: white; padding: 25px; border-radius: var(--radius-sm); box-shadow: var(--card-shadow); transition: 0.3s; }
+        .f-icon { font-size: 2rem; margin-bottom: 15px; display: block; }
+        .f-card h3 { font-size: 1.25rem; font-weight: 900; color: var(--navy-blue); margin: 0 0 8px 0; }
+        .f-card p { color: var(--text-muted); line-height: 1.5; margin: 0; font-size: 0.95rem; }
+
+        .about-section { background: white; padding: 80px 0; }
+        .section-container { max-width: 1100px; margin: 0 auto; padding: 0 32px; }
+        .about-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 50px; align-items: center; }
+        .about-content h2 { font-size: 2.5rem; font-weight: 900; color: var(--navy-blue); margin-bottom: 20px; letter-spacing: -1px; }
+        .about-content p { color: var(--text-muted); line-height: 1.6; margin-bottom: 15px; }
+
+        .contact-section { padding: 80px 0; text-align: center; }
+        .contact-card { background: var(--navy-blue); color: white; padding: 50px; border-radius: var(--radius-lg); max-width: 800px; margin: 0 auto; }
+        .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 30px; }
+        .contact-method { background: rgba(255,255,255,0.1); padding: 20px; border-radius: 12px; text-decoration: none; color: white; font-weight: 700; border: none; cursor: pointer; transition: 0.2s; }
+        .contact-method:hover { background: rgba(255,255,255,0.2); }
+
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(28, 46, 74, 0.85); backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; z-index: 2000; }
+        .modal-content { background: white; width: 90%; max-width: 500px; border-radius: var(--radius-lg); padding: 40px; position: relative; }
+        .close-modal { position: absolute; top: 20px; right: 20px; font-size: 1.5rem; cursor: pointer; color: var(--text-muted); border: none; background: none; }
+
+        #chatWidget { position: fixed; bottom: 30px; right: 30px; z-index: 2500; display: none; flex-direction: column; width: 320px; height: 450px; background: white; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); overflow: hidden; }
+        .chat-header { background: var(--navy-blue); color: white; padding: 15px; display: flex; justify-content: space-between; }
+        .chat-body { flex: 1; padding: 15px; overflow-y: auto; background: #f8fafc; display: flex; flex-direction: column; gap: 10px; }
+        .chat-msg { padding: 12px; border-radius: 15px; max-width: 85%; font-size: 0.85rem; }
+        .msg-support { background: #e2edf5; color: var(--navy-blue); align-self: flex-start; }
+        .msg-user { background: var(--accent-blue); color: white; align-self: flex-end; }
+        .chat-footer { padding: 15px; border-top: 1px solid #eee; display: flex; gap: 10px; }
+        .chat-input { flex: 1; border: 1px solid #ddd; padding: 10px; border-radius: 10px; outline: none; }
+
+        .contact-form { display: flex; flex-direction: column; gap: 15px; }
+        .contact-form input, .contact-form select, .contact-form textarea { padding: 12px; border-radius: 12px; border: 1px solid #ddd; font-family: inherit; }
+        .btn-submit-form { background: var(--accent-blue); color: white; border: none; padding: 15px; border-radius: 12px; font-weight: 800; cursor: pointer; }
+
+        footer { padding: 40px; text-align: center; color: var(--text-muted); font-size: 0.85rem; }
+    </style>
+</head>
+<body>
+
+    {% if messages %}
+    <div class="toast-container" id="toastContainer">
+        {% for message in messages %}
+        <div class="toast"><span>✅</span> {{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <nav>
+        <div class="nav-content">
+            <a href="/" class="logo-box">
+                <div class="rf-icon">RF</div>
+                <div class="logo-text"><span class="brand">RE-FIND</span><span class="subtext">MARKET</span></div>
+            </a>
+
+            <div class="menu-toggle" onclick="toggleNav()">
+                <span></span><span></span><span></span>
+            </div>
+
+            <div class="nav-actions-container" id="navActions">
+                <div class="nav-links-left">
+                    <a href="#about" class="nav-link">About</a>
+                    <a href="#contact" class="nav-link">Contact</a>
+                </div>
+                <div class="nav-auth-group">
+                    <a href="{% url 'login' %}" class="btn-outline">Sign In</a>
+                    <a href="{% url 'public_marketplace' %}" class="btn-primary">Explore Gallery</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="trust-tag">PROUDLY SOUTH AFRICAN • DHA IDENTITY VERIFIED</div>
+        <h1>Quality.<br><span style="color: var(--accent-blue);">Verified.</span></h1>
+        <p>The elite second-hand marketplace. We verify every seller and secure every payment so you can trade with absolute confidence.</p>
+        <div class="hero-btns">
+            <a href="{% url 'public_marketplace' %}" class="btn-primary" style="padding: 16px 40px; border-radius: 15px; font-size: 1.1rem;">Browse Marketplace</a>
+            <a href="{% url 'register' %}" class="btn-outline" style="border-bottom: 2px solid var(--navy-blue); margin-left: 10px;">Create Account &rarr;</a>
+        </div>
+    </header>
+
+    <section class="features">
+        <div class="f-card"><span class="f-icon">🛡️</span><h3>Verified Sellers</h3><p>Sellers are verified against the DHA database to eliminate fraud and scams.</p></div>
+        <div class="f-card"><span class="f-icon">🔒</span><h3>Secure Escrow</h3><p>Payments are held securely until both parties confirm a successful trade.</p></div>
+        <div class="f-card"><span class="f-icon">💎</span><h3>Elite Quality</h3><p>A curated experience for those who value transparency and premium trading.</p></div>
+    </section>
+
+    <section class="about-section" id="about">
+        <div class="section-container">
+            <div class="about-grid">
+                <div class="about-content">
+                    <h2>Rethink Your Trading</h2>
+                    <p>Re-Find Market was born from a simple observation: the South African second-hand market was full of potential, but plagued by uncertainty and risk.</p>
+                    <p>We decided to build something different. A space where identity is verified, transactions are protected, and quality is the standard.</p>
+                    <p>Our mission is to empower South Africans to trade goods with confidence. We don't do subscriptions—we want local businesses to get exposure where they are otherwise overlooked.</p>
+                </div>
+                <div style="background: var(--bg-main); min-height: 300px; border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: center; color: var(--accent-blue); font-weight: 900; font-size: 4rem; opacity: 0.5;">RF</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact-section" id="contact">
+        <div class="section-container">
+            <div class="contact-card">
+                <h2>Get in touch.</h2>
+                <p>Have questions? Our support team is here to assist you.</p>
+                <div class="contact-grid">
+                    <button class="contact-method" onclick="openModal()">✉️ Email Support</button>
+                    <button class="contact-method" onclick="toggleChat()">💬 Live Chat</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="modal-overlay" id="contactModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal()">&times;</button>
+            <h2 style="margin-top: 0; color: var(--navy-blue);">Support Inquiry</h2>
+            <form action="{% url 'contact_submit' %}" method="POST" class="contact-form">
+                {% csrf_token %}
+                <input type="text" name="name" placeholder="Full Name" required>
+                <input type="email" name="email" placeholder="Email Address" required>
+                <select name="subject" required>
+                    <option value="" disabled selected>Nature of Inquiry</option>
+                    <option value="General">General Inquiry</option>
+                    <option value="Payment">Payment & Escrow Issue</option>
+                    <option value="Verification">DHA Verification Help</option>
+                </select>
+                <textarea name="message" placeholder="How can we help you?" required style="height: 120px;"></textarea>
+                <button type="submit" class="btn-submit-form">Send Message</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="chatWidget">
+        <div class="chat-header">
+            <span style="font-weight: 800;">RF Support Live</span>
+            <button onclick="toggleChat()" style="background: none; border: none; color: white; cursor: pointer;">&times;</button>
+        </div>
+        <div class="chat-body" id="chatMessages">
+            <div class="chat-msg msg-support">Hello! How can we help you today?</div>
+        </div>
+        <div class="chat-footer">
+            <input type="text" id="chatInput" class="chat-input" placeholder="Type a message...">
+            <button onclick="sendLiveMessage()" style="background: var(--accent-blue); color: white; border: none; padding: 10px; border-radius: 10px; cursor: pointer;">Send</button>
+        </div>
+    </div>
+
+    <footer><p>&copy; 2026 Re-Find Market. Built for South Africans.</p></footer>
+
+    <script>
+        // NAVIGATION TOGGLE
+        function toggleNav() {
+            const nav = document.getElementById('navActions');
+            nav.classList.toggle('active');
+        }
+
+        // MODAL TOGGLES
+        function openModal() { document.getElementById('contactModal').style.display = 'flex'; }
+        function closeModal() { document.getElementById('contactModal').style.display = 'none'; }
+
+        function toggleChat() {
+            const widget = document.getElementById('chatWidget');
+            widget.style.display = (widget.style.display !== 'flex') ? 'flex' : 'none';
+        }
+
+        // CHAT ENGINE
+        function appendMessage(text, isAdmin) {
+            const container = document.getElementById('chatMessages');
+            const msgDiv = document.createElement('div');
+            msgDiv.className = isAdmin ? "chat-msg msg-support" : "chat-msg msg-user";
+            msgDiv.innerText = text;
+            container.appendChild(msgDiv);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function sendLiveMessage() {
+            const input = document.getElementById('chatInput');
+            const msg = input.value.trim();
+            if(!msg) return;
+            appendMessage(msg, false);
+            input.value = '';
+            // Fetch logic remains the same...
+        }
+
+        window.onclick = (e) => { 
+            if (e.target == document.getElementById('contactModal')) closeModal(); 
+        }
+
+        // TOAST ENGINE
+        window.onload = () => {
+            const toast = document.getElementById('toastContainer');
+            if(toast) setTimeout(() => toast.remove(), 5000);
+        };
+    </script>
+</body>
+</html>

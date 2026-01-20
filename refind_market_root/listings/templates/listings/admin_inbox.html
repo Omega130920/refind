@@ -1,0 +1,116 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>RF Admin | Support Inbox</title>
+    <style>
+        body { font-family: sans-serif; margin: 0; display: flex; height: 100vh; background: #f0f2f5; }
+        
+        /* SIDEBAR */
+        .sidebar { width: 350px; background: #1c2e4a; color: white; display: flex; flex-direction: column; }
+        .sidebar-header { padding: 20px; background: #142136; font-weight: 800; border-bottom: 1px solid #2d4059; display: flex; justify-content: space-between; align-items: center; }
+        .chat-list { flex: 1; overflow-y: auto; }
+        .chat-item { padding: 15px 20px; border-bottom: 1px solid #2d4059; cursor: pointer; text-decoration: none; color: #cbd5e1; display: block; transition: 0.2s; }
+        .chat-item:hover { background: #2d4059; }
+        .chat-item.active { background: #007bff; color: white; border-left: 5px solid #fff; }
+
+        /* CHAT AREA */
+        .main-chat { flex: 1; display: flex; flex-direction: column; }
+        .chat-header { 
+            padding: 15px 30px; 
+            background: white; 
+            border-bottom: 1px solid #ddd; 
+            font-weight: 700; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+        .message-history { flex: 1; padding: 30px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
+        
+        .bubble { padding: 12px 18px; border-radius: 15px; max-width: 70%; line-height: 1.4; position: relative; }
+        .user-msg { background: #e2edf5; align-self: flex-start; border-bottom-left-radius: 2px; }
+        .admin-msg { background: #1c2e4a; color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
+        
+        .reply-box { padding: 20px; background: white; border-top: 1px solid #ddd; display: flex; gap: 10px; }
+        textarea { flex: 1; border: 1px solid #ddd; border-radius: 10px; padding: 10px; resize: none; font-family: inherit; }
+        
+        .btn { padding: 10px 20px; border-radius: 8px; font-weight: 700; cursor: pointer; border: none; text-decoration: none; font-size: 0.85rem; }
+        .btn-primary { background: #007bff; color: white; }
+        .btn-success { background: #28a745; color: white; }
+        .btn-outline { background: transparent; border: 1px solid #cbd5e1; color: #cbd5e1; font-size: 0.7rem; }
+
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <span>ACTIVE CHATS</span>
+            <a href="{% url 'public_marketplace' %}" class="btn-outline">EXIT</a>
+        </div>
+        <div class="chat-list">
+            {% for chat in active_chats %}
+            <a href="?chat_id={{ chat.id }}" class="chat-item {% if selected_chat.id == chat.id %}active{% endif %}">
+                <strong>{{ chat.user.username|default:"Guest User" }}</strong><br>
+                <small style="opacity: 0.7;">{{ chat.created_at|date:"D, H:i" }}</small>
+            </a>
+            {% empty %}
+            <p style="padding: 20px; opacity: 0.5; text-align: center;">No active inquiries.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="main-chat">
+        {% if selected_chat %}
+        <div class="chat-header">
+            <span>Conversation with {{ selected_chat.user.username|default:selected_chat.session_key|slice:":8" }}</span>
+            <a href="{% url 'resolve_chat' selected_chat.id %}" class="btn btn-success">Mark as Resolved</a>
+        </div>
+        
+        <div class="message-history" id="messageHistory">
+            {% for msg in messages %}
+            <div class="bubble {% if msg.is_admin_reply %}admin-msg{% else %}user-msg{% endif %}">
+                <small style="opacity: 0.7; font-size: 0.7rem; display: block; margin-bottom: 4px;">
+                    {{ msg.sender_name }} • {{ msg.created_at|date:"H:i" }}
+                </small>
+                {{ msg.text }}
+            </div>
+            {% endfor %}
+        </div>
+
+        <form action="{% url 'admin_reply' selected_chat.id %}" method="POST" class="reply-box">
+            {% csrf_token %}
+            <textarea name="reply_text" rows="2" placeholder="Write your reply here..." required id="replyTextArea"></textarea>
+            <button type="submit" class="btn btn-primary">Reply</button>
+        </form>
+        {% else %}
+        <div style="flex: 1; display: flex; align-items: center; justify-content: center; color: #94a3b8; flex-direction: column;">
+            <span style="font-size: 4rem; margin-bottom: 10px;">💬</span>
+            <p>Select a chat from the sidebar to start responding.</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        // Auto-scroll to the bottom of the message history
+        const history = document.getElementById('messageHistory');
+        if (history) {
+            history.scrollTop = history.scrollHeight;
+        }
+
+        // Focus the textarea automatically when a chat is selected
+        const textArea = document.getElementById('replyTextArea');
+        if (textArea) {
+            textArea.focus();
+        }
+
+        // Shortcut: Cmd/Ctrl + Enter to send reply
+        textArea?.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                this.form.submit();
+            }
+        });
+    </script>
+</body>
+</html>

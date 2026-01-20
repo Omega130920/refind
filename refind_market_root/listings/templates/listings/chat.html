@@ -1,0 +1,306 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat with {{ recipient.username }} | Refind Market</title>
+    
+    <style>
+        :root {
+            --bg-main: #e2edf5ff; 
+            --nav-glass: rgba(255, 255, 255, 0.7);
+            --text-dark: #1a1a1b;
+            --text-muted: #6e6d7a;
+            --accent-blue: #007bff;
+            --accent-orange: #f39c12; 
+            --accent-danger: #ff4d4d;
+            --accent-success: #28a745;
+            --navy-blue: #1c2e4a;     
+            --card-shadow: 0 20px 40px -10px rgba(0,0,0,0.05);
+            --radius-lg: 28px;
+            --radius-sm: 18px;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            -webkit-font-smoothing: antialiased;
+            color: var(--text-dark);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* NAVIGATION */
+        nav {
+            background: var(--nav-glass);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            position: sticky;
+            top: 20px; 
+            z-index: 1000;
+            margin: 0 24px;
+            padding: 10px 0;
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 32px;
+            flex-wrap: wrap;
+        }
+
+        .logo-box { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+        .rf-icon {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: white; font-weight: 900; font-size: 1.5rem;
+            width: 46px; height: 46px; display: flex;
+            align-items: center; justify-content: center;
+            border-radius: 12px; box-shadow: 0 6px 15px rgba(243, 156, 18, 0.35);
+        }
+        .logo-text { display: flex; flex-direction: column; line-height: 1; }
+        .logo-text .brand { font-size: 1.3rem; font-weight: 900; color: var(--navy-blue); letter-spacing: -1px; text-transform: uppercase; }
+        .logo-text .subtext { font-size: 0.6rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; }
+
+        /* HAMBURGER */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+        .menu-toggle span {
+            width: 25px; height: 3px; background: var(--navy-blue); border-radius: 3px;
+        }
+
+        .nav-links { display: flex; align-items: center; gap: 20px; }
+        .nav-links a { 
+            text-decoration: none; color: var(--text-muted); font-weight: 600; 
+            font-size: 0.9rem; display: flex; align-items: center; gap: 5px;
+        }
+        .nav-timeline-link { color: var(--navy-blue) !important; font-weight: 800 !important; }
+        .nav-store-link { color: var(--accent-orange) !important; font-weight: 800 !important; }
+
+        /* USER DROPDOWN */
+        .user-dropdown-container { position: relative; display: inline-block; }
+        .user-trigger {
+            display: flex; align-items: center; gap: 8px; cursor: pointer;
+            padding: 8px 16px; border-radius: 12px; background: rgba(0,0,0,0.03);
+            color: var(--navy-blue);
+        }
+        .dropdown-menu {
+            display: none; position: absolute; right: 0; top: 120%;
+            background: white; min-width: 220px; border-radius: var(--radius-sm);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.05);
+            padding: 10px 0; z-index: 2000;
+        }
+        .dropdown-menu.show { display: block; }
+        .dropdown-menu a, .logout-item {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 12px 20px; text-decoration: none; color: var(--text-dark);
+            font-size: 0.85rem; font-weight: 600;
+        }
+        .logout-item {
+            width: 100%; background: none; border: none; font-family: inherit;
+            cursor: pointer; color: var(--accent-danger) !important;
+        }
+        .dropdown-divider { height: 1px; background: #eee; margin: 8px 0; }
+        .nav-badge { background: var(--accent-orange); color: white; font-size: 0.7rem; font-weight: 900; padding: 2px 6px; border-radius: 6px; }
+        .notification-dot { width: 8px; height: 8px; background: var(--accent-orange); border-radius: 50%; display: inline-block; }
+
+        /* CHAT LAYOUT */
+        .chat-main-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 24px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .back-btn { display: inline-block; text-decoration: none; color: var(--accent-blue); font-weight: 700; margin-bottom: 15px; font-size: 0.9rem; }
+
+        .chat-window {
+            background: white; border-radius: var(--radius-lg); overflow: hidden;
+            box-shadow: var(--card-shadow); display: flex; flex-direction: column;
+            border: 1px solid rgba(0,0,0,0.05); flex: 1;
+        }
+
+        .chat-header {
+            background: #ffffff; padding: 15px 25px; border-bottom: 1px solid #f1f1f1;
+            display: flex; align-items: center; gap: 15px; flex-shrink: 0;
+        }
+
+        .item-mini-img { width: 45px; height: 45px; object-fit: cover; border-radius: 10px; border: 1px solid #f1f1f1; }
+        .chat-user-info h3 { margin: 0; font-size: 1.1rem; font-weight: 800; color: var(--navy-blue); }
+        .chat-user-info small { color: var(--text-muted); font-size: 0.8rem; }
+
+        .message-area {
+            flex: 1; overflow-y: auto; padding: 25px; background: #fafbfc;
+            display: flex; flex-direction: column; gap: 12px;
+        }
+
+        .message { max-width: 75%; padding: 12px 18px; font-size: 0.95rem; line-height: 1.4; position: relative; }
+
+        .msg-sent { align-self: flex-end; background: var(--accent-blue); color: white; border-radius: 18px 18px 4px 18px; }
+        .msg-received { align-self: flex-start; background: white; color: var(--text-dark); border-radius: 18px 18px 18px 4px; border: 1px solid #eee; }
+
+        .timestamp { font-size: 0.65rem; margin-top: 5px; opacity: 0.7; font-weight: 600; }
+        .msg-sent .timestamp { text-align: right; color: rgba(255,255,255,0.8); }
+        .msg-received .timestamp { text-align: left; color: #999; }
+
+        .chat-input-area { padding: 20px; background: white; border-top: 1px solid #f1f1f1; flex-shrink: 0; }
+        .input-form { display: flex; gap: 12px; align-items: center; }
+
+        .input-form input {
+            flex: 1; padding: 14px 20px; border: 1px solid #eee; border-radius: 15px;
+            outline: none; font-size: 0.95rem; background: #f9f9f9; transition: 0.3s;
+        }
+        .input-form input:focus { background: white; border-color: var(--accent-blue); }
+
+        .send-btn {
+            background: var(--accent-blue); color: white; border: none; padding: 14px 25px;
+            border-radius: 15px; font-weight: 800; cursor: pointer; transition: 0.3s;
+        }
+        .send-btn:hover { background: var(--navy-blue); transform: translateY(-2px); }
+
+        /* MOBILE RESPONSIVE */
+        @media (max-width: 768px) {
+            nav { margin: 10px 15px; }
+            .menu-toggle { display: flex; }
+            .nav-links { display: none; width: 100%; flex-direction: column; padding: 20px 0; gap: 15px; align-items: flex-start; }
+            .nav-links.active { display: flex; }
+            .dropdown-menu { position: static; box-shadow: none; border: none; width: 100%; padding: 0; }
+            .logo-text .subtext { display: none; }
+            .chat-main-container { margin: 15px 0 0 0; padding: 0 10px; height: calc(100vh - 120px); }
+            .chat-window { border-radius: 20px 20px 0 0; }
+            .message { max-width: 85%; }
+            .send-btn { padding: 14px 18px; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-content">
+            <a href="{% url 'item_list' %}" class="logo-box">
+                <div class="rf-icon">RF</div>
+                <div class="logo-text">
+                    <span class="brand">RE-FIND</span>
+                    <span class="subtext">MARKET</span>
+                </div>
+            </a>
+
+            <div class="menu-toggle" onclick="toggleNav()">
+                <span></span><span></span><span></span>
+            </div>
+
+            <div class="nav-links" id="navLinks">
+                <a href="{% url 'timeline_feed' %}" class="nav-timeline-link">🏘️ Town Square</a>
+                <a href="{% url 'vendor_list' %}">🏪 Vendors</a>
+
+                {% if user.is_authenticated %}
+                    {% if user.vendor_profile %}
+                        <a href="{% url 'vendor_storefront' user.vendor_profile.store_slug %}" class="nav-store-link">🏬 My Store</a>
+                    {% endif %}
+
+                    <div class="user-dropdown-container">
+                        <div class="user-trigger" onclick="toggleDropdown(event)">
+                            <strong>@{{ user.username }}</strong>
+                            {% if unread_count > 0 or pending_requests_count > 0 or accepted_purchases_count > 0 %}
+                                <span class="notification-dot"></span>
+                            {% endif %}
+                            <span style="font-size: 0.6rem; opacity: 0.5;">▼</span>
+                        </div>
+
+                        <div id="userDropdown" class="dropdown-menu">
+                            <a href="{% url 'profile' %}">👤 My Profile</a>
+                            <a href="{% url 'inbox' %}">📩 Inbox {% if unread_count > 0 %}<span class="nav-badge">{{ unread_count }}</span>{% endif %}</a>
+                            <a href="{% url 'my_listings' %}">📢 My Ads {% if pending_requests_count > 0 %}<span class="nav-badge">{{ pending_requests_count }}</span>{% endif %}</a>
+                            <a href="{% url 'my_purchases' %}">🛍️ Purchases {% if accepted_purchases_count > 0 %}<span class="nav-badge">{{ accepted_purchases_count }}</span>{% endif %}</a>
+                            <div class="dropdown-divider"></div>
+                            <a href="{% url 'item_create' %}" style="color: var(--accent-blue);">➕ Sell Item</a>
+                            <form action="{% url 'logout' %}" method="post" style="margin: 0;">
+                                {% csrf_token %}
+                                <button type="submit" class="logout-item">🚪 Logout</button>
+                            </form>
+                        </div>
+                    </div>
+                {% else %}
+                    <a href="{% url 'login' %}" style="font-weight: 800; color: var(--accent-blue);">Login</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <div class="chat-main-container">
+        <a href="{% url 'inbox' %}" class="back-btn">← Back to Inbox</a>
+
+        <div class="chat-window">
+            <div class="chat-header">
+                {% if item.image1 %}
+                    <img src="{{ item.image1.url }}" class="item-mini-img">
+                {% endif %}
+                <div class="chat-user-info">
+                    <h3>{{ recipient.username }}</h3>
+                    <small>Regarding: <strong>{{ item.title }}</strong></small>
+                </div>
+            </div>
+
+            <div class="message-area" id="chat-messages">
+                {% for msg in chat_history %}
+                    <div class="message {% if msg.sender == request.user %}msg-sent{% else %}msg-received{% endif %}">
+                        {{ msg.content }}
+                        <div class="timestamp">
+                            {{ msg.timestamp|date:"H:i" }}
+                        </div>
+                    </div>
+                {% empty %}
+                    <div style="text-align: center; color: #999; margin-top: 100px;">
+                        <p>No messages yet. Start the conversation!</p>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="chat-input-area">
+                <form method="POST" class="input-form">
+                    {% csrf_token %}
+                    <input type="text" name="content" placeholder="Type your message..." required autocomplete="off">
+                    <button type="submit" class="send-btn">Send</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleNav() {
+            document.getElementById("navLinks").classList.toggle("active");
+        }
+        function toggleDropdown(event) {
+            event.stopPropagation();
+            document.getElementById("userDropdown").classList.toggle("show");
+        }
+        window.onclick = function(event) {
+            if (!event.target.closest('.user-dropdown-container')) {
+                var dropdowns = document.getElementsByClassName("dropdown-menu");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    dropdowns[i].classList.remove('show');
+                }
+            }
+        }
+
+        // Auto-scroll to bottom of chat
+        const chatContainer = document.getElementById('chat-messages');
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    </script>
+</body>
+</html>

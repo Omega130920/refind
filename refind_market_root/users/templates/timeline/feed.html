@@ -1,0 +1,419 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Town Square | Re-Find Market</title>
+    
+    <style>
+        :root {
+            --bg-main: #e2edf5ff; 
+            --nav-glass: rgba(255, 255, 255, 0.7);
+            --text-dark: #1a1a1b;
+            --text-muted: #6e6d7a;
+            --accent-blue: #007bff;
+            --accent-orange: #f39c12; 
+            --accent-danger: #ff4d4d;
+            --accent-success: #28a745;
+            --navy-blue: #1c2e4a;     
+            --card-shadow: 0 8px 24px -10px rgba(0,0,0,0.08);
+            --radius-lg: 28px;
+            --radius-sm: 18px;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            -webkit-font-smoothing: antialiased;
+            color: var(--text-dark);
+        }
+
+        /* LIGHTBOX CSS */
+        .lightbox-overlay {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        #img-container {
+            transition: transform 0.3s ease;
+            cursor: zoom-in;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-width: 95%;
+            max-height: 95%;
+        }
+
+        #lightbox-img {
+            max-width: 100%;
+            max-height: 90vh;
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+        }
+
+        .zoomed { transform: scale(2); cursor: zoom-out !important; }
+
+        .close-lightbox {
+            position: absolute; top: 30px; right: 40px;
+            color: white; font-size: 40px; font-weight: bold;
+            cursor: pointer; z-index: 10000;
+        }
+
+        /* NAVIGATION BAR */
+        nav {
+            background: var(--nav-glass);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            position: sticky;
+            top: 20px; 
+            z-index: 1000;
+            margin: 0 24px;
+            padding: 10px 0;
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 32px;
+            flex-wrap: wrap;
+        }
+
+        .logo-box { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+        .rf-icon {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: white; font-weight: 900; font-size: 1.5rem;
+            width: 46px; height: 46px; display: flex;
+            align-items: center; justify-content: center;
+            border-radius: 12px; box-shadow: 0 6px 15px rgba(243, 156, 18, 0.35);
+        }
+        .logo-text { display: flex; flex-direction: column; line-height: 1; }
+        .logo-text .brand { font-size: 1.3rem; font-weight: 900; color: var(--navy-blue); letter-spacing: -1px; text-transform: uppercase; }
+        .logo-text .subtext { font-size: 0.6rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; }
+
+        .menu-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+        .menu-toggle span { width: 25px; height: 3px; background: var(--navy-blue); border-radius: 3px; }
+
+        .nav-links { display: flex; align-items: center; gap: 20px; }
+        .nav-links a { 
+            text-decoration: none; color: var(--text-muted); 
+            font-weight: 600; font-size: 0.9rem; transition: 0.2s; 
+            display: flex; align-items: center; gap: 5px;
+        }
+
+        /* DROPDOWN STYLES */
+        .user-dropdown-container { position: relative; display: inline-block; }
+        .user-trigger {
+            display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 8px 16px; border-radius: 12px;
+            background: rgba(0,0,0,0.03); transition: 0.2s; color: var(--navy-blue);
+        }
+        .dropdown-menu {
+            display: none; position: absolute; right: 0; top: 120%; background: white; min-width: 220px;
+            border-radius: var(--radius-sm); box-shadow: 0 15px 35px rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.05);
+            padding: 10px 0; z-index: 2000;
+        }
+        .dropdown-menu.show { display: block; }
+        .dropdown-menu a, .logout-item {
+            display: flex; justify-content: space-between; align-items: center; padding: 12px 20px;
+            text-decoration: none; color: var(--text-dark); font-size: 0.85rem; font-weight: 600;
+        }
+        .logout-item { width: 100%; background: none; border: none; font-family: inherit; cursor: pointer; color: var(--accent-danger) !important; text-align: left; }
+        .nav-badge { background: var(--accent-orange); color: white; font-size: 0.7rem; font-weight: 900; padding: 2px 6px; border-radius: 6px; }
+        .notification-dot { width: 8px; height: 8px; background: var(--accent-orange); border-radius: 50%; display: inline-block; }
+
+        .main-container { max-width: 580px; margin: 30px auto 100px; padding: 0 15px; }
+
+        /* HEADER & FILTER BAR */
+        .header-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 0 5px;
+        }
+
+        .filter-bar {
+            background: white; padding: 12px; border-radius: 18px; margin-bottom: 20px;
+            box-shadow: var(--card-shadow); display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+        }
+        .filter-input { flex-grow: 1; min-width: 120px; border: 1px solid #eef2f6; border-radius: 12px; padding: 8px 12px; font-size: 0.85rem; outline: none; }
+        .filter-select { flex-grow: 1; border: 1px solid #eef2f6; border-radius: 12px; padding: 8px; font-size: 0.85rem; outline: none; background: white; }
+        .filter-btn { background: var(--navy-blue); color: white; border: none; border-radius: 12px; padding: 8px 15px; font-weight: 700; font-size: 0.8rem; cursor: pointer; }
+
+        /* MY POSTS BUTTON STYLE */
+        .btn-my-activity {
+            background: white;
+            color: var(--accent-blue);
+            text-decoration: none;
+            padding: 10px 18px;
+            border-radius: 14px;
+            font-size: 0.85rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid var(--accent-blue);
+            transition: 0.3s;
+            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.1);
+        }
+        .btn-my-activity:hover {
+            background: var(--accent-blue);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* POST CARDS */
+        .create-post-card {
+            background: white; border-radius: 20px; padding: 20px; margin-bottom: 25px;
+            box-shadow: var(--card-shadow); display: flex; gap: 15px; align-items: center;
+        }
+        .create-trigger { flex-grow: 1; background: #f3f4f6; border-radius: 25px; padding: 12px 20px; color: var(--text-muted); font-size: 0.9rem; text-decoration: none; font-weight: 600; }
+
+        .post-card { background: white; border-radius: 20px; padding: 16px; margin-bottom: 15px; box-shadow: var(--card-shadow); border: 1px solid rgba(0,0,0,0.02); }
+        .post-media-container { border-radius: 12px; overflow: hidden; margin: 12px 0; border: 1px solid #f1f5f9; }
+        .post-media { width: 100%; max-height: 480px; object-fit: cover; display: block; background: #f1f5f9; cursor: zoom-in; }
+
+        .tagged-item-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 10px; display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit; margin-top: 8px; }
+        .loc-badge { font-size: 0.65rem; color: var(--accent-blue); font-weight: 800; background: #f0f7ff; padding: 2px 8px; border-radius: 6px; text-transform: uppercase; }
+
+        .comment-input { flex-grow: 1; border: none; border-radius: 20px; padding: 8px 15px; font-size: 0.85rem; outline: none; font-family: inherit; background: #f3f4f6; }
+        .action-btn { background: none; border: none; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.85rem; font-weight: 700; color: var(--text-muted); }
+
+        @media (max-width: 768px) {
+            nav { margin: 10px 15px; }
+            .menu-toggle { display: flex; }
+            .nav-links { display: none; width: 100%; flex-direction: column; padding-top: 20px; gap: 15px; align-items: flex-start; }
+            .nav-links.active { display: flex; }
+            .logo-text .subtext { display: none; }
+            .main-container { padding: 0 10px; }
+            .header-section { flex-direction: column; align-items: flex-start; gap: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="lightbox" class="lightbox-overlay" onclick="handleLightboxClick(event)">
+        <span class="close-lightbox" onclick="closeLightbox()">&times;</span>
+        <div id="img-container">
+            <img id="lightbox-img" src="">
+        </div>
+    </div>
+
+    <nav>
+        <div class="nav-content">
+            <a href="{% url 'item_list' %}" class="logo-box">
+                <div class="rf-icon">RF</div>
+                <div class="logo-text">
+                    <span class="brand">RE-FIND</span>
+                    <span class="subtext">MARKET</span>
+                </div>
+            </a>
+
+            <div class="menu-toggle" onclick="toggleNav()">
+                <span></span><span></span><span></span>
+            </div>
+
+            <div class="nav-links" id="navLinks">
+                <a href="{% url 'timeline_feed' %}" class="nav-timeline-link">🏘️ Town Square</a>
+                <a href="{% url 'vendor_list' %}">🏪 Vendors</a>
+
+                {% if user.is_authenticated %}
+                    {% if user.vendor_profile %}
+                        <a href="{% url 'vendor_storefront' user.vendor_profile.store_slug %}" class="nav-store-link">🏬 My Store</a>
+                    {% endif %}
+
+                    <div class="user-dropdown-container">
+                        <div class="user-trigger" onclick="toggleDropdown(event)">
+                            <strong>@{{ user.username }}</strong>
+                            {% if unread_count > 0 or pending_requests_count > 0 or accepted_purchases_count > 0 %}
+                                <span class="notification-dot"></span>
+                            {% endif %}
+                            <span style="font-size: 0.6rem; opacity: 0.5;">▼</span>
+                        </div>
+
+                        <div id="userDropdown" class="dropdown-menu">
+                            <a href="{% url 'profile' %}">👤 My Profile</a>
+                            <a href="{% url 'inbox' %}">📩 Inbox {% if unread_count > 0 %}<span class="nav-badge">{{ unread_count }}</span>{% endif %}</a>
+                            <a href="{% url 'my_listings' %}">📢 My Ads {% if pending_requests_count > 0 %}<span class="nav-badge">{{ pending_requests_count }}</span>{% endif %}</a>
+                            <a href="{% url 'my_purchases' %}">🛍️ Purchases {% if accepted_purchases_count > 0 %}<span class="nav-badge">{{ accepted_purchases_count }}</span>{% endif %}</a>
+                            <div class="dropdown-divider"></div>
+                            <a href="{% url 'item_create' %}" style="color: var(--accent-blue);">➕ Sell Item</a>
+                            <form action="{% url 'logout' %}" method="post" style="margin: 0;">
+                                {% csrf_token %}
+                                <button type="submit" class="logout-item">🚪 Logout</button>
+                            </form>
+                        </div>
+                    </div>
+                {% else %}
+                    <a href="{% url 'login' %}" style="font-weight: 800; color: var(--accent-blue);">Login</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div class="header-section">
+            <div>
+                <h1 style="font-size: 1.6rem; font-weight: 900; color: var(--navy-blue); margin: 0;">Town Square</h1>
+                <p style="color: var(--text-muted); font-size: 0.85rem;">Local vibes and curated finds</p>
+            </div>
+            {% if user.is_authenticated %}
+                <a href="{% url 'timeline_feed' %}?user={{ user.username }}" class="btn-my-activity">
+                    📊 My Posts
+                </a>
+            {% endif %}
+        </div>
+
+        <div class="filter-bar">
+            <form method="GET" action="{% url 'timeline_feed' %}" style="display: flex; gap: 8px; width: 100%; flex-wrap: wrap;">
+                <input type="text" name="location" placeholder="City..." value="{{ request.GET.location|default:'' }}" class="filter-input">
+                <select name="time" class="filter-select">
+                    <option value="">All Time</option>
+                    <option value="hour" {% if request.GET.time == 'hour' %}selected{% endif %}>Last Hour</option>
+                    <option value="day" {% if request.GET.time == 'day' %}selected{% endif %}>Today</option>
+                    <option value="week" {% if request.GET.time == 'week' %}selected{% endif %}>This Week</option>
+                </select>
+                <button type="submit" class="filter-btn">Filter</button>
+                {% if request.GET.location or request.GET.time or request.GET.user %}
+                    <a href="{% url 'timeline_feed' %}" style="text-decoration: none; color: var(--accent-danger); font-size: 0.8rem; font-weight: 800; display: flex; align-items: center; margin-left: 5px;">✕ Clear</a>
+                {% endif %}
+            </form>
+        </div>
+
+        {% if user.is_authenticated %}
+        <div class="create-post-card">
+            <div style="width: 40px; height: 40px; background: var(--navy-blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 900;">
+                {{ user.username|slice:":1"|upper }}
+            </div>
+            <a href="{% url 'create_post' %}" class="create-trigger">
+                What's happening, {{ user.username }}?
+            </a>
+        </div>
+        {% endif %}
+
+        {% for post in posts %}
+        <div class="post-card" id="post-{{ post.id }}">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <a href="{% if post.author.vendor_profile %}{% url 'vendor_storefront' post.author.vendor_profile.store_slug %}{% else %}{% url 'timeline_feed' %}?user={{ post.author.username }}{% endif %}" style="text-decoration: none; display: flex; align-items: center; gap: 10px;">
+                    <div style="width: 38px; height: 38px; background: var(--navy-blue); border-radius: 50%; overflow: hidden; border: 1px solid #f1f5f9;">
+                        {% if post.author.vendor_profile.logo %}
+                            <img src="{{ post.author.vendor_profile.logo.url }}" style="width: 100%; height: 100%; object-fit: cover;">
+                        {% else %}
+                            <div style="color: white; display: flex; align-items: center; justify-content: center; height: 100%; font-weight: 900; font-size: 0.8rem;">{{ post.author.username|slice:":1"|upper }}</div>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <h4 style="margin: 0; font-size: 0.85rem; font-weight: 800; color: var(--navy-blue);">
+                            {{ post.author.vendor_profile.business_name|default:post.author.username }}
+                            {% if post.author.vendor_profile %}<span style="color: var(--accent-orange);">✔</span>{% endif %}
+                        </h4>
+                        <div style="display: flex; gap: 6px; align-items: center;">
+                            <span class="loc-badge">📍 {{ post.author.city|default:"Local" }}</span>
+                            <small style="color: var(--text-muted); font-size: 0.65rem;">{{ post.created_at|timesince }}</small>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <p style="font-size: 0.9rem; line-height: 1.4; color: var(--text-dark); margin: 0 0 10px; white-space: pre-wrap;">{{ post.content }}</p>
+
+            {% if post.image or post.video %}
+            <div class="post-media-container">
+                {% if post.video %}
+                    <video src="{{ post.video.url }}" class="post-media" controls preload="metadata"></video>
+                {% elif post.image %}
+                    <img src="{{ post.image.url }}" class="post-media" onclick="openLightbox(this.src)">
+                {% endif %}
+            </div>
+            {% endif %}
+
+            <div style="margin-top: 12px; padding-top: 10px; border-top: 1px solid #f8fafc; display: flex; gap: 20px;">
+                <form action="{% url 'toggle_like_post' post.id %}" method="POST" style="margin: 0;">
+                    {% csrf_token %}
+                    <button type="submit" class="action-btn" style="color: {% if user in post.likes.all %}var(--accent-danger){% endif %};">
+                        <span>{% if user in post.likes.all %}❤️{% else %}🤍{% endif %}</span>
+                        <span>{{ post.likes.count }}</span>
+                    </button>
+                </form>
+                <button onclick="document.getElementById('comment-{{ post.id }}').focus();" class="action-btn">
+                    <span>💬</span>
+                    <span>{{ post.comments.count }}</span>
+                </button>
+            </div>
+
+            <div style="margin-top: 10px;">
+                {% if post.comments.count > 2 %}
+                    <a href="{% url 'post_detail' post.id %}" style="text-decoration: none; font-size: 0.75rem; color: var(--accent-blue); font-weight: 700;">View all {{ post.comments.count }} comments</a>
+                {% endif %}
+
+                {% for comment in post.comments.all|dictsortreversed:"created_at"|slice:":2" %}
+                <div style="font-size: 0.8rem; margin-bottom: 8px;">
+                    <strong style="color: var(--navy-blue);">@{{ comment.author.username }}</strong> {{ comment.text }}
+                </div>
+                {% endfor %}
+
+                <form action="{% url 'add_comment' post.id %}" method="POST" style="display: flex; gap: 8px; margin-top: 8px;">
+                    {% csrf_token %}
+                    <input type="text" id="comment-{{ post.id }}" name="text" placeholder="Comment..." required class="comment-input">
+                    <button type="submit" style="background: none; border: none; color: var(--accent-blue); font-weight: 800; font-size: 0.75rem; cursor: pointer;">Post</button>
+                </form>
+            </div>
+        </div>
+        {% empty %}
+            <div style="text-align: center; padding: 40px; background: white; border-radius: 20px; box-shadow: var(--card-shadow);">
+                <p style="color: var(--text-muted); font-weight: 600;">No posts found.</p>
+            </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        function toggleNav() { document.getElementById("navLinks").classList.toggle("active"); }
+        function toggleDropdown(event) {
+            event.stopPropagation();
+            document.getElementById("userDropdown").classList.toggle("show");
+        }
+        let isZoomed = false;
+        function openLightbox(imgSrc) {
+            const lightbox = document.getElementById('lightbox');
+            document.getElementById('lightbox-img').src = imgSrc;
+            lightbox.style.display = 'flex';
+            document.body.style.overflow = 'hidden'; 
+            isZoomed = false;
+            document.getElementById('img-container').classList.remove('zoomed');
+        }
+        function handleLightboxClick(event) {
+            const img = document.getElementById('lightbox-img');
+            if (event.target === img) {
+                isZoomed = !isZoomed;
+                document.getElementById('img-container').classList.toggle('zoomed', isZoomed);
+            } else { closeLightbox(); }
+        }
+        function closeLightbox() {
+            document.getElementById('lightbox').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        window.onclick = function(event) {
+            if (!event.target.closest('.user-dropdown-container')) {
+                document.querySelectorAll(".dropdown-menu").forEach(d => d.classList.remove('show'));
+            }
+        }
+        document.addEventListener('keydown', e => { if (e.key === "Escape") closeLightbox(); });
+    </script>
+</body>
+</html>

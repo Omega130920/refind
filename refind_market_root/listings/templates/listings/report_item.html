@@ -1,0 +1,243 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Listing | Refind Market</title>
+    
+    <style>
+        :root {
+            --bg-main: #e2edf5ff; 
+            --nav-glass: rgba(255, 255, 255, 0.7);
+            --text-dark: #1a1a1b;
+            --text-muted: #6e6d7a;
+            --accent-blue: #007bff;
+            --accent-orange: #f39c12; 
+            --accent-danger: #ff4d4d;
+            --navy-blue: #1c2e4a;     
+            --card-shadow: 0 20px 40px -10px rgba(0,0,0,0.05);
+            --radius-lg: 28px;
+            --radius-sm: 18px;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            -webkit-font-smoothing: antialiased;
+            color: var(--text-dark);
+        }
+
+        /* NAVIGATION: Standardized */
+        nav {
+            background: var(--nav-glass);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            position: sticky;
+            top: 20px; 
+            z-index: 1000;
+            margin: 0 24px;
+            padding: 10px 0;
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 32px;
+            flex-wrap: wrap;
+        }
+
+        .logo-box { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .rf-icon {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: white; font-weight: 900; font-size: 1.5rem;
+            width: 52px; height: 52px; display: flex;
+            align-items: center; justify-content: center;
+            border-radius: 14px; box-shadow: 0 6px 15px rgba(243, 156, 18, 0.35);
+        }
+        .logo-text { display: flex; flex-direction: column; line-height: 1; }
+        .logo-text .brand { font-size: 1.6rem; font-weight: 900; color: var(--navy-blue); letter-spacing: -1px; text-transform: uppercase; }
+        .logo-text .subtext { font-size: 0.7rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 3px; margin-top: 4px; }
+
+        /* HAMBURGER */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+        .menu-toggle span { width: 25px; height: 3px; background: var(--navy-blue); border-radius: 3px; }
+
+        .nav-links { display: flex; align-items: center; gap: 20px; }
+        .nav-links a { text-decoration: none; color: var(--text-muted); font-weight: 600; font-size: 0.9rem; transition: 0.2s; }
+
+        /* DROPDOWN STYLES */
+        .user-dropdown-container { position: relative; display: inline-block; }
+        .user-trigger {
+            display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 8px 16px; border-radius: 12px;
+            background: rgba(0,0,0,0.03); transition: 0.2s; color: var(--navy-blue);
+        }
+        .dropdown-menu {
+            display: none; position: absolute; right: 0; top: 120%; background: white; min-width: 220px;
+            border-radius: var(--radius-sm); box-shadow: 0 15px 35px rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.05);
+            padding: 10px 0; z-index: 2000;
+        }
+        .dropdown-menu.show { display: block; }
+        .dropdown-menu a, .logout-item {
+            display: flex; justify-content: space-between; align-items: center; padding: 12px 20px;
+            text-decoration: none; color: var(--text-dark); font-size: 0.85rem; font-weight: 600;
+        }
+        .logout-item { width: 100%; background: none; border: none; font-family: inherit; cursor: pointer; color: var(--accent-danger) !important; text-align: left; }
+
+        /* REPORT LAYOUT */
+        .report-container { max-width: 550px; margin: 80px auto; padding: 0 24px; }
+        .report-card {
+            background: white; padding: 40px; border-radius: var(--radius-lg);
+            box-shadow: var(--card-shadow); border: 1px solid rgba(0,0,0,0.02);
+        }
+        .report-header { text-align: center; margin-bottom: 30px; }
+        .report-header h2 { font-size: 2.2rem; font-weight: 900; color: var(--accent-danger); margin: 0 0 10px 0; letter-spacing: -1px; }
+
+        .item-preview {
+            background: #fff5f5; padding: 15px; border-radius: 14px; margin-bottom: 30px;
+            text-align: center; border: 1px solid #fee2e2;
+        }
+
+        .field-label { display: block; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; color: var(--navy-blue); margin-bottom: 10px; letter-spacing: 0.5px; }
+        select, textarea {
+            width: 100%; padding: 16px; border-radius: 14px; border: 2px solid #f1f1f1;
+            font-size: 1rem; font-family: inherit; transition: 0.3s; background: #fafafa; margin-bottom: 25px;
+        }
+        select:focus, textarea:focus { outline: none; border-color: var(--accent-danger); background: white; }
+
+        .btn-group { display: flex; gap: 15px; }
+        .submit-btn { flex: 2; padding: 18px; background: var(--accent-danger); color: white; border: none; border-radius: 16px; font-size: 1rem; font-weight: 800; cursor: pointer; transition: 0.3s; }
+        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(255, 77, 77, 0.2); }
+        .cancel-btn { flex: 1; display: flex; align-items: center; justify-content: center; text-decoration: none; background: #f1f5f9; color: var(--text-muted); border-radius: 16px; font-weight: 700; font-size: 0.9rem; }
+
+        /* MOBILE RESPONSIVE OVERRIDES */
+        @media (max-width: 768px) {
+            nav { margin: 10px 15px; }
+            .menu-toggle { display: flex; }
+            .nav-links { display: none; width: 100%; flex-direction: column; padding: 20px 0; gap: 15px; align-items: flex-start; }
+            .nav-links.active { display: flex; }
+            .dropdown-menu { position: static; box-shadow: none; border: none; width: 100%; padding: 0; }
+            .logo-text .subtext { display: none; }
+            .report-container { margin: 40px auto; }
+            .report-card { padding: 30px 20px; }
+            .btn-group { flex-direction: column; }
+            .submit-btn, .cancel-btn { width: 100%; padding: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-content">
+            <a href="{% url 'item_list' %}" class="logo-box">
+                <img src="{% static 'images/Re-Find_logo.jpg' %}" alt="" 
+                     style="height: 52px; width: auto; display: block;"
+                     onerror="this.style.display='none'; document.getElementById('css-logo').style.display='flex';">
+                
+                <div id="css-logo" style="display:none; align-items:center; gap:14px;">
+                    <div class="rf-icon">RF</div>
+                    <div class="logo-text">
+                        <span class="brand">RE-FIND</span>
+                        <span class="subtext">MARKET</span>
+                    </div>
+                </div>
+            </a>
+
+            <div class="menu-toggle" onclick="toggleNav()">
+                <span></span><span></span><span></span>
+            </div>
+
+            <div class="nav-links" id="navLinks">
+                <a href="{% url 'item_list' %}">Marketplace</a>
+                {% if user.is_authenticated %}
+                    <div class="user-dropdown-container">
+                        <div class="user-trigger" onclick="toggleDropdown(event)">
+                            <strong>@{{ user.username }}</strong>
+                            <span style="font-size: 0.6rem; opacity: 0.5;">▼</span>
+                        </div>
+                        <div id="userDropdown" class="dropdown-menu">
+                            <a href="{% url 'profile' %}">👤 My Account</a>
+                            <a href="{% url 'inbox' %}">📩 Inbox</a>
+                            <a href="{% url 'my_listings' %}">📢 My Ads</a>
+                            <div style="height:1px; background:#eee; margin:8px 0;"></div>
+                            <form action="{% url 'logout' %}" method="post" style="margin: 0;">
+                                {% csrf_token %}
+                                <button type="submit" class="logout-item">🚪 Logout</button>
+                            </form>
+                        </div>
+                    </div>
+                    <a href="{% url 'item_create' %}" style="background: var(--accent-blue); color:white; padding: 10px 24px; border-radius: 14px; font-weight:700;">Sell</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <div class="report-container">
+        <div class="report-card">
+            <div class="report-header">
+                <h2>Report Listing</h2>
+                <p style="color: var(--text-muted); font-weight: 500;">Help us keep Refind Market safe.</p>
+            </div>
+
+            <div class="item-preview">
+                <span style="font-size: 0.75rem; font-weight: 800; color: var(--accent-danger); text-transform: uppercase; display: block; margin-bottom: 5px;">Reporting</span>
+                <span style="font-weight: 700; font-size: 1.1rem;">{{ item.title }}</span>
+            </div>
+
+            <form method="POST">
+                {% csrf_token %}
+                
+                <label class="field-label">Reason for report</label>
+                <select name="reason" required>
+                    <option value="" disabled selected>Select a reason...</option>
+                    <option value="Scam">Potential Scam or Fraud</option>
+                    <option value="Prohibited">Prohibited/Illegal Item</option>
+                    <option value="Duplicate">Duplicate Listing</option>
+                    <option value="Misleading">Misleading Information</option>
+                    <option value="Other">Other</option>
+                </select>
+
+                <label class="field-label">Additional Details</label>
+                <textarea name="description" rows="4" required placeholder="Tell our moderation team what's wrong..."></textarea>
+
+                <div class="btn-group">
+                    <button type="submit" class="submit-btn">Submit Report</button>
+                    <a href="{% url 'item_detail' item.id %}" class="cancel-btn">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function toggleNav() {
+            document.getElementById("navLinks").classList.toggle("active");
+        }
+        function toggleDropdown(event) {
+            event.stopPropagation();
+            document.getElementById("userDropdown").classList.toggle("show");
+        }
+        window.onclick = function(event) {
+            if (!event.target.closest('.user-dropdown-container')) {
+                var dropdowns = document.getElementsByClassName("dropdown-menu");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    dropdowns[i].classList.remove('show');
+                }
+            }
+        }
+    </script>
+</body>
+</html>

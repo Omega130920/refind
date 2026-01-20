@@ -1,0 +1,229 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Become a Vendor | Re-Find Market</title>
+    <style>
+        :root {
+            --bg-main: #e2edf5ff; 
+            --nav-glass: rgba(255, 255, 255, 0.7);
+            --navy-blue: #1c2e4a;
+            --accent-blue: #007bff;
+            --accent-orange: #f39c12;
+            --accent-success: #28a745;
+            --accent-danger: #ff4d4d;
+            --text-muted: #6e6d7a;
+            --radius-lg: 28px;
+            --radius-sm: 18px;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+        }
+
+        /* NAVIGATION - Standardized with other pages */
+        nav {
+            background: var(--nav-glass);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            position: sticky;
+            top: 20px; 
+            z-index: 1000;
+            margin: 0 24px;
+            padding: 10px 0;
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 32px;
+            flex-wrap: wrap;
+        }
+
+        .logo-box { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .rf-icon-nav {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: white; font-weight: 900; font-size: 1.2rem;
+            width: 38px; height: 38px; display: flex;
+            align-items: center; justify-content: center;
+            border-radius: 10px;
+        }
+        .logo-text .brand { font-size: 1.3rem; font-weight: 900; color: var(--navy-blue); letter-spacing: -1px; text-transform: uppercase; }
+
+        /* HAMBURGER */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+        .menu-toggle span { width: 25px; height: 3px; background: var(--navy-blue); border-radius: 3px; }
+
+        .nav-links { display: flex; align-items: center; gap: 20px; }
+        .nav-links a { text-decoration: none; color: var(--text-muted); font-weight: 600; font-size: 0.85rem; transition: 0.2s; }
+
+        /* REGISTRATION CONTENT */
+        .registration-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+        }
+
+        .glass-card {
+            background: white; width: 100%; max-width: 550px;
+            padding: 40px; border-radius: var(--radius-lg);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+        }
+
+        h2 { font-weight: 900; color: var(--navy-blue); margin: 0; letter-spacing: -1px; font-size: 2rem; }
+        .subtitle { color: var(--text-muted); margin-bottom: 20px; font-size: 0.95rem; line-height: 1.4; }
+
+        /* Progress Steps */
+        .step-indicator { display: flex; gap: 8px; margin-bottom: 30px; }
+        .step { flex: 1; height: 6px; border-radius: 10px; background: #eee; }
+        .step.active { background: var(--accent-orange); }
+        .step.complete { background: var(--accent-success); }
+
+        .form-group { margin-bottom: 22px; }
+        label { 
+            display: block; font-weight: 800; font-size: 0.75rem; 
+            text-transform: uppercase; color: var(--navy-blue); 
+            margin-bottom: 8px; letter-spacing: 0.5px;
+        }
+        
+        input, textarea, select {
+            width: 100%; padding: 14px; border-radius: 14px; border: 2px solid #f1f1f1;
+            background: #fafafa; font-size: 1rem; box-sizing: border-box; outline: none;
+            font-family: inherit; transition: 0.2s;
+        }
+        input:focus, textarea:focus, select:focus { border-color: var(--accent-blue); background: white; }
+
+        input[type="file"] { background: #fff; padding: 10px; border: 2px dashed #e2edf5; cursor: pointer; }
+
+        .btn-submit {
+            width: 100%; padding: 18px; background: var(--navy-blue); color: white;
+            border: none; border-radius: 16px; font-weight: 800; font-size: 1rem;
+            cursor: pointer; transition: 0.3s; margin-top: 15px;
+            box-shadow: 0 4px 12px rgba(28, 46, 74, 0.15);
+        }
+        .btn-submit:hover { transform: translateY(-2px); background: var(--accent-blue); }
+
+        .help-text { font-size: 0.7rem; color: var(--text-muted); margin-top: 6px; line-height: 1.3; }
+        .errorlist { color: var(--accent-danger); font-size: 0.8rem; font-weight: 700; list-style: none; padding: 0; margin: 5px 0 0 0; }
+
+        .trust-banner {
+            background: #f0fff4; border: 1px solid #c6f6d5; padding: 12px; border-radius: 14px;
+            margin-bottom: 25px; display: flex; align-items: center; gap: 10px;
+            color: #22543d; font-size: 0.85rem; font-weight: 600;
+        }
+
+        /* MOBILE RESPONSIVE OVERRIDES */
+        @media (max-width: 768px) {
+            nav { margin: 10px 15px; }
+            .menu-toggle { display: flex; }
+            .nav-links {
+                display: none; width: 100%; flex-direction: column;
+                padding-top: 20px; gap: 15px; align-items: flex-start;
+            }
+            .nav-links.active { display: flex; }
+            
+            .registration-container { padding: 30px 15px; }
+            .glass-card { padding: 30px 20px; }
+            h2 { font-size: 1.6rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-content">
+            <a href="{% url 'item_list' %}" class="logo-box">
+                <div class="rf-icon-nav">RF</div>
+                <div class="logo-text">
+                    <span class="brand">RE-FIND</span>
+                </div>
+            </a>
+
+            <div class="menu-toggle" onclick="toggleNav()">
+                <span></span><span></span><span></span>
+            </div>
+
+            <div class="nav-links" id="navLinks">
+                <a href="{% url 'timeline_feed' %}">🏘️ Town Square</a>
+                <a href="{% url 'item_list' %}">🛒 Marketplace</a>
+                <a href="{% url 'vendor_list' %}">🏪 Vendors</a>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'profile' %}">👤 <strong>{{ user.username }}</strong></a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <div class="registration-container">
+        <div class="glass-card">
+            <div style="text-align: center; margin-bottom: 25px;">
+                 <div style="background: var(--accent-orange); color: white; width: 55px; height: 55px; border-radius: 15px; display: inline-flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1.6rem; margin-bottom: 15px; box-shadow: 0 5px 15px rgba(243, 156, 18, 0.3);">RF</div>
+                 <h2>Merchant Registration</h2>
+                 <p class="subtitle">Complete your vendor profile to start trading. Your location ensures local buyers can find your stall.</p>
+            </div>
+
+            <div class="step-indicator">
+                <div class="step complete"></div>
+                <div class="step active"></div>
+                <div class="step"></div>
+            </div>
+
+            <div class="trust-banner">
+                <span>🛡️</span>
+                <span>Identity Verification & Location data will be visible to buyers to build trust.</span>
+            </div>
+
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                {% for field in form %}
+                    <div class="form-group">
+                        <label for="{{ field.id_for_label }}">
+                            {{ field.label }}
+                            {% if field.field.required %}<span style="color: var(--accent-danger);">*</span>{% endif %}
+                        </label>
+                        {{ field }}
+                        {% if field.errors %}
+                            <div class="errorlist">{{ field.errors }}</div>
+                        {% endif %}
+                        {% if field.help_text %}
+                            <p class="help-text">{{ field.help_text|safe }}</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+                <button type="submit" class="btn-submit">Verify & Launch My Store</button>
+            </form>
+            
+            <a href="{% url 'profile' %}" style="display:block; text-align:center; margin-top:25px; font-size:0.85rem; color:var(--text-muted); text-decoration:none; font-weight: 700;">← Cancel and return to profile</a>
+        </div>
+    </div>
+
+    <script>
+        function toggleNav() {
+            document.getElementById("navLinks").classList.toggle("active");
+        }
+    </script>
+</body>
+</html>

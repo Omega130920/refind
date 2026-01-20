@@ -1,0 +1,291 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ item.title }} | Re-Find Market</title>
+    
+    <style>
+        :root {
+            --bg-main: #e2edf5ff; 
+            --nav-glass: rgba(255, 255, 255, 0.7);
+            --text-dark: #1a1a1b;
+            --text-muted: #6e6d7a;
+            --accent-blue: #007bff;
+            --accent-orange: #f39c12; 
+            --accent-danger: #ff4d4d;
+            --accent-success: #28a745;
+            --navy-blue: #1c2e4a;     
+            --card-shadow: 0 20px 40px -10px rgba(0,0,0,0.05);
+            --radius-lg: 28px;
+            --radius-sm: 18px;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            -webkit-font-smoothing: antialiased;
+            color: var(--text-dark);
+        }
+
+        /* NAVIGATION */
+        nav {
+            background: var(--nav-glass);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            position: sticky;
+            top: 20px; 
+            z-index: 1000;
+            margin: 0 24px;
+            padding: 10px 0;
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 32px;
+            flex-wrap: wrap; /* Added for mobile wrapping */
+        }
+
+        .logo-box { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+        .rf-icon {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: white; font-weight: 900; font-size: 1.5rem;
+            width: 46px; height: 46px; display: flex;
+            align-items: center; justify-content: center;
+            border-radius: 12px; box-shadow: 0 6px 15px rgba(243, 156, 18, 0.35);
+        }
+        .logo-text { display: flex; flex-direction: column; line-height: 1; }
+        .logo-text .brand { font-size: 1.3rem; font-weight: 900; color: var(--navy-blue); letter-spacing: -1px; text-transform: uppercase; }
+        .logo-text .subtext { font-size: 0.6rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; }
+
+        /* HAMBURGER MENU */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+        .menu-toggle span {
+            width: 25px; height: 3px; background: var(--navy-blue); border-radius: 3px; transition: 0.3s;
+        }
+
+        .nav-actions { display: flex; gap: 20px; align-items: center; }
+
+        .detail-container { max-width: 1000px; margin: 20px auto 60px; padding: 0 32px; }
+        .back-btn { display: inline-flex; align-items: center; gap: 6px; text-decoration: none; color: var(--accent-blue); font-weight: 700; margin-bottom: 15px; font-size: 0.9rem; transition: 0.2s; }
+        .back-btn:hover { transform: translateX(-4px); }
+
+        /* RESPONSIVE GRID LAYOUT */
+        .grid-layout { 
+            display: flex; 
+            flex-wrap: wrap; /* Flex wrap for mobile stacking */
+            gap: 30px; 
+            align-items: start; 
+        }
+
+        .image-gallery { flex: 1.1; min-width: 350px; background: white; padding: 12px; border-radius: var(--radius-lg); box-shadow: var(--card-shadow); position: relative; }
+        .info-card { flex: 1; min-width: 350px; background: white; padding: 30px; border-radius: var(--radius-lg); box-shadow: var(--card-shadow); position: sticky; top: 100px; }
+
+        /* MOBILE ADJUSTMENTS */
+        @media (max-width: 768px) {
+            nav { margin: 10px 15px; top: 10px; }
+            .nav-content { padding: 0 20px; }
+            .menu-toggle { display: flex; }
+            
+            .nav-actions {
+                display: none;
+                width: 100%;
+                flex-direction: column;
+                padding-top: 20px;
+                gap: 15px;
+                text-align: center;
+            }
+            .nav-actions.active { display: flex; }
+
+            .detail-container { padding: 0 15px; }
+            .grid-layout { flex-direction: column; }
+            .image-gallery, .info-card { min-width: 100%; flex: none; }
+            .info-card { position: relative; top: 0; }
+            .slider-container { height: 320px !important; }
+            .title { font-size: 1.5rem !important; }
+            .logo-text .subtext { display: none; }
+        }
+
+        /* GALLERY SYSTEM */
+        .slider-container { position: relative; width: 100%; height: 480px; border-radius: var(--radius-sm); overflow: hidden; background: #f8f9fa; }
+        .gallery-slide { width: 100%; height: 100%; object-fit: cover; display: none; cursor: pointer; }
+        .gallery-slide.active { display: block; }
+
+        .nav-arrow {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.9); border: none; width: 40px; height: 40px;
+            border-radius: 50%; cursor: pointer; font-weight: bold; display: flex;
+            align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: 0.2s; z-index: 10;
+        }
+        .nav-arrow:hover { background: white; transform: translateY(-50%) scale(1.1); }
+        .prev-arrow { left: 15px; } .next-arrow { right: 15px; }
+
+        .expand-btn {
+            position: absolute; bottom: 15px; right: 15px; background: var(--navy-blue);
+            color: white; border: none; padding: 8px 14px; border-radius: 8px;
+            font-size: 0.7rem; font-weight: 800; cursor: pointer; z-index: 10;
+        }
+
+        .photo-index {
+            position: absolute; top: 15px; left: 15px; background: rgba(0, 0, 0, 0.5);
+            color: white; padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 700;
+        }
+
+        /* INFO CARD STYLES */
+        .category-tag { display: inline-block; background: #f1f5f9; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-bottom: 10px; }
+        .title { font-size: 1.8rem; font-weight: 900; margin: 0 0 8px 0; letter-spacing: -1px; line-height: 1.2; }
+        .meta-info { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; font-size: 0.85rem; color: var(--text-muted); font-weight: 600; }
+        .stock-pill { display: inline-flex; align-items: center; gap: 6px; background: #eef2f7; color: var(--navy-blue); padding: 6px 14px; border-radius: 10px; font-size: 0.8rem; font-weight: 800; margin-bottom: 15px; }
+        .stock-warning { background: #fff4e5; color: var(--accent-orange); }
+        .price { font-size: 2.2rem; font-weight: 900; color: var(--text-dark); margin-bottom: 5px; }
+        .unit-label { font-size: 0.9rem; color: var(--text-muted); font-weight: 600; margin-bottom: 25px; display: block; }
+
+        .lure-box { background: #f0f7ff; padding: 25px; border-radius: 24px; text-align: center; border: 2px dashed var(--accent-blue); margin-top: 25px; }
+        .btn-buy { width: 100%; padding: 15px; background: var(--accent-blue); color: white; border: none; border-radius: 14px; font-size: 1rem; font-weight: 800; cursor: pointer; transition: 0.3s; box-shadow: 0 6px 15px rgba(0, 123, 255, 0.2); display: block; text-decoration: none; box-sizing: border-box; }
+
+        /* LIGHTBOX */
+        #lightbox { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.95); z-index: 2000; justify-content: center; align-items: center; }
+        #lightbox-img { max-width: 85%; max-height: 85vh; border-radius: 8px; }
+        .close-lightbox { position: absolute; top: 30px; right: 30px; color: white; font-size: 2.5rem; cursor: pointer; line-height: 1; z-index: 2010; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-content">
+            <a href="/" class="logo-box">
+                <div class="rf-icon">RF</div>
+                <div class="logo-text">
+                    <span class="brand">RE-FIND</span>
+                    <span class="subtext">MARKET</span>
+                </div>
+            </a>
+
+            <div class="menu-toggle" onclick="toggleMenu()">
+                <span></span><span></span><span></span>
+            </div>
+
+            <div class="nav-actions" id="navActions">
+                <a href="{% url 'login' %}" style="text-decoration: none; color: var(--text-dark); font-weight: 700; font-size: 0.9rem;">Login</a>
+                <a href="{% url 'register' %}" style="text-decoration: none; color: white; background: var(--accent-blue); padding: 10px 18px; border-radius: 12px; font-weight: 700; font-size: 0.9rem;">Join Re-Find Market</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="detail-container">
+        <a href="{% url 'public_marketplace' %}" class="back-btn">← Back to Gallery</a>
+
+        <div class="grid-layout">
+            <div class="image-gallery">
+                <div class="slider-container" id="slider">
+                    {% if item.images.all %}
+                        {% for img in item.images.all %}
+                            <img src="{{ img.image.url }}" class="gallery-slide {% if forloop.first %}active{% endif %}" onclick="openLightbox()">
+                        {% endfor %}
+                        
+                        {% if item.images.count > 1 %}
+                            <button class="nav-arrow prev-arrow" onclick="moveSlide(-1)">❮</button>
+                            <button class="nav-arrow next-arrow" onclick="moveSlide(1)">❯</button>
+                            <div class="photo-index" id="photo-index">1 / {{ item.images.count }}</div>
+                        {% endif %}
+                        
+                        <button class="expand-btn" onclick="openLightbox()">FULLSCREEN ⤢</button>
+                    {% else %}
+                        <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: #f8f9fa; color: #ccc;">No Images Available</div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="info-card">
+                <span class="category-tag">{{ item.get_category_display }}</span>
+                <h1 class="title">{{ item.title }}</h1>
+                
+                <div class="meta-info">
+                    <span>📍 {{ item.location_display|default:"Unknown Location" }}</span>
+                    <span style="color: var(--accent-blue);">{{ item.created_at|timesince }} ago</span>
+                </div>
+
+                <div class="stock-pill {% if item.available_stock <= 2 %}stock-warning{% endif %}">
+                    {% if item.available_stock == 1 %}
+                        ⚠️ Only 1 Left!
+                    {% else %}
+                        📦 {{ item.available_stock }} Units Available
+                    {% endif %}
+                </div>
+
+                <div class="price">R{{ item.display_price|floatformat:2 }}</div>
+                <span class="unit-label">Price per unit (incl. secure payment fee)</span>
+
+                <div class="description-box">
+                    <h3 style="font-size: 1.1rem; margin-bottom: 10px;">Description</h3>
+                    <p style="line-height: 1.5; color: #4a4a4a; margin: 0; font-size: 0.95rem;">{{ item.description|linebreaks }}</p>
+                </div>
+
+                <div class="lure-box">
+                    <h4 style="margin: 0; font-size: 1.1rem; font-weight: 800; color: var(--navy-blue);">Secure this find today</h4>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; margin: 8px 0 15px;">
+                        Join our verified community to message sellers, negotiate, and process payments securely.
+                    </p>
+                    <a href="{% url 'register' %}" class="btn-buy">Create Free Account</a>
+                    <a href="{% url 'login' %}" style="display: block; margin-top: 12px; color: var(--accent-blue); font-weight: 700; text-decoration: none; font-size: 0.85rem;">Already a member? Sign In</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="lightbox">
+        <span class="close-lightbox" onclick="closeLightbox()">&times;</span>
+        <img id="lightbox-img" src="">
+    </div>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById('navActions').classList.toggle('active');
+        }
+
+        let currentIndex = 0;
+        const slides = document.querySelectorAll('.gallery-slide');
+        const photoIndexDisplay = document.getElementById('photo-index');
+
+        function moveSlide(step) {
+            if (slides.length <= 1) return;
+            slides[currentIndex].classList.remove('active');
+            currentIndex = (currentIndex + step + slides.length) % slides.length;
+            slides[currentIndex].classList.add('active');
+            if(photoIndexDisplay) photoIndexDisplay.innerText = `${currentIndex + 1} / ${slides.length}`;
+        }
+
+        function openLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            lightboxImg.src = slides[currentIndex].src;
+            lightbox.style.display = 'flex';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').style.display = 'none';
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape") closeLightbox();
+        });
+    </script>
+</body>
+</html>

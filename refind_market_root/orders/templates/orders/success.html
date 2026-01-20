@@ -1,0 +1,215 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Purchase Confirmed | Refind Market</title>
+    
+    <style>
+        :root {
+            --bg-main: #e2edf5ff; 
+            --nav-glass: rgba(255, 255, 255, 0.7);
+            --text-dark: #1a1a1b;
+            --text-muted: #6e6d7a;
+            --accent-blue: #007bff;
+            --accent-orange: #f39c12; 
+            --accent-success: #28a745;
+            --navy-blue: #1c2e4a;     
+            --card-shadow: 0 20px 40px -10px rgba(0,0,0,0.05);
+            --radius-lg: 28px;
+            --radius-sm: 18px;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            -webkit-font-smoothing: antialiased;
+            color: var(--text-dark);
+            height: 100vh;
+        }
+
+        /* NAVIGATION: Global Floating Glass */
+        nav {
+            background: var(--nav-glass);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            position: sticky;
+            top: 20px; 
+            z-index: 1000;
+            margin: 0 24px;
+            padding: 10px 0;
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 32px;
+        }
+
+        .logo-box { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .rf-icon {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: white; font-weight: 900; font-size: 1.5rem;
+            width: 52px; height: 52px; display: flex;
+            align-items: center; justify-content: center;
+            border-radius: 14px; box-shadow: 0 6px 15px rgba(243, 156, 18, 0.35);
+        }
+        .logo-text { display: flex; flex-direction: column; line-height: 1; }
+        .logo-text .brand { font-size: 1.6rem; font-weight: 900; color: var(--navy-blue); letter-spacing: -1px; text-transform: uppercase; }
+        .logo-text .subtext { font-size: 0.7rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 3px; margin-top: 4px; }
+
+        .nav-links { display: flex; align-items: center; gap: 20px; }
+        .nav-links a { text-decoration: none; color: var(--text-muted); font-weight: 600; font-size: 0.9rem; }
+        .btn-sell-nav { background-color: var(--accent-blue); color: white !important; padding: 10px 24px; border-radius: 14px; font-weight: 700; box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2); }
+
+        /* CONFIRMATION LAYOUT */
+        .confirm-container {
+            max-width: 550px;
+            margin: 100px auto;
+            padding: 0 24px;
+        }
+
+        .confirm-card {
+            background: white;
+            padding: 60px 40px;
+            border-radius: var(--radius-lg);
+            text-align: center;
+            box-shadow: var(--card-shadow);
+            border: 1px solid rgba(0,0,0,0.02);
+        }
+
+        .success-icon {
+            width: 90px;
+            height: 90px;
+            background: #e9f7ef;
+            color: var(--accent-success);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            margin: 0 auto 30px;
+            font-weight: 900;
+        }
+
+        h2 {
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: var(--navy-blue);
+            margin: 0 0 15px 0;
+            letter-spacing: -1px;
+        }
+
+        .info-pill {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            border: 1px solid #f1f5f9;
+        }
+
+        .info-pill strong {
+            color: var(--accent-blue);
+            font-weight: 800;
+        }
+
+        .status-badge {
+            display: inline-block;
+            background: #fff8eb;
+            color: #b45309;
+            padding: 6px 14px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 30px;
+        }
+
+        .action-btn {
+            display: block;
+            width: 100%;
+            padding: 18px;
+            background: var(--accent-blue);
+            color: white;
+            text-decoration: none;
+            border-radius: 18px;
+            font-weight: 800;
+            font-size: 1.1rem;
+            transition: 0.3s;
+            box-shadow: 0 8px 20px rgba(0, 123, 255, 0.2);
+        }
+
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(0, 123, 255, 0.3);
+        }
+
+        .footer-note {
+            margin-top: 25px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-content">
+            <a href="{% url 'item_list' %}" class="logo-box">
+                <img src="{% static 'images/Re-Find_logo.jpg' %}" alt="" 
+                     style="height: 52px; width: auto; display: block;"
+                     onerror="this.style.display='none'; document.getElementById('css-logo').style.display='flex';">
+                
+                <div id="css-logo" style="display:none; align-items:center; gap:14px;">
+                    <div class="rf-icon">RF</div>
+                    <div class="logo-text">
+                        <span class="brand">RE-FIND</span>
+                        <span class="subtext">MARKET</span>
+                    </div>
+                </div>
+            </a>
+
+            <div class="nav-links">
+                <a href="{% url 'item_list' %}">Marketplace</a>
+                <a href="{% url 'inbox' %}">Inbox</a>
+                <a href="{% url 'profile' %}" class="btn-sell-nav">My Account</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="confirm-container">
+        <div class="confirm-card">
+            <div class="success-icon">✓</div>
+            <h2>Purchase Confirmed</h2>
+            
+            <div class="info-pill">
+                You have successfully purchased <br>
+                <strong>{{ order.item.title }}</strong>
+            </div>
+
+            <span class="status-badge">Seller Notified: {{ order.seller.username }}</span>
+
+            <p style="color: var(--text-muted); line-height: 1.6; margin-bottom: 30px;">
+                This item has been secured for you and removed from the public marketplace.
+            </p>
+
+            <a href="{% url 'item_list' %}" class="action-btn">Return to Marketplace</a>
+            
+            <div class="footer-note">
+                Need to chat? Check your <a href="{% url 'inbox' %}" style="color: var(--accent-blue); text-decoration: none; font-weight: 700;">Inbox</a> to coordinate delivery.
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

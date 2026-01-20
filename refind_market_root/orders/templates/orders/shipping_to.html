@@ -1,0 +1,289 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delivery Details | Re-Find Market</title>
+    <style>
+        :root {
+            --bg-main: #e2edf5ff; 
+            --navy-blue: #1c2e4a;
+            --accent-blue: #007bff;
+            --accent-success: #28a745;
+            --accent-danger: #ff4d4d;
+            --text-muted: #6e6d7a;
+            --radius-lg: 28px;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .glass-card {
+            background: white;
+            width: 100%;
+            max-width: 600px;
+            padding: 40px;
+            border-radius: var(--radius-lg);
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.05);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+        }
+
+        .order-summary {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            border: 1px solid #edf2f7;
+        }
+        .item-img {
+            width: 70px; height: 70px;
+            object-fit: cover;
+            border-radius: 12px;
+            background: #eee;
+        }
+        .item-details h4 { margin: 0; color: var(--navy-blue); font-size: 1rem; }
+        .item-details p { margin: 4px 0 0; color: var(--text-muted); font-size: 0.8rem; font-weight: 600; }
+
+        h2 { font-weight: 900; color: var(--navy-blue); margin: 0; letter-spacing: -1px; }
+        .subtitle { color: var(--text-muted); margin-bottom: 20px; font-size: 0.9rem; }
+
+        .field-group { margin-bottom: 15px; }
+        label { display: block; font-weight: 800; font-size: 0.7rem; text-transform: uppercase; color: var(--navy-blue); margin-bottom: 8px; }
+        
+        input {
+            width: 100%; padding: 14px; border-radius: 14px; border: 2px solid #f1f1f1;
+            background: #fafafa; font-size: 1rem; box-sizing: border-box;
+        }
+
+        .rate-card {
+            border: 2px solid #f1f1f1;
+            padding: 18px;
+            border-radius: 18px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .rate-card:hover { border-color: var(--accent-blue); background: #f0f7ff; }
+        .rate-card.selected { border-color: var(--accent-blue); background: #eef6ff; }
+
+        .delivery-est {
+            color: var(--accent-blue);
+            font-size: 0.85rem;
+            font-weight: 800;
+            margin-top: 4px;
+            display: block;
+        }
+
+        .price-breakdown {
+            margin-top: 20px;
+            padding: 20px;
+            background: #fdfdfd;
+            border-radius: 20px;
+            border: 2px dashed #e2e8f0;
+            display: none;
+        }
+        .breakdown-row { display: flex; justify-content: space-between; margin-bottom: 8px; color: var(--text-muted); }
+        .total-row { margin-top: 10px; font-weight: 900; font-size: 1.4rem; color: var(--navy-blue); border-top: 1px solid #eee; padding-top: 10px; }
+
+        .btn-calc {
+            background: var(--navy-blue); color: white; border: none; padding: 14px;
+            border-radius: 14px; font-weight: 800; cursor: pointer; width: 100%; margin-bottom: 20px;
+        }
+
+        .btn-pay {
+            width: 100%; padding: 18px; background: var(--accent-success); color: white;
+            border: none; border-radius: 18px; font-weight: 900; font-size: 1.1rem;
+            cursor: pointer; margin-top: 20px;
+        }
+
+        #loader { display: none; text-align: center; color: var(--accent-blue); font-weight: 700; margin: 20px 0; }
+    </style>
+</head>
+<body>
+
+    <div class="glass-card">
+        <div class="order-summary">
+            {% if order.item.image1 %}
+                <img src="{{ order.item.image1.url }}" class="item-img" alt="item">
+            {% else %}
+                <div class="item-img" style="display:flex;align-items:center;justify-content:center;font-size:10px;color:#ccc">No Image</div>
+            {% endif %}
+            <div class="item-details">
+                <h4>{{ order.item.title }}</h4>
+                <p>Qty: {{ order.quantity }} × R{{ order.unit_price }}</p>
+            </div>
+        </div>
+
+        <h2>Shipping Address</h2>
+        <p class="subtitle">Enter your address to calculate live courier rates.</p>
+
+        <form method="POST" id="shippingForm">
+            {% csrf_token %}
+            
+            <div class="field-group">
+                <label>Street Address</label>
+                <input type="text" name="delivery_street" id="street" placeholder="e.g. 22 Ealing Cres" required>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div class="field-group">
+                    <label>City</label>
+                    <input type="text" name="delivery_city" id="city" placeholder="Johannesburg" required>
+                </div>
+                <div class="field-group">
+                    <label>Postcode</label>
+                    <input type="text" name="delivery_code" id="postcode" placeholder="2191" required>
+                </div>
+            </div>
+
+            <button type="button" class="btn-calc" onclick="fetchRates()">Find Couriers</button>
+
+            <div id="loader">Checking availability...</div>
+            <div id="rates-list"></div>
+
+            <div class="price-breakdown" id="breakdown-area">
+                <div class="breakdown-row">
+                    <span>Subtotal</span>
+                    <span>R{{ order.amount }}</span>
+                </div>
+                <div class="breakdown-row">
+                    <span>Shipping</span>
+                    <span id="breakdown-shipping">R0.00</span>
+                </div>
+                <div class="breakdown-row total-row">
+                    <span>Total Payout</span>
+                    <span id="breakdown-total">R0.00</span>
+                </div>
+                
+                <input type="hidden" name="selected_rate_code" id="hidden_service_code">
+                <input type="hidden" name="selected_rate_price" id="hidden_service_price">
+                <input type="hidden" name="selected_provider_slug" id="hidden_provider_slug">
+
+                <button type="submit" id="pay-button" class="btn-pay">Pay & Secure Item</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function formatHumanDate(dateStr) {
+            if (!dateStr) return null;
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('en-ZA', { 
+                weekday: 'long', month: 'short', day: 'numeric' 
+            });
+        }
+
+        async function fetchRates() {
+            const postcode = document.getElementById('postcode').value;
+            const ratesList = document.getElementById('rates-list');
+            const loader = document.getElementById('loader');
+            const breakdown = document.getElementById('breakdown-area');
+            
+            const sellerPreference = "{{ order.preferred_method }}"; 
+            console.log("DEBUG: Seller Preference is:", sellerPreference);
+
+            if(!postcode) { alert("Please enter a postcode"); return; }
+
+            loader.style.display = 'block';
+            ratesList.innerHTML = '';
+            breakdown.style.display = 'none';
+
+            try {
+                const response = await fetch(`/orders/get-bobgo-rates/?order_id={{ order.id }}&dest_code=${postcode}`);
+                const data = await response.json();
+                loader.style.display = 'none';
+
+                if (data.provider_rate_requests) {
+                    let hasRates = false;
+                    data.provider_rate_requests.forEach(provider => {
+                        if (provider.status === "success" && provider.responses) {
+                            provider.responses.forEach(rate => {
+                                
+                                // --- SELLER PREFERENCE FILTER ---
+                                const deliveryType = rate.service_level.delivery_type; 
+                                
+                                if (sellerPreference !== 'any') {
+                                    if (sellerPreference === 'door_to_door' && deliveryType !== 'door') {
+                                        console.log("Filtered out non-door rate:", rate.service_level.name);
+                                        return;
+                                    }
+                                    if (sellerPreference === 'pickup_point' && deliveryType !== 'point') {
+                                        console.log("Filtered out non-locker rate:", rate.service_level.name);
+                                        return;
+                                    }
+                                }
+                                // ---------------------------------------
+
+                                hasRates = true;
+                                let deliveryText = rate.service_level.description || "Standard Delivery";
+                                const minDate = formatHumanDate(rate.service_level.min_delivery_date);
+                                const maxDate = formatHumanDate(rate.service_level.max_delivery_date);
+
+                                if (minDate && maxDate) {
+                                    deliveryText = `Arrives: ${minDate} — ${maxDate}`;
+                                }
+
+                                const card = document.createElement('div');
+                                card.className = 'rate-card';
+                                card.innerHTML = `
+                                    <div style="flex: 1;">
+                                        <small style="color:var(--text-muted); font-weight:700; text-transform:uppercase; font-size:9px;">${provider.provider_name}</small><br>
+                                        <strong style="color:var(--navy-blue); font-size:1rem;">${rate.service_level.name}</strong>
+                                        <span class="delivery-est">🚚 ${deliveryText}</span>
+                                    </div>
+                                    <div style="text-align: right">
+                                        <span style="font-weight:900; color:var(--accent-success); font-size:1.2rem;">R${rate.rate_amount}</span>
+                                    </div>
+                                `;
+                                // Pass the provider_slug to the select function
+                                card.onclick = () => selectRate(card, rate.service_level_code, rate.rate_amount, provider.provider_slug);
+                                ratesList.appendChild(card);
+                            });
+                        }
+                    });
+                    if (!hasRates) { 
+                        ratesList.innerHTML = '<p style="text-align:center; color:var(--accent-danger); font-weight:600;">No shipping rates match the seller\'s preference for this area.</p>'; 
+                    }
+                }
+            } catch (error) {
+                loader.style.display = 'none';
+                console.error("Shipping API Error:", error);
+                alert("Error connecting to shipping service.");
+            }
+        }
+
+        function selectRate(element, code, price, providerSlug) {
+            document.querySelectorAll('.rate-card').forEach(c => c.classList.remove('selected'));
+            element.classList.add('selected');
+
+            const itemAmount = parseFloat("{{ order.amount }}");
+            const shippingPrice = parseFloat(price);
+            const total = (itemAmount + shippingPrice).toFixed(2);
+
+            document.getElementById('breakdown-area').style.display = 'block';
+            document.getElementById('breakdown-shipping').innerText = `R${shippingPrice.toFixed(2)}`;
+            document.getElementById('breakdown-total').innerText = `R${total}`;
+
+            document.getElementById('hidden_service_code').value = code;
+            document.getElementById('hidden_service_price').value = price;
+            // NEW: Set the provider slug in the hidden input
+            document.getElementById('hidden_provider_slug').value = providerSlug;
+        }
+    </script>
+</body>
+</html>
