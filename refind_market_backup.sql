@@ -149,7 +149,7 @@ CREATE TABLE `django_session` (
 
 LOCK TABLES `django_session` WRITE;
 /*!40000 ALTER TABLE `django_session` DISABLE KEYS */;
-INSERT INTO `django_session` VALUES ('1o4tl448c5ff0oeb0cusslmonkfqg3y7','.eJxVjEsOwjAMBe-SNYrctE4CS_Y9Q2U7DimgVOpnhbg7VOoCtm9m3ssMtK1l2BadhzGZi3Hm9LsxyUPrDtKd6m2yMtV1Htnuij3oYvsp6fN6uH8HhZbyrSFnbYVcDHL2EZwHxwEbQdaICIhtJIaOFCJ2GNhp8k2SyCxZA5B5fwDW9zf3:1vfuaa:o3KW5wroEs6pM4eOpy0LSrG201Yoh-dSB_rdp6-9f4M','2026-01-28 06:42:45'),('4pcbp8khgp6ffqm84pgphdykasqxd0tx','.eJxVjEsOwjAMBe-SNYrctE4CS_Y9Q2U7DimgVOpnhbg7VOoCtm9m3ssMtK1l2BadhzGZi3Hm9LsxyUPrDtKd6m2yMtV1Htnuij3oYvsp6fN6uH8HhZbyrSFnbYVcDHL2EZwHxwEbQdaICIhtJIaOFCJ2GNhp8k2SyCxZA5B5fwDW9zf3:1vfl8h:3QmqmBT4t839T0Y7WN3T3CP_vR-2Usx6qcvWv5D6bZ0','2026-01-27 20:37:20'),('fdq2tvkth8a0vd7w5x6yjpeyul0sgwsi','.eJxVjEsOwjAMBe-SNYrctE4CS_Y9Q2U7DimgVOpnhbg7VOoCtm9m3ssMtK1l2BadhzGZi3Hm9LsxyUPrDtKd6m2yMtV1Htnuij3oYvsp6fN6uH8HhZbyrSFnbYVcDHL2EZwHxwEbQdaICIhtJIaOFCJ2GNhp8k2SyCxZA5B5fwDW9zf3:1vfXV6:YvNmAsC9f3R3_-GFRNq1R9US5elUl2SDd1ev0ZsjB5g','2026-01-27 06:03:33'),('kw79khng9rjhtnrr06rvjtel76es1l2z','.eJxVjDsOwjAQRO_iGln-xR9K-pzB8nq9OIAcKU4qxN1JpBRQjTTvzbxZTNta49bLEidkV6bZ5beDlJ-lHQAfqd1nnue2LhPwQ-En7Xycsbxup_t3UFOv-9r4YkGDDIpcSD4bqzGgA-FRl0xpkBYESfSAYvCOvCHaA9Aqo7TV7PMF8SY4Hg:1vfC1a:RG5JW1Obpf54umnmoVo_Skz5ubPRLQips7Og_iPNCak','2026-01-26 07:07:38'),('x9una2htxu8lz51pbyxoehkziyzcmzes','.eJxVjEsOwjAMBe-SNYrctE4CS_Y9Q2U7DimgVOpnhbg7VOoCtm9m3ssMtK1l2BadhzGZi3Hm9LsxyUPrDtKd6m2yMtV1Htnuij3oYvsp6fN6uH8HhZbyrSFnbYVcDHL2EZwHxwEbQdaICIhtJIaOFCJ2GNhp8k2SyCxZA5B5fwDW9zf3:1vfzQ8:v93GKbjTSoHVJBf6iseIrQMJUPjr2Hlzk1VAzM8joqs','2026-01-28 11:52:17'),('xjftlnf1kj2u5b6eyivjsu9rqydgve9q','.eJxVjEsOwjAMBe-SNYrctE4CS_Y9Q2U7DimgVOpnhbg7VOoCtm9m3ssMtK1l2BadhzGZi3Hm9LsxyUPrDtKd6m2yMtV1Htnuij3oYvsp6fN6uH8HhZbyrSFnbYVcDHL2EZwHxwEbQdaICIhtJIaOFCJ2GNhp8k2SyCxZA5B5fwDW9zf3:1vdlk5:QsySghqhuGRmfshWlJDx2KE4fR1wul5on3J-WSkUMLM','2026-01-22 08:51:41'),('y6uzwc0eggcurnf4gx2iut32vxpx0ezb','.eJxVjEsOwjAMBe-SNYrctE4CS_Y9Q2U7DimgVOpnhbg7VOoCtm9m3ssMtK1l2BadhzGZi3Hm9LsxyUPrDtKd6m2yMtV1Htnuij3oYvsp6fN6uH8HhZbyrSFnbYVcDHL2EZwHxwEbQdaICIhtJIaOFCJ2GNhp8k2SyCxZA5B5fwDW9zf3:1vfuKb:2zj3W4rlH4TDjhtwcKr-9WYR7R3uu_1IGyHcvIojSBI','2026-01-28 06:26:14');
+INSERT INTO `django_session` VALUES ('09kei6z0givs5ug3g1kyox4ovs0i591j','.eJxVjEsOwjAMBe-SNYrctE4CS_Y9Q2U7DimgVOpnhbg7VOoCtm9m3ssMtK1l2BadhzGZi3Hm9LsxyUPrDtKd6m2yMtV1Htnuij3oYvsp6fN6uH8HhZbyrSFnbYVcDHL2EZwHxwEbQdaICIhtJIaOFCJ2GNhp8k2SyCxZA5B5fwDW9zf3:1vgrro:RQd4luKITmErsDg9TM9-8s3Mzv4LIwQkRCrZhaOWJDg','2026-01-30 22:00:28'),('1o4tl448c5ff0oeb0cusslmonkfqg3y7','.eJxVjEsOwjAMBe-SNYrctE4CS_Y9Q2U7DimgVOpnhbg7VOoCtm9m3ssMtK1l2BadhzGZi3Hm9LsxyUPrDtKd6m2yMtV1Htnuij3oYvsp6fN6uH8HhZbyrSFnbYVcDHL2EZwHxwEbQdaICIhtJIaOFCJ2GNhp8k2SyCxZA5B5fwDW9zf3:1vfuaa:o3KW5wroEs6pM4eOpy0LSrG201Yoh-dSB_rdp6-9f4M','2026-01-28 06:42:45'),('4pcbp8khgp6ffqm84pgphdykasqxd0tx','.eJxVjEsOwjAMBe-SNYrctE4CS_Y9Q2U7DimgVOpnhbg7VOoCtm9m3ssMtK1l2BadhzGZi3Hm9LsxyUPrDtKd6m2yMtV1Htnuij3oYvsp6fN6uH8HhZbyrSFnbYVcDHL2EZwHxwEbQdaICIhtJIaOFCJ2GNhp8k2SyCxZA5B5fwDW9zf3:1vfl8h:3QmqmBT4t839T0Y7WN3T3CP_vR-2Usx6qcvWv5D6bZ0','2026-01-27 20:37:20'),('c50k1cw4rqxvm3i5tuscxq8m0gwsyl46','.eJxVjDsOwjAQBe_iGlnY8peSnjNYu-s1DiBbipMq4u4QKQW0b2beJhKsS03r4DlNWVyEEqffDYGe3HaQH9DuXVJvyzyh3BV50CFvPfPrerh_BxVG_dZIUemg2aoQYjYG0VlG64rT3mrgiJ5YnZ2Bwlis98zgHGGBQioYEu8P6tE40w:1vmILV:0sDMn1_jZtFDwuAMMT4CsiJWI1Omxfj8kD879E7of88','2026-02-14 21:17:33'),('do3c1n5sjtotcqdznx8mf18whnz503s0','.eJxVjEsOwjAMBe-SNYrctE4CS_Y9Q2U7DimgVOpnhbg7VOoCtm9m3ssMtK1l2BadhzGZi3Hm9LsxyUPrDtKd6m2yMtV1Htnuij3oYvsp6fN6uH8HhZbyrSFnbYVcDHL2EZwHxwEbQdaICIhtJIaOFCJ2GNhp8k2SyCxZA5B5fwDW9zf3:1vghpG:gVk3npAoroxdBdyhzlMpim4l7qhCrGWkUrjVOCoW9HU','2026-01-30 11:17:10'),('fdq2tvkth8a0vd7w5x6yjpeyul0sgwsi','.eJxVjEsOwjAMBe-SNYrctE4CS_Y9Q2U7DimgVOpnhbg7VOoCtm9m3ssMtK1l2BadhzGZi3Hm9LsxyUPrDtKd6m2yMtV1Htnuij3oYvsp6fN6uH8HhZbyrSFnbYVcDHL2EZwHxwEbQdaICIhtJIaOFCJ2GNhp8k2SyCxZA5B5fwDW9zf3:1vfXV6:YvNmAsC9f3R3_-GFRNq1R9US5elUl2SDd1ev0ZsjB5g','2026-01-27 06:03:33'),('kw79khng9rjhtnrr06rvjtel76es1l2z','.eJxVjDsOwjAQRO_iGln-xR9K-pzB8nq9OIAcKU4qxN1JpBRQjTTvzbxZTNta49bLEidkV6bZ5beDlJ-lHQAfqd1nnue2LhPwQ-En7Xycsbxup_t3UFOv-9r4YkGDDIpcSD4bqzGgA-FRl0xpkBYESfSAYvCOvCHaA9Aqo7TV7PMF8SY4Hg:1vfC1a:RG5JW1Obpf54umnmoVo_Skz5ubPRLQips7Og_iPNCak','2026-01-26 07:07:38'),('m1wnp95ak2qzc3qdcst3nkuh094qe18s','.eJxVjDsOwjAQRO_iGln-xR9K-pzB8nq9OIAcKU4qxN1JpBRQjTTvzbxZTNta49bLEidkV6bZ5beDlJ-lHQAfqd1nnue2LhPwQ-En7Xycsbxup_t3UFOv-9r4YkGDDIpcSD4bqzGgA-FRl0xpkBYESfSAYvCOvCHaA9Aqo7TV7PMF8SY4Hg:1vjkim:e3nb1JPHVCHzM-obAFFBdiXwVl59NO2ohaHtzC2tamw','2026-02-07 20:59:04'),('s84ie6m58cad7fa856q38qwicbgtvab6','.eJxVjDsOwjAQRO_iGln-xR9K-pzB8nq9OIAcKU4qxN1JpBRQjTTvzbxZTNta49bLEidkV6bZ5beDlJ-lHQAfqd1nnue2LhPwQ-En7Xycsbxup_t3UFOv-9r4YkGDDIpcSD4bqzGgA-FRl0xpkBYESfSAYvCOvCHaA9Aqo7TV7PMF8SY4Hg:1vixHW:BXUjV6rwkhelNfUuDcnrelKBfxa0PG4WMh6bTG6YAxo','2026-02-05 16:11:39'),('x2aly4z8cihfwlbeys9k9f5dcedsyf4a','.eJxVjEsOwjAMBe-SNYrctE4CS_Y9Q2U7DimgVOpnhbg7VOoCtm9m3ssMtK1l2BadhzGZi3Hm9LsxyUPrDtKd6m2yMtV1Htnuij3oYvsp6fN6uH8HhZbyrSFnbYVcDHL2EZwHxwEbQdaICIhtJIaOFCJ2GNhp8k2SyCxZA5B5fwDW9zf3:1viWPZ:5p9fROJe78WkLlMgOAtHeMD16-p1wsMhta2MI1MXROI','2026-02-04 11:30:09'),('x9una2htxu8lz51pbyxoehkziyzcmzes','.eJxVjEsOwjAMBe-SNYrctE4CS_Y9Q2U7DimgVOpnhbg7VOoCtm9m3ssMtK1l2BadhzGZi3Hm9LsxyUPrDtKd6m2yMtV1Htnuij3oYvsp6fN6uH8HhZbyrSFnbYVcDHL2EZwHxwEbQdaICIhtJIaOFCJ2GNhp8k2SyCxZA5B5fwDW9zf3:1vfzQ8:v93GKbjTSoHVJBf6iseIrQMJUPjr2Hlzk1VAzM8joqs','2026-01-28 11:52:17'),('xjftlnf1kj2u5b6eyivjsu9rqydgve9q','.eJxVjEsOwjAMBe-SNYrctE4CS_Y9Q2U7DimgVOpnhbg7VOoCtm9m3ssMtK1l2BadhzGZi3Hm9LsxyUPrDtKd6m2yMtV1Htnuij3oYvsp6fN6uH8HhZbyrSFnbYVcDHL2EZwHxwEbQdaICIhtJIaOFCJ2GNhp8k2SyCxZA5B5fwDW9zf3:1vdlk5:QsySghqhuGRmfshWlJDx2KE4fR1wul5on3J-WSkUMLM','2026-01-22 08:51:41'),('y6uzwc0eggcurnf4gx2iut32vxpx0ezb','.eJxVjEsOwjAMBe-SNYrctE4CS_Y9Q2U7DimgVOpnhbg7VOoCtm9m3ssMtK1l2BadhzGZi3Hm9LsxyUPrDtKd6m2yMtV1Htnuij3oYvsp6fN6uH8HhZbyrSFnbYVcDHL2EZwHxwEbQdaICIhtJIaOFCJ2GNhp8k2SyCxZA5B5fwDW9zf3:1vfuKb:2zj3W4rlH4TDjhtwcKr-9WYR7R3uu_1IGyHcvIojSBI','2026-01-28 06:26:14');
 /*!40000 ALTER TABLE `django_session` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -184,10 +184,12 @@ CREATE TABLE `listings_item` (
   `quantity_sold` int DEFAULT '0',
   `is_featured_on_profile` tinyint(1) DEFAULT '0',
   `show_on_marketplace` tinyint(1) DEFAULT '1',
+  `condition` varchar(20) DEFAULT 'good',
+  `negotiation_limit` int DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `seller_id` (`seller_id`),
   CONSTRAINT `listings_item_ibfk_1` FOREIGN KEY (`seller_id`) REFERENCES `users_user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -196,7 +198,7 @@ CREATE TABLE `listings_item` (
 
 LOCK TABLES `listings_item` WRITE;
 /*!40000 ALTER TABLE `listings_item` DISABLE KEYS */;
-INSERT INTO `listings_item` (`id`, `seller_id`, `title`, `description`, `price`, `category`, `is_sold`, `created_at`, `image`, `image1`, `image2`, `image3`, `image4`, `image5`, `image6`, `region`, `city`, `suburb`, `total_quantity`, `quantity_sold`, `is_featured_on_profile`, `show_on_marketplace`) VALUES (1,2,'Test','Test',10.00,'Fuun',1,'2026-01-07 05:36:17','default.jpg',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,0,0,1),(2,2,'test3','',30.00,NULL,1,'2026-01-07 05:58:08','item_pics/8886ea17-f722-4957-b1e0-51b0bb76b422.jpg',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,0,0,1),(4,2,'Test4','Test4',40.00,'Fun',1,'2026-01-07 08:19:12','item_pics/image_1.png','','','','','','',NULL,NULL,NULL,1,1,0,1),(5,2,'Test5','Test5',50.00,'Fun',1,'2026-01-07 08:23:23','default.jpg','','','','','','',NULL,NULL,NULL,1,1,0,1),(6,2,'test7','test',10.00,'Books',0,'2026-01-07 11:38:42','item_pics/Re-Find_logo2.png',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,0,0,1),(7,2,'test8','Test8',100.00,'Sporting',0,'2026-01-07 11:40:04','item_pics/image001_zrL9e2q.png',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,0,0,1),(8,2,'Test10','Test10',400.00,'Computing',0,'2026-01-07 11:45:24','item_pics/1000443214_1.jpg',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,0,0,1),(9,2,'sf','sds',100.00,'Books',1,'2026-01-07 17:19:21','item_pics/Re-Find_logo.png','','','','','','',NULL,NULL,NULL,1,1,0,1),(10,2,'ddff','ddff',2.00,'Collectibles',1,'2026-01-07 17:20:04','item_pics/1000443215.jpg','','','','','','',NULL,NULL,NULL,1,1,0,1),(11,3,'Final Test','Final Test',300.00,'Collectibles',0,'2026-01-07 18:02:21','default.jpg','item_photos/image001_GZGECHn.png','item_photos/Re-Find_logo2_5ZBWgvP.png','','','','',NULL,NULL,NULL,1,0,0,1),(12,3,'Final Test2','Final Test2',3.00,'Books',1,'2026-01-07 18:03:19','default.jpg','item_photos/image001_jJxHpBz.png','item_photos/Screenshot_20250623_160941_0AQLFsH.jpg','item_photos/IMG_4892.jpeg','','','',NULL,NULL,NULL,1,1,0,1),(13,3,'gfd','gf',1.00,'Tools',1,'2026-01-07 18:16:54','default.jpg','item_photos/Screenshot_20250623_160941_ziT5llA.jpg','','','','','',NULL,NULL,NULL,1,1,0,1),(14,3,'asd','jhgf',4.00,'Collectibles',1,'2026-01-07 18:17:37','default.jpg','item_photos/Screenshot_2025-09-30_084634_1.png','item_photos/Screenshot_20251001_173153_com.google.android.apps.docs.jpg','','','','',NULL,NULL,NULL,1,1,0,1),(15,2,'WHAT','WHAT',50.00,'Appliances',1,'2026-01-08 11:13:33','default.jpg','item_photos/image001.jpg','item_photos/Screenshot_2025-09-30_084634_1_JwZO1Et.png','item_photos/Screenshot_20251001_173153_com_oBoqztH.google.android.apps.docs.jpg','','','',NULL,NULL,NULL,1,1,0,1),(16,2,'TEST QTY','TEST QTY',20.00,'Computing',1,'2026-01-08 17:22:01','default.jpg','item_photos/image.jpg','','','','','',NULL,NULL,NULL,2,2,0,1),(17,3,'CONTAINER LOOK','Check out Containers',200.00,'Collectibles',0,'2026-01-08 18:04:37','default.jpg','item_photos/8886ea17-f722-4957-b1e0-51b0bb76b422.jpg','','','','','','Western Cape','Cape Town','Durbanville',1,0,0,1),(18,3,'Rates 1','Rates 1',200.00,'Books',1,'2026-01-09 08:30:09','default.jpg','item_photos/8886ea17-f722-4957-b1e0-51b0bb76b422_jK3QreN.jpg','','','','','','Western Cape','Cape Town','Durbanville',1,1,0,1),(19,3,'Rates 2','Rates 2',200.00,'Books',0,'2026-01-09 08:30:41','default.jpg','item_photos/8886ea17-f722-4957-b1e0-51b0bb76b422_jmJHlMe.jpg','','','','','','Western Cape','Cape Town','Durbanville',1,0,0,1),(20,2,'Rates 3','Rates 3',200.00,'Computing',1,'2026-01-09 08:40:58','default.jpg','item_photos/Screenshot_2025-09-30_084634_1_ZvHAJkK.png','','','','','','Western Cape','Cape Town','Durbanville',1,1,0,1),(21,2,'Waybill test','Waybill test',1.00,'Tools',1,'2026-01-09 10:25:04','default.jpg','item_photos/Re-Find_logo2_tEDcfAN.png','','','','','','Western Cape','Cape Town','Durbanville',1,1,0,1),(22,2,'Waybill Test 2','Waybill Test 2',1.00,'Tools',1,'2026-01-09 10:31:11','default.jpg','item_photos/image_1.png','','','','','','Western Cape','Cape Town','Durbanville',1,1,0,1),(23,3,'WayBill Test 3','WayBill Test 3',1.00,'Tools',1,'2026-01-09 10:37:20','default.jpg','item_photos/image001_hd5yp6U.png','','','','','','Western Cape','Cape Town','Durbanville',1,1,0,1),(24,5,'Vendor TesT','Vendor TesT',400.00,'Automotive',0,'2026-01-12 17:07:30','default.jpg','item_photos/Screenshot_2025-09-30_135406.png','','','','','','Western Cape','Cape Town','Durbanville',6,5,0,1),(25,2,'New layout','It looks good',23.00,'Gaming',0,'2026-01-14 05:28:47','default.jpg','item_photos/1000072243.jpg','item_photos/1000072247.jpg','','','','','Western Cape','Cape town','Durbanville',2,0,0,1),(26,2,'New layout 2','H',33.00,'Fashion',0,'2026-01-14 05:30:39','default.jpg','item_photos/1000014684.jpg','item_photos/1000071941.jpg','','','','','Western Cape','Cape town','Durbanville',2,0,0,1);
+INSERT INTO `listings_item` (`id`, `seller_id`, `title`, `description`, `price`, `category`, `is_sold`, `created_at`, `image`, `image1`, `image2`, `image3`, `image4`, `image5`, `image6`, `region`, `city`, `suburb`, `total_quantity`, `quantity_sold`, `is_featured_on_profile`, `show_on_marketplace`, `condition`, `negotiation_limit`) VALUES (1,1,'Baby Chair','A high chair for toddlers',500.00,'Other',0,'2026-01-30 18:08:47','default.jpg','item_photos/Re-Find_logo_VtWWdL1.png','item_photos/Re-Find_logo1.png','item_photos/Re-Find_logo2_uJIMXN8.png','','','','Western Cape','Cape Town','Durbanville',2,1,0,1,'good',10),(2,1,'QTY test','sgh',200.00,'Books',0,'2026-01-30 18:40:31','default.jpg','item_photos/1000443215_4.jpg','','','','','','Western Cape','Cape Town','Durbanville',3,2,0,1,'new',15);
 /*!40000 ALTER TABLE `listings_item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -214,7 +216,7 @@ CREATE TABLE `listings_itemimage` (
   PRIMARY KEY (`id`),
   KEY `fk_listings_itemimage_item` (`item_id`),
   CONSTRAINT `fk_listings_itemimage_item` FOREIGN KEY (`item_id`) REFERENCES `listings_item` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -223,7 +225,7 @@ CREATE TABLE `listings_itemimage` (
 
 LOCK TABLES `listings_itemimage` WRITE;
 /*!40000 ALTER TABLE `listings_itemimage` DISABLE KEYS */;
-INSERT INTO `listings_itemimage` VALUES (1,'item_photos/Re-Find_logo2.png',6),(2,'item_photos/image001.png',7),(3,'item_photos/1000443214_1.jpg',8),(4,'item_photos/Re-Find_logo.png',9),(5,'item_photos/1000443215.jpg',10),(6,'item_photos/Screenshot_20250623_160941_emwG4ob.jpg',13),(7,'item_photos/Screenshot_2025-09-30_084634_1_S1QCcgt.png',14),(8,'item_photos/Screenshot_20251001_173153_com_NMvkVd8.google.android.apps.docs.jpg',14),(9,'item_photos/image001_1RSOmpV.jpg',15),(10,'item_photos/Screenshot_2025-09-30_084634_1_rHtlHUI.png',15),(11,'item_photos/Screenshot_20251001_173153_com_GHZAtr7.google.android.apps.docs.jpg',15),(12,'item_photos/image_ivqUBF1.jpg',16),(13,'item_photos/8886ea17-f722-4957-b1e0-51b0bb76b422_dpOMQae.jpg',17),(14,'item_photos/8886ea17-f722-4957-b1e0-51b0bb76b422_0ok6DFC.jpg',18),(15,'item_photos/8886ea17-f722-4957-b1e0-51b0bb76b422_ACnrmjN.jpg',19),(16,'item_photos/Screenshot_2025-09-30_084634_1_35stl1r.png',20),(17,'item_photos/Re-Find_logo2_Bbr54hp.png',21),(18,'item_photos/image_1_MdPMASb.png',22),(19,'item_photos/image001_GKJSNqo.png',23),(20,'item_photos/Screenshot_2025-09-30_135406_C9TJIWc.png',24),(21,'item_photos/1000072243_RYCYLjd.jpg',25),(22,'item_photos/1000014684_4DdoTeU.jpg',26),(23,'item_photos/1000071941_ovpcYhx.jpg',26);
+INSERT INTO `listings_itemimage` VALUES (1,'item_photos/Re-Find_logo_BuwwJlH.png',1),(2,'item_photos/Re-Find_logo1_WUpe6Jc.png',1),(3,'item_photos/Re-Find_logo2_tBCHGCv.png',1),(4,'item_photos/1000443215_4_W5kepN9.jpg',2);
 /*!40000 ALTER TABLE `listings_itemimage` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -249,7 +251,7 @@ CREATE TABLE `listings_message` (
   CONSTRAINT `fk_message_item` FOREIGN KEY (`item_id`) REFERENCES `listings_item` (`id`) ON DELETE CASCADE,
   CONSTRAINT `fk_message_recipient` FOREIGN KEY (`recipient_id`) REFERENCES `users_user` (`id`) ON DELETE CASCADE,
   CONSTRAINT `fk_message_sender` FOREIGN KEY (`sender_id`) REFERENCES `users_user` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -258,7 +260,7 @@ CREATE TABLE `listings_message` (
 
 LOCK TABLES `listings_message` WRITE;
 /*!40000 ALTER TABLE `listings_message` DISABLE KEYS */;
-INSERT INTO `listings_message` VALUES (1,'Good Day i like this item do you have more than 1?','2026-01-07 10:23:58.409589',1,5,2,3),(2,'Good Day','2026-01-08 05:59:18.617471',1,14,3,2),(3,'hi','2026-01-08 06:26:43.277960',1,14,3,2),(4,'hi','2026-01-08 08:17:45.887623',1,14,3,2),(5,'Hi','2026-01-14 06:43:53.673365',0,19,3,2);
+INSERT INTO `listings_message` VALUES (1,'Hello :)','2026-01-30 20:51:00.334919',1,2,1,2);
 /*!40000 ALTER TABLE `listings_message` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -315,7 +317,7 @@ CREATE TABLE `listings_review` (
   CONSTRAINT `fk_review_order` FOREIGN KEY (`order_id`) REFERENCES `orders_order` (`id`) ON DELETE CASCADE,
   CONSTRAINT `fk_review_reviewer` FOREIGN KEY (`reviewer_id`) REFERENCES `users_user` (`id`) ON DELETE CASCADE,
   CONSTRAINT `fk_review_target` FOREIGN KEY (`target_user_id`) REFERENCES `users_user` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -324,7 +326,6 @@ CREATE TABLE `listings_review` (
 
 LOCK TABLES `listings_review` WRITE;
 /*!40000 ALTER TABLE `listings_review` DISABLE KEYS */;
-INSERT INTO `listings_review` VALUES (1,5,'it was working','2026-01-07 10:07:41.714544',2,3,2),(2,2,'Working','2026-01-07 10:07:54.425635',1,3,2);
 /*!40000 ALTER TABLE `listings_review` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -421,6 +422,7 @@ CREATE TABLE `orders_order` (
   `parcel_height` int DEFAULT '10',
   `preferred_method` varchar(50) DEFAULT 'any',
   `bobgo_provider_slug` varchar(100) DEFAULT NULL,
+  `negotiated_base_price` decimal(10,2) NOT NULL DEFAULT '0.00',
   PRIMARY KEY (`id`),
   KEY `item_id` (`item_id`),
   KEY `buyer_id` (`buyer_id`),
@@ -428,7 +430,7 @@ CREATE TABLE `orders_order` (
   CONSTRAINT `fk_order_seller` FOREIGN KEY (`seller_id`) REFERENCES `users_user` (`id`),
   CONSTRAINT `orders_order_ibfk_1` FOREIGN KEY (`item_id`) REFERENCES `listings_item` (`id`),
   CONSTRAINT `orders_order_ibfk_2` FOREIGN KEY (`buyer_id`) REFERENCES `users_user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -437,7 +439,7 @@ CREATE TABLE `orders_order` (
 
 LOCK TABLES `orders_order` WRITE;
 /*!40000 ALTER TABLE `orders_order` DISABLE KEYS */;
-INSERT INTO `orders_order` VALUES (1,2,3,'paid',NULL,NULL,NULL,'2026-01-07 06:50:03',2,30.00,1,NULL,NULL,NULL,NULL,'GP',NULL,NULL,NULL,'GP',0.00,NULL,1.00,10,10,10,'any',NULL),(2,1,3,'paid',NULL,NULL,NULL,'2026-01-07 07:02:25',2,10.00,1,NULL,NULL,NULL,NULL,'GP',NULL,NULL,NULL,'GP',0.00,NULL,1.00,10,10,10,'any',NULL),(3,14,2,'paid',NULL,NULL,NULL,'2026-01-08 03:58:16',3,4.30,1,NULL,NULL,NULL,NULL,'GP',NULL,NULL,NULL,'GP',0.00,NULL,1.00,10,10,10,'any',NULL),(4,13,2,'paid',NULL,NULL,NULL,'2026-01-08 06:11:38',3,1.07,1,NULL,NULL,NULL,NULL,'GP',NULL,NULL,NULL,'GP',0.00,NULL,1.00,10,10,10,'any',NULL),(5,10,3,'paid',NULL,NULL,NULL,'2026-01-08 06:17:09',2,2.15,1,'44 Minuet Ridge','Cape Town','Cape Town','7440','WC','0A Twist Street','Cape Town','7440','GP',261.60,'ECO',20.00,30,40,20,'any',NULL),(6,4,3,'shipped',NULL,'UASS3QFP',NULL,'2026-01-08 06:46:17',2,43.00,1,'44 Minuet Ridge','Cape Town','Cape Town','7440','WC','0A Twist Street','Cape Town','7440','GP',104.36,'LOF',1.00,10,10,10,'door_to_door','sandbox'),(7,12,2,'paid',NULL,NULL,NULL,'2026-01-08 06:47:20',3,3.22,1,NULL,NULL,NULL,NULL,'GP',NULL,NULL,NULL,'GP',0.00,NULL,1.00,10,10,10,'any',NULL),(8,16,3,'paid',NULL,NULL,NULL,'2026-01-08 17:57:44',2,43.00,2,NULL,NULL,NULL,NULL,'GP',NULL,NULL,NULL,'GP',0.00,NULL,1.00,10,10,10,'any',NULL),(9,17,2,'shipping_set',NULL,NULL,NULL,'2026-01-08 18:16:31',3,215.00,1,'44 Minuet Ridge','C','Durbanville','7440','GP','0A Twist Street','Cape Town','7440','GP',86.27,'ECO',1.00,10,10,10,'any',NULL),(10,11,2,'pending_approval',NULL,NULL,NULL,'2026-01-09 07:35:38',3,322.50,1,NULL,NULL,NULL,NULL,'GP',NULL,NULL,NULL,'GP',0.00,NULL,1.00,10,10,10,'any',NULL),(11,17,2,'shipping_set',NULL,NULL,NULL,'2026-01-09 08:11:52',3,215.00,1,'44 Minuet Ridge','Cape Town','Cape Town','7440','WC','0A Twist Street','Cape Town','7440','GP',114.95,'ECO',20.00,30,40,20,'any',NULL),(12,15,3,'paid',NULL,NULL,NULL,'2026-01-09 08:23:46',2,53.75,1,'44 Minuet Ridge','Cape Town','Cape Town','7440','WC','0A Twist Street','Cape Town','7440','GP',114.95,'ECO',20.00,30,40,20,'any',NULL),(13,19,2,'accepted',NULL,NULL,NULL,'2026-01-09 08:30:54',3,215.00,1,'44 Minuet Ridge','Cape Town','Cape Town','7440','WC',NULL,NULL,NULL,'GP',0.00,NULL,20.00,30,40,20,'any',NULL),(14,18,2,'paid',NULL,NULL,NULL,'2026-01-09 08:30:57',3,215.00,1,'44 Minuet Ridge','Cape Town','Cape Town','7440','WC','0A Twist Street','Cape Town','7440','GP',261.60,'ECO',20.00,30,40,20,'any',NULL),(15,20,3,'paid',NULL,NULL,NULL,'2026-01-09 08:41:13',2,215.00,1,'44 Minuet Ridge','Cape Town','Cape Town','7440','WC','0A Twist Street','Cape Town','7440','GP',86.27,'ECO',1.00,10,10,10,'any',NULL),(16,6,3,'accepted',NULL,NULL,NULL,'2026-01-09 08:56:18',2,10.75,1,'44 Minuet Ridge','Cape Town','Cape Town','7440','WC',NULL,NULL,NULL,'GP',0.00,NULL,1.00,10,10,10,'pickup_point',NULL),(17,5,3,'paid',NULL,NULL,NULL,'2026-01-09 09:14:54',2,53.75,1,'44 Minuet Ridge','Cape Town','Cape Town','7440','WC','0A Twist Street','Cape Town','7440','GP',104.36,'LOF',1.00,10,10,10,'door_to_door',NULL),(18,9,3,'shipped',NULL,'UASD3NLJ',NULL,'2026-01-09 09:35:07',2,107.50,1,'44 Minuet Ridge','Cape Town','Cape Town','7440','WC','0A Twist Street','Cape Town','7440','GP',86.27,'ECO',1.00,10,10,10,'door_to_door','demo'),(19,21,3,'shipped',NULL,'UASS9GHS',NULL,'2026-01-09 10:25:21',2,1.07,1,'44 Minuet Ridge','Cape Town','Cape Town','7440','WC','0A Twist Street','Cape Town','7440','GP',114.95,'ECO',10.00,30,40,20,'door_to_door','sandbox'),(20,22,3,'shipped',NULL,'UASSSXW8',NULL,'2026-01-09 10:31:19',2,1.07,1,'44 Minuet Ridge','Cape Town','Cape Town','7440','WC','0A Twist Street','Cape Town','7440','GP',677.60,'LSX',10.00,20,30,20,'door_to_door','sandbox'),(21,23,2,'shipped',NULL,'UASSK8BN',NULL,'2026-01-09 10:37:25',3,1.07,1,'44 Minuet Ridge','Cape Town','Cape Town','7440','WC','0A Twist Street','Cape Town','7440','GP',114.95,'ECO',10.00,30,20,30,'door_to_door','sandbox'),(22,24,2,'shipped',NULL,'UASDP7KJ',NULL,'2026-01-12 17:08:00',5,2150.00,5,'44 Minuet Ridge','Cape Town','Durbanville','7440','WC','0A Twist Street','Cape Town','7440','GP',96.01,'ECO',3.00,12,30,20,'door_to_door','demo'),(23,19,2,'pending_approval',NULL,NULL,NULL,'2026-01-14 04:43:38',3,215.00,1,NULL,NULL,NULL,NULL,'GP',NULL,NULL,NULL,'GP',0.00,NULL,1.00,10,10,10,'any',NULL);
+INSERT INTO `orders_order` VALUES (1,1,2,'shipped',NULL,'UASSN4C6',NULL,'2026-01-30 18:14:51',1,537.50,1,'44 Minuet Ridge','Cape Town','Durbanville','7440','WC','0A Twist Street','Cape Town','7440','GP',114.95,'ECO',20.00,12,10,20,'door_to_door','sandbox',500.00),(2,2,2,'shipped',NULL,'UASSCT89',NULL,'2026-01-30 18:41:00',1,430.00,2,'44 Minuet Ridge','Cape Town','Durbanville','7440','WC','0A Twist Street','Cape Town','7440','GP',104.36,'LOF',1.00,10,10,10,'door_to_door','sandbox',200.00);
 /*!40000 ALTER TABLE `orders_order` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -457,7 +459,7 @@ CREATE TABLE `timeline_comment_likes` (
   KEY `fk_user_comment_like` (`user_id`),
   CONSTRAINT `fk_comment` FOREIGN KEY (`comment_id`) REFERENCES `timeline_comments` (`id`) ON DELETE CASCADE,
   CONSTRAINT `fk_user_comment_like` FOREIGN KEY (`user_id`) REFERENCES `users_user` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -487,7 +489,7 @@ CREATE TABLE `timeline_comments` (
   KEY `fk_comment_author` (`author_id`),
   CONSTRAINT `fk_comment_author` FOREIGN KEY (`author_id`) REFERENCES `users_user` (`id`) ON DELETE CASCADE,
   CONSTRAINT `fk_comment_post` FOREIGN KEY (`post_id`) REFERENCES `timeline_posts` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -496,7 +498,6 @@ CREATE TABLE `timeline_comments` (
 
 LOCK TABLES `timeline_comments` WRITE;
 /*!40000 ALTER TABLE `timeline_comments` DISABLE KEYS */;
-INSERT INTO `timeline_comments` VALUES (1,1,5,'Hi do you make this yourself?','2026-01-12 15:45:47'),(2,1,5,'h','2026-01-12 16:03:05'),(3,1,5,'g','2026-01-12 16:03:08'),(4,1,5,'DF','2026-01-12 16:08:03'),(5,2,2,'Wow','2026-01-14 08:42:54');
 /*!40000 ALTER TABLE `timeline_comments` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -516,7 +517,7 @@ CREATE TABLE `timeline_post_likes` (
   KEY `fk_like_user` (`user_id`),
   CONSTRAINT `fk_like_post` FOREIGN KEY (`post_id`) REFERENCES `timeline_posts` (`id`) ON DELETE CASCADE,
   CONSTRAINT `fk_like_user` FOREIGN KEY (`user_id`) REFERENCES `users_user` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -525,7 +526,6 @@ CREATE TABLE `timeline_post_likes` (
 
 LOCK TABLES `timeline_post_likes` WRITE;
 /*!40000 ALTER TABLE `timeline_post_likes` DISABLE KEYS */;
-INSERT INTO `timeline_post_likes` VALUES (2,2,2);
 /*!40000 ALTER TABLE `timeline_post_likes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -549,7 +549,7 @@ CREATE TABLE `timeline_posts` (
   KEY `fk_post_item` (`tagged_item_id`),
   CONSTRAINT `fk_post_author` FOREIGN KEY (`author_id`) REFERENCES `users_user` (`id`) ON DELETE CASCADE,
   CONSTRAINT `fk_post_item` FOREIGN KEY (`tagged_item_id`) REFERENCES `listings_item` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -558,7 +558,7 @@ CREATE TABLE `timeline_posts` (
 
 LOCK TABLES `timeline_posts` WRITE;
 /*!40000 ALTER TABLE `timeline_posts` DISABLE KEYS */;
-INSERT INTO `timeline_posts` VALUES (1,2,'i found it','timeline_posts/1000443214.jpg',NULL,NULL,'2026-01-11 19:38:17'),(2,5,'So did i','','',NULL,'2026-01-12 13:45:28');
+INSERT INTO `timeline_posts` VALUES (1,2,'Nice day','timeline_posts/image.png','',NULL,'2026-01-30 20:51:20');
 /*!40000 ALTER TABLE `timeline_posts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -579,7 +579,7 @@ CREATE TABLE `users_follow` (
   KEY `vendor_id` (`vendor_id`),
   CONSTRAINT `users_follow_ibfk_1` FOREIGN KEY (`follower_id`) REFERENCES `users_user` (`id`) ON DELETE CASCADE,
   CONSTRAINT `users_follow_ibfk_2` FOREIGN KEY (`vendor_id`) REFERENCES `users_vendorprofile` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -588,7 +588,6 @@ CREATE TABLE `users_follow` (
 
 LOCK TABLES `users_follow` WRITE;
 /*!40000 ALTER TABLE `users_follow` DISABLE KEYS */;
-INSERT INTO `users_follow` VALUES (1,3,1,'2026-01-10 18:44:49');
 /*!40000 ALTER TABLE `users_follow` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -624,7 +623,7 @@ CREATE TABLE `users_user` (
   `gender` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -633,7 +632,7 @@ CREATE TABLE `users_user` (
 
 LOCK TABLES `users_user` WRITE;
 /*!40000 ALTER TABLE `users_user` DISABLE KEYS */;
-INSERT INTO `users_user` VALUES (2,'omega','pbkdf2_sha256$1000000$htwFVmgdGZtavaWVtMKn9T$T5hzR+hyB99u1s0OCNhntJwBI+dJR5/V8mO/tIshNP8=','','','',1,1,1,'2026-01-14 11:52:17','2026-01-07 06:59:06',NULL,0,NULL,'South Africa',NULL,NULL,NULL,0,NULL,NULL,NULL),(3,'Luano','pbkdf2_sha256$1000000$HcX2eNY9jziurxiaDEABcL$NgEy4gDUoQ471wzAObfiEZw8qKjUDz40SJSS+l3jrjA=','luanoveck@gmail.com','Luano','van Eck',0,1,0,'2026-01-12 07:07:38','2026-01-07 08:13:28','1234567890123',0,'0833803942','South Africa',NULL,NULL,NULL,0,NULL,NULL,NULL),(4,'Alpha','pbkdf2_sha256$1000000$VAzamjVXCDLUHIC1KMa0WY$31gq+FUyuuYoRf3D5x8zGST5A3VaxlZadlAOsqQv/gE=','luanoveck@gmail.com','Alpha','Alpha',0,1,0,'2026-01-09 08:28:25','2026-01-09 08:28:14','9876543210123',0,'0833803942','South Africa','Western Cape','Cape Town','Paarl',1,'2026-01-09 08:28:14.727578',NULL,NULL),(5,'Le-Rie','pbkdf2_sha256$1000000$LjXpc9bhYzUSveTJMK06lb$T69UxVdtdmB3VJknGQ6fCltdgRsLdi1q0CXanAAh3NU=','luanoveck@gmail.com','Le-Rie','van Eck',0,1,0,'2026-01-12 19:10:13','2026-01-12 11:45:05','9105160107080',0,'0833803942','South Africa','Western Cape','Cape Town','Durbanville',1,'2026-01-12 11:45:05.685893','1991-05-16','Female');
+INSERT INTO `users_user` VALUES (1,'Omega','pbkdf2_sha256$1000000$vJgsSiDcdGm4LXv5SqOb5M$HcEK0O+2kkltN49ezGRVzyW0ByvcaJaM8gEA0VDpRaw=','luanoveck@gmail.com','Omega','Omega',1,1,1,'2026-01-31 21:17:33','2026-01-30 20:06:55','9510245212088',0,'0833803942','South Africa','Western Cape','Cape Town','Durbanville',1,'2026-01-30 20:06:56.304202','1995-10-24','Male'),(2,'Luano','pbkdf2_sha256$1000000$DJWei28Dp5bngzhBmWf6Ld$EBXotq9CG/HqQbKkL8SwZDfoXacgdrXcuG56kj35KcE=','luanoveck@gmail.com','Luano','van Eck',0,1,0,'2026-01-30 20:43:08','2026-01-30 20:13:26','6202095593089',0,'0833803942','South Africa','Western Cape','Cape Town','Paarl',1,'2026-01-30 20:13:27.440639','1962-02-09','Male');
 /*!40000 ALTER TABLE `users_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -661,7 +660,7 @@ CREATE TABLE `users_vendorprofile` (
   UNIQUE KEY `business_name` (`business_name`),
   UNIQUE KEY `store_slug` (`store_slug`),
   CONSTRAINT `fk_vendor_user` FOREIGN KEY (`user_id`) REFERENCES `users_user` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -670,7 +669,6 @@ CREATE TABLE `users_vendorprofile` (
 
 LOCK TABLES `users_vendorprofile` WRITE;
 /*!40000 ALTER TABLE `users_vendorprofile` DISABLE KEYS */;
-INSERT INTO `users_vendorprofile` VALUES (1,2,'Omega\'s','omegas','We started this for FUN!!!!','vendor_logos/Re-Find_logo.png','vendor_banners/Re-Find_logo2.png','Everything',1,0,'2026-01-10 18:39:09'),(2,5,'Le-Rie Schools','le-rie-schools','We do everything for Schools','vendor_logos/Screenshot_2025-09-29_121544.png','vendor_banners/Screenshot_2025-10-08_103427.png','Cape Town',12,0,'2026-01-12 13:06:23');
 /*!40000 ALTER TABLE `users_vendorprofile` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -683,4 +681,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-01-14 22:23:52
+-- Dump completed on 2026-02-01 21:02:18
