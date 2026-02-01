@@ -15,4 +15,5 @@ urlpatterns = [
     path('get-bobgo-rates/', views.get_bobgo_rates_ajax, name='get_bobgo_rates_ajax'),
     path('finalize-payment/<int:order_id>/', views.finalize_payment, name='finalize_payment'),
     path('generate-waybill/<int:order_id>/', views.generate_waybill, name='generate_waybill'),
+    path('bobgo-webhook/', views.bobgo_webhook, name='bobgo_webhook'),
 ]

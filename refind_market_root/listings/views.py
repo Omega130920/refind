@@ -9,7 +9,7 @@ import json
 from django.http import JsonResponse
 from django.contrib.auth.decorators import user_passes_test
 from django.urls import reverse
-
+from decimal import Decimal
 # Imports from your local models
 from .models import Item, ItemImage, Review, Message, Report  
 from .forms import ItemCreateForm
@@ -101,10 +101,57 @@ def item_list(request):
 
 def item_detail(request, pk):
     item = get_object_or_404(Item.objects.prefetch_related('images'), pk=pk)
-    # Also calculate remaining stock for the detail page
     item.remaining_stock = item.total_quantity - item.quantity_sold
-    return render(request, 'listings/item_detail.html', {'item': item})
 
+    base = Decimal(str(item.price))
+    fee_rate = Decimal('0.075')
+
+    full_total = base + (base * fee_rate)
+    
+    # Initialize dictionary with THREE tiers
+    negotiation_data = {
+        'full': {
+            'base': base,
+            'total': round(full_total, 2),
+            'label': 'Full Price (Priority)'
+        },
+        'tier_1': None, # 5%
+        'tier_2': None, # 10%
+        'tier_3': None  # 15%
+    }
+    
+    if item.negotiation_limit > 0:
+        # Tier 1: Always 5%
+        t1_base = base * Decimal('0.95')
+        negotiation_data['tier_1'] = {
+            'base': t1_base,
+            'total': round(t1_base + (t1_base * fee_rate), 2),
+            'label': '5% Off'
+        }
+        
+        # Tier 2: 10% (Only if limit is 10 or 15)
+        if item.negotiation_limit >= 10:
+            t2_base = base * Decimal('0.90')
+            negotiation_data['tier_2'] = {
+                'base': t2_base,
+                'total': round(t2_base + (t2_base * fee_rate), 2),
+                'label': '10% Off'
+            }
+
+        # Tier 3: 15% (Only if limit is 15)
+        if item.negotiation_limit >= 15:
+            t3_base = base * Decimal('0.85')
+            negotiation_data['tier_3'] = {
+                'base': t3_base,
+                'total': round(t3_base + (t3_base * fee_rate), 2),
+                'label': '15% Off'
+            }
+
+    context = {
+        'item': item,
+        'negotiation_data': negotiation_data
+    }
+    return render(request, 'listings/item_detail.html', context)
 
 from django.db import transaction
 
@@ -133,12 +180,15 @@ def item_create(request):
             item = form.save(commit=False)
             item.seller = request.user
             
+            # --- NEW: Save Flea Market Logic Fields ---
+            item.condition = form.cleaned_data.get('condition')
+            item.negotiation_limit = form.cleaned_data.get('negotiation_limit')
+            
             # --- Save Inventory Data ---
             item.total_quantity = form.cleaned_data.get('total_quantity', 1)
             item.quantity_sold = 0 
             
             # --- Save Visibility Control ---
-            # This captures whether the vendor wants it on the main market or just their store
             item.show_on_marketplace = form.cleaned_data.get('show_on_marketplace', True)
             
             # --- Save Location Data ---
@@ -146,6 +196,7 @@ def item_create(request):
             item.city = form.cleaned_data.get('city')
             item.suburb = form.cleaned_data.get('suburb')
             
+            # Save to Database
             item.save()
             
             # 2. MANUALLY SAVE THE GALLERY IMAGES
@@ -162,6 +213,7 @@ def item_create(request):
             messages.success(request, f"Listing published successfully!")
             return redirect('item_list')
         else:
+            # This will catch validation errors (like missing condition)
             messages.error(request, "Please correct the errors below.")
     else:
         # Pre-fill with User's Location and pass user to the form
@@ -171,6 +223,8 @@ def item_create(request):
             'suburb': request.user.suburb,
             'total_quantity': 1,
             'show_on_marketplace': True,
+            'condition': 'good',           # NEW Default
+            'negotiation_limit': 0,        # NEW Default
         }
         form = ItemCreateForm(initial=initial_data, user=request.user)
         
@@ -232,22 +286,26 @@ def item_edit(request, pk):
         form = ItemCreateForm(request.POST, request.FILES, instance=item, user=request.user)
         
         if form.is_valid():
-            # Save the item
+            # 1. Save the item (commit=False)
             updated_item = form.save(commit=False)
             
+            # --- NEW: Ensure Negotiation & Condition are updated ---
+            updated_item.condition = form.cleaned_data.get('condition')
+            updated_item.negotiation_limit = form.cleaned_data.get('negotiation_limit')
+            
             # --- Ensure Visibility Control is updated ---
-            # If the user is a vendor, they might have toggled this
             updated_item.show_on_marketplace = form.cleaned_data.get('show_on_marketplace', True)
             
+            # Save to MySQL
             updated_item.save()
             
-            # TRIGGER NOTIFICATION
+            # 2. TRIGGER NOTIFICATION (Restock Logic)
             if hasattr(request.user, 'vendor_profile'):
                 if updated_item.total_quantity > old_total_qty:
-                    # Call the helper from users/views.py
                     notify_followers(request.user.vendor_profile, updated_item, action_type="restock")
             
-            # Gallery image logic (if you are adding more during edit)
+            # 3. Gallery image logic
+            # Handle additional images if your form allows multiple selection under 'images'
             images = request.FILES.getlist('images')
             if images:
                 for f in images:
@@ -255,8 +313,10 @@ def item_edit(request, pk):
             
             messages.success(request, "Item updated successfully!")
             return redirect('my_listings')
+        else:
+            messages.error(request, "Please correct the errors below.")
     else:
-        # Pass user to the form on GET request so the toggle appears
+        # Pass user to the form on GET request so the toggle and price tiers appear
         form = ItemCreateForm(instance=item, user=request.user)
         
     return render(request, 'listings/item_form.html', {'form': form, 'edit_mode': True})

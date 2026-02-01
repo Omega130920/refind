@@ -4,6 +4,11 @@ from django.utils import timezone
 from datetime import timedelta
 from users.models import User
 
+from django.db import models
+from django.conf import settings
+from django.utils import timezone
+from datetime import timedelta
+
 class Item(models.Model):
     # Category Definitions
     CATEGORY_CHOICES = [
@@ -25,6 +30,22 @@ class Item(models.Model):
         ('Other', 'Other / Miscellaneous'),
     ]
 
+    # --- NEW: Condition & Negotiation Choices ---
+    CONDITION_CHOICES = [
+        ('new', 'Brand New (Sealed)'),
+        ('like_new', 'Like New (Open box)'),
+        ('good', 'Good (Lightly used)'),
+        ('fair', 'Fair (Visible wear)'),
+        ('spares', 'Spares / Repair'),
+    ]
+    
+    NEGOTIATION_CHOICES = [
+        (0, 'Fixed Price (No negotiation)'),
+        (5, 'Open to 5% off'),
+        (10, 'Open to 10% off'),
+        (15, 'Open to 15% off'),
+    ]
+
     # 'seller' links to the 'id' in users_user
     seller = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING, db_column='seller_id')
     title = models.CharField(max_length=255)
@@ -32,15 +53,19 @@ class Item(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     category = models.CharField(max_length=100, choices=CATEGORY_CHOICES, blank=True, null=True)
     
+    # --- NEW FIELDS FOR FLEA MARKET LOGIC ---
+    condition = models.CharField(max_length=20, choices=CONDITION_CHOICES, default='good')
+    negotiation_limit = models.IntegerField(choices=NEGOTIATION_CHOICES, default=0)
+
     # is_sold acts as a manual toggle, but stock logic handles the rest
     is_sold = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     
-    # --- NEW INVENTORY FIELDS ---
+    # --- INVENTORY FIELDS ---
     total_quantity = models.PositiveIntegerField(default=1)
     quantity_sold = models.PositiveIntegerField(default=0)
     
-    # NEW LOCATION FIELDS
+    # LOCATION FIELDS
     region = models.CharField(max_length=100, blank=True, null=True)
     city = models.CharField(max_length=100, blank=True, null=True)
     suburb = models.CharField(max_length=100, blank=True, null=True)
@@ -55,7 +80,6 @@ class Item(models.Model):
     image6 = models.ImageField(upload_to='item_photos/', blank=True, null=True)
     
     is_featured_on_profile = models.BooleanField(default=False)
-    
     show_on_marketplace = models.BooleanField(default=True)
 
     class Meta:
@@ -85,13 +109,13 @@ class Item(models.Model):
     
     @property
     def display_price(self):
-        """Returns the price shown to the buyer (Original + 7.5%)"""
+        """Returns the full price shown to the buyer (Original + 7.5% platform fee)"""
         fee_multiplier = 1.075
         return round(float(self.price) * fee_multiplier, 2)
 
     @property
     def platform_fee(self):
-        """Returns only the 7.5% portion for your profit tracking"""
+        """Returns only the 7.5% portion based on the current base price"""
         return round(float(self.price) * 0.075, 2)
 
     @property

@@ -429,3 +429,4 @@ def toggle_comment_like(request, comment_id):
     else:
         comment.comment_likes.add(request.user)
     return redirect('timeline_feed')
+

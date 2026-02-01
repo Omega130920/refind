@@ -69,16 +69,13 @@
         .logo-text .brand { font-size: 1.3rem; font-weight: 900; color: var(--navy-blue); letter-spacing: -1px; text-transform: uppercase; }
         .logo-text .subtext { font-size: 0.6rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; }
 
-        /* HAMBURGER */
         .menu-toggle {
             display: none;
             flex-direction: column;
             gap: 5px;
             cursor: pointer;
         }
-        .menu-toggle span {
-            width: 25px; height: 3px; background: var(--navy-blue); border-radius: 3px;
-        }
+        .menu-toggle span { width: 25px; height: 3px; background: var(--navy-blue); border-radius: 3px; }
 
         .nav-links { display: flex; align-items: center; gap: 20px; }
         .nav-links a { 
@@ -86,7 +83,6 @@
             font-size: 0.9rem; display: flex; align-items: center; gap: 5px;
         }
 
-        /* USER DROPDOWN */
         .user-dropdown-container { position: relative; display: inline-block; }
         .user-trigger {
             display: flex; align-items: center; gap: 8px; cursor: pointer;
@@ -108,20 +104,12 @@
         .logout-item { width: 100%; background: none; border: none; font-family: inherit; cursor: pointer; color: var(--accent-danger) !important; text-align: left; }
         .dropdown-divider { height: 1px; background: #eee; margin: 8px 0; }
         .nav-badge { background: var(--accent-orange); color: white; font-size: 0.7rem; font-weight: 900; padding: 2px 6px; border-radius: 6px; }
-        .notification-dot { width: 8px; height: 8px; background: var(--accent-orange); border-radius: 50%; display: inline-block; }
 
-        /* DETAIL LAYOUT */
         .detail-container { max-width: 1100px; margin: 20px auto 60px; padding: 0 32px; }
         .back-link { display: inline-block; text-decoration: none; color: var(--accent-blue); font-weight: 700; font-size: 0.9rem; margin-bottom: 15px; }
 
-        .grid-layout { 
-            display: flex; 
-            flex-wrap: wrap; 
-            gap: 30px; 
-            align-items: start; 
-        }
+        .grid-layout { display: flex; flex-wrap: wrap; gap: 30px; align-items: start; }
 
-        /* GALLERY */
         .image-gallery { flex: 1.1; min-width: 350px; background: white; padding: 12px; border-radius: var(--radius-lg); box-shadow: var(--card-shadow); position: relative; }
         .slider-container { position: relative; width: 100%; height: 480px; border-radius: var(--radius-sm); overflow: hidden; background: #f8f9fa; }
         .gallery-slide { width: 100%; height: 100%; object-fit: cover; display: none; cursor: pointer; }
@@ -137,34 +125,39 @@
         .expand-btn { position: absolute; bottom: 15px; right: 15px; background: var(--navy-blue); color: white; border: none; padding: 8px 14px; border-radius: 8px; font-size: 0.7rem; font-weight: 800; cursor: pointer; z-index: 10; }
         .photo-index { position: absolute; top: 15px; left: 15px; background: rgba(0, 0, 0, 0.5); color: white; padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; }
 
-        /* INFO CARD */
         .info-card { flex: 1; min-width: 350px; background: white; padding: 30px; border-radius: var(--radius-lg); box-shadow: var(--card-shadow); position: sticky; top: 100px; }
         .category-tag { display: inline-block; background: #f1f5f9; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-bottom: 10px; }
         .title { font-size: 1.8rem; font-weight: 900; margin: 0 0 4px 0; line-height: 1.1; }
         .location-subtitle { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px; display: flex; align-items: center; gap: 4px; }
-        .price { font-size: 1.6rem; font-weight: 900; color: var(--accent-success); margin-bottom: 10px; }
+        
+        .price-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+        .price { font-size: 1.6rem; font-weight: 900; color: var(--accent-success); }
+        .negotiable-pill { background: var(--navy-blue); color: white; padding: 4px 10px; border-radius: 8px; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; }
+
         .inventory-status { display: inline-block; font-size: 0.8rem; font-weight: 700; padding: 4px 10px; border-radius: 6px; margin-bottom: 20px; background: #eef2f7; color: var(--navy-blue); }
         .low-stock { background: #fff3cd; color: #856404; }
 
-        /* INTERACTION ELEMENTS */
         .quantity-box { background: #f8fafc; padding: 15px; border-radius: var(--radius-sm); margin-bottom: 20px; border: 1px solid #edf2f7; display: flex; align-items: center; justify-content: space-between; }
         .quantity-select { padding: 8px 12px; border-radius: 8px; border: 2px solid #ddd; font-weight: 700; outline: none; background: white; cursor: pointer; min-width: 80px; }
         .btn-buy { width: 100%; padding: 16px; background: var(--accent-blue); color: white; border: none; border-radius: 14px; font-size: 1rem; font-weight: 800; cursor: pointer; transition: opacity 0.2s; }
         .btn-msg { display: block; text-align: center; width: 100%; margin-top: 12px; padding: 14px; background: white; color: var(--accent-blue); border: 2px solid var(--accent-blue); border-radius: 14px; text-decoration: none; font-weight: 800; font-size: 0.95rem; }
 
-        /* RESPONSIVE BREAKPOINTS */
+        /* MODALS */
+        .modal { display: none; position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(28, 46, 74, 0.8); backdrop-filter: blur(8px); justify-content: center; align-items: center; }
+        .modal-content { background: white; padding: 30px; border-radius: var(--radius-lg); width: 90%; max-width: 450px; box-shadow: 0 30px 60px rgba(0,0,0,0.2); }
+        .offer-btn { width: 100%; padding: 18px; margin-bottom: 12px; border-radius: 16px; border: 2px solid #eee; background: white; cursor: pointer; text-align: left; transition: all 0.2s; display: block; text-decoration: none; color: inherit; }
+        .offer-btn:hover { border-color: var(--accent-blue); background: #f0f7ff; transform: translateY(-2px); }
+        .offer-btn strong { display: block; font-size: 1.1rem; color: var(--navy-blue); }
+        .offer-btn span { font-size: 0.85rem; color: var(--text-muted); }
+        .offer-btn .tag { float: right; padding: 2px 8px; border-radius: 6px; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; }
+        .tag-priority { background: #e1f5fe; color: #0288d1; }
+        .tag-deal { background: #e8f5e9; color: #2e7d32; }
+
         @media (max-width: 768px) {
             nav { margin: 10px 15px; }
             .menu-toggle { display: flex; }
-            .nav-links {
-                display: none; width: 100%; flex-direction: column;
-                padding-top: 20px; gap: 15px; align-items: flex-start;
-            }
+            .nav-links { display: none; width: 100%; flex-direction: column; padding-top: 20px; gap: 15px; align-items: flex-start; }
             .nav-links.active { display: flex; }
-            .user-dropdown-container { width: 100%; }
-            .dropdown-menu { position: static; box-shadow: none; width: 100%; border: none; }
-            .logo-text .subtext { display: none; }
-
             .detail-container { padding: 0 15px; }
             .grid-layout { flex-direction: column; }
             .image-gallery, .info-card { min-width: 100%; flex: none; }
@@ -172,7 +165,6 @@
             .slider-container { height: 320px; }
         }
 
-        /* LIGHTBOX SYSTEM */
         #lightbox { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.95); z-index: 2000; justify-content: center; align-items: center; overflow: hidden; }
         #lightbox-img-container { transition: transform 0.3s ease; cursor: zoom-in; display: flex; justify-content: center; align-items: center; }
         #lightbox-img { max-width: 85%; max-height: 85vh; border-radius: 8px; }
@@ -193,30 +185,24 @@
                     <span class="subtext">MARKET</span>
                 </div>
             </a>
-
             <div class="menu-toggle" onclick="toggleNav()">
                 <span></span><span></span><span></span>
             </div>
-
             <div class="nav-links" id="navLinks">
                 <a href="{% url 'timeline_feed' %}">🏘️ Town Square</a>
                 <a href="{% url 'item_list' %}">🛒 Marketplace</a>
                 <a href="{% url 'vendor_list' %}" style="color: var(--navy-blue); font-weight: 800;">🏪 Vendors</a>
-
                 {% if user.is_authenticated %}
                     <div class="user-dropdown-container">
                         <div class="user-trigger" onclick="toggleDropdown(event)">
                             <strong>@{{ user.username }}</strong>
-                            {% if unread_count > 0 or pending_requests_count > 0 or accepted_purchases_count > 0 %}
-                                <span class="notification-dot"></span>
-                            {% endif %}
                             <span style="font-size: 0.6rem; opacity: 0.5;">▼</span>
                         </div>
                         <div id="userDropdown" class="dropdown-menu">
                             <a href="{% url 'profile' %}">👤 My Account</a>
-                            <a href="{% url 'inbox' %}">📩 Inbox {% if unread_count > 0 %}<span class="nav-badge">{{ unread_count }}</span>{% endif %}</a>
-                            <a href="{% url 'my_listings' %}">📢 My Ads {% if pending_requests_count > 0 %}<span class="nav-badge">{{ pending_requests_count }}</span>{% endif %}</a>
-                            <a href="{% url 'my_purchases' %}">🛍️ Purchases {% if accepted_purchases_count > 0 %}<span class="nav-badge">{{ accepted_purchases_count }}</span>{% endif %}</a>
+                            <a href="{% url 'inbox' %}">📩 Inbox</a>
+                            <a href="{% url 'my_listings' %}">📢 My Ads</a>
+                            <a href="{% url 'my_purchases' %}">🛍️ Purchases</a>
                             <div class="dropdown-divider"></div>
                             <form action="{% url 'logout' %}" method="post" style="margin: 0;">
                                 {% csrf_token %}
@@ -255,36 +241,107 @@
 
             <div class="info-card">
                 <span class="category-tag">{{ item.get_category_display }}</span>
+                <span class="category-tag" style="background: var(--navy-blue); color: white;">{{ item.get_condition_display }}</span>
                 <h1 class="title">{{ item.title }}</h1>
                 <div class="location-subtitle">📍 {{ item.city|default:item.region|default:"Local" }}</div>
-                <div id="unit-price" class="price" data-base-price="{{ item.display_price }}">R{{ item.display_price }}</div>
                 
-                <div class="inventory-status {% if item.remaining_stock == 1 %}low-stock{% endif %}">
-                    {% if item.remaining_stock == 1 %}🔥 Only 1 Left!{% else %}{{ item.remaining_stock }} Units Available{% endif %}
+                <div class="price-row">
+                    <div id="unit-price" class="price" data-unit-total="{{ negotiation_data.full.total }}">R{{ negotiation_data.full.total }}</div>
+                    {% if item.negotiation_limit > 0 %}
+                        <div class="negotiable-pill">🤝 Negotiable - Up to {{ item.negotiation_limit }}%</div>
+                    {% endif %}
+                </div>
+                
+                <div class="inventory-status {% if item.available_stock == 1 %}low-stock{% endif %}">
+                    {% if item.available_stock <= 0 %}
+                        Sold Out
+                    {% elif item.available_stock == 1 %}
+                        🔥 Only 1 Left!
+                    {% else %}
+                        {{ item.available_stock }} Units Available
+                    {% endif %}
                 </div>
 
                 {% if item.seller != user %}
-                    <form action="{% url 'checkout' item.id %}" method="POST">
-                        {% csrf_token %}
-                        {% if item.remaining_stock > 1 %}
-                        <div class="quantity-box">
-                            <label for="requested_quantity">Quantity</label>
-                            <select name="requested_quantity" id="requested_quantity" class="quantity-select"></select>
-                        </div>
-                        {% else %}
-                            <input type="hidden" name="requested_quantity" value="1">
+                    {% if item.is_available %}
+                        {% if item.available_stock > 1 %}
+                            <div class="quantity-box">
+                                <label for="requested_quantity" style="font-weight: 800;">Quantity</label>
+                                <select name="requested_quantity" id="requested_quantity" class="quantity-select"></select>
+                            </div>
                         {% endif %}
-                        <button type="submit" class="btn-buy">Request to Buy</button>
-                    </form>
+                        <button type="button" class="btn-buy" onclick="openNegotiationModal()">Request to Buy</button>
+                    {% else %}
+                        <button type="button" class="btn-buy" disabled style="background:#ccc; cursor:not-allowed;">Sold Out</button>
+                    {% endif %}
                     <a href="{% url 'chat' item.id item.seller.id %}" class="btn-msg">Message Seller</a>
                 {% else %}
                     <a href="{% url 'item_edit' item.id %}" class="btn-buy" style="display: block; text-decoration: none; text-align: center;">Edit Listing</a>
                 {% endif %}
 
-                <div class="description-box">
-                    <h3>Description</h3>
+                <div class="description-box" style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px;">
+                    <h3 style="font-size: 1rem; margin-bottom: 10px;">Description</h3>
                     <p style="line-height: 1.5; color: #4a4a4a; margin: 0; font-size: 0.9rem;">{{ item.description|linebreaks }}</p>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="negotiationModal" class="modal">
+        <div class="modal-content">
+            <h2 style="margin-top:0; font-weight:900;">Choose Your Offer</h2>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 25px;">Selecting full price gives your request priority in the seller's inbox.</p>
+            
+            <form action="{% url 'checkout' item.id %}" method="POST" id="offerForm">
+                {% csrf_token %}
+                <input type="hidden" name="requested_quantity" id="modal_quantity" value="1">
+                
+                <button type="submit" name="chosen_base_price" value="{{ negotiation_data.full.base }}" class="offer-btn">
+                    <span class="tag tag-priority">Priority</span>
+                    <strong id="modal-priority-price" data-unit="{{ negotiation_data.full.total }}">R{{ negotiation_data.full.total }}</strong>
+                    <span>Full Price (Inc. 7.5% platform fee)</span>
+                </button>
+
+                {% if negotiation_data.tier_1 %}
+                <button type="submit" name="chosen_base_price" value="{{ negotiation_data.tier_1.base }}" class="offer-btn">
+                    <span class="tag tag-deal">Deal</span>
+                    <strong id="modal-tier1-price" data-unit="{{ negotiation_data.tier_1.total }}">R{{ negotiation_data.tier_1.total }}</strong>
+                    <span>Negotiated Offer (5% Off)</span>
+                </button>
+                {% endif %}
+
+                {% if negotiation_data.tier_2 %}
+                <button type="submit" name="chosen_base_price" value="{{ negotiation_data.tier_2.base }}" class="offer-btn">
+                    <span class="tag tag-deal">Deal</span>
+                    <strong id="modal-tier2-price" data-unit="{{ negotiation_data.tier_2.total }}">R{{ negotiation_data.tier_2.total }}</strong>
+                    <span>Negotiated Offer (10% Off)</span>
+                </button>
+                {% endif %}
+
+                {% if negotiation_data.tier_3 %}
+                <button type="submit" name="chosen_base_price" value="{{ negotiation_data.tier_3.base }}" class="offer-btn">
+                    <span class="tag tag-deal">Max Deal</span>
+                    <strong id="modal-max-price" data-unit="{{ negotiation_data.tier_3.total }}">R{{ negotiation_data.tier_3.total }}</strong>
+                    <span>Negotiated Offer ({{ item.negotiation_limit }}% Off)</span>
+                </button>
+                {% endif %}
+
+                <button type="button" onclick="closeNegotiationModal()" class="btn-msg" style="border: none;">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="successModal" class="modal">
+        <div class="modal-content" style="text-align: center;">
+            <div style="font-size: 3rem; margin-bottom: 10px;">✅</div>
+            <h2 style="margin-top:0; font-weight:900;">Request Sent!</h2>
+            <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 25px;">
+                The buyer has been notified of your request for <strong>{{ item.title }}</strong>.
+            </p>
+            
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <button onclick="closeSuccessModal()" class="btn-buy">Stay on Item Detail</button>
+                <a href="{% url 'item_list' %}" class="btn-msg" style="text-decoration: none;">Back to Marketplace</a>
             </div>
         </div>
     </div>
@@ -298,25 +355,96 @@
 
     <script>
         function toggleNav() { document.getElementById("navLinks").classList.toggle("active"); }
-        function toggleDropdown(event) { event.stopPropagation(); document.getElementById("userDropdown").classList.toggle("show"); }
+        function toggleDropdown(event) { event.stopPropagation(); document.getElementById("userDropdown").classList.remove('show'); }
+        
+        // Modal Control Logic
+        function openNegotiationModal() { 
+            const qtySelect = document.getElementById('requested_quantity');
+            const qty = qtySelect ? parseInt(qtySelect.value) : 1;
+            
+            // Sync hidden quantity for the form
+            document.getElementById('modal_quantity').value = qty;
 
-        // Quantity selector logic
+            // Multiply modal prices by QTY
+            updateModalPrices(qty);
+
+            document.getElementById('negotiationModal').style.display = 'flex'; 
+            document.body.style.overflow = 'hidden';
+        }
+
+        function updateModalPrices(qty) {
+            const elements = [
+                { id: 'modal-priority-price' },
+                { id: 'modal-tier1-price' },
+                { id: 'modal-tier2-price' }, // ADDED SYNC FOR TIER 2
+                { id: 'modal-max-price' }    // SYNC FOR TIER 3
+            ];
+            elements.forEach(elInfo => {
+                const el = document.getElementById(elInfo.id);
+                if (el) {
+                    const unitPrice = parseFloat(el.dataset.unit);
+                    el.textContent = 'R' + (unitPrice * qty).toFixed(2);
+                }
+            });
+        }
+        
+        function closeNegotiationModal() { 
+            document.getElementById('negotiationModal').style.display = 'none'; 
+            document.body.style.overflow = 'auto';
+        }
+
+        function openSuccessModal() {
+            document.getElementById('successModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSuccessModal() {
+            document.getElementById('successModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // AJAX Form Submission
+        document.getElementById('offerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const actionUrl = this.action;
+
+            fetch(actionUrl, {
+                method: 'POST',
+                body: formData,
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            })
+            .then(response => {
+                if (response.ok) {
+                    closeNegotiationModal();
+                    openSuccessModal();
+                } else {
+                    alert("Submission failed. Please try again.");
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+
+        // Quantity selector and unit price sync
         (function() {
             const select = document.getElementById('requested_quantity');
             const priceDisplay = document.getElementById('unit-price');
             if (select) {
-                const maxStock = parseInt("{{ item.remaining_stock }}") || 1;
-                const basePrice = parseFloat(priceDisplay.dataset.basePrice) || 0;
+                const maxStock = parseInt("{{ item.available_stock }}") || 1;
+                const unitTotal = parseFloat(priceDisplay.dataset.unitTotal) || 0;
+                
                 for (let i = 1; i <= maxStock; i++) {
                     const opt = document.createElement('option'); opt.value = i; opt.textContent = i; select.appendChild(opt);
                 }
+                
                 select.addEventListener('change', function() {
-                    priceDisplay.textContent = 'R' + (basePrice * parseInt(this.value)).toLocaleString(undefined, {minimumFractionDigits: 2});
+                    const qty = parseInt(this.value);
+                    priceDisplay.textContent = 'R' + (unitTotal * qty).toFixed(2);
                 });
             }
         })();
 
-        // Gallery & Lightbox logic
+        // Slider and Lightbox logic
         let currentIndex = 0; let isZoomed = false;
         const slides = document.querySelectorAll('.gallery-slide');
         const photoIndexDisplay = document.getElementById('photo-index');
@@ -349,7 +477,13 @@
         function toggleZoom(event) { event.stopPropagation(); isZoomed = !isZoomed; document.getElementById('lightbox-img-container').classList.toggle('zoomed', isZoomed); }
         function resetZoom() { isZoomed = false; document.getElementById('lightbox-img-container').classList.remove('zoomed'); }
         
-        window.onclick = function(event) { if (!event.target.closest('.user-dropdown-container')) document.querySelectorAll(".dropdown-menu").forEach(d => d.classList.remove('show')); }
+        window.onclick = function(event) { 
+            if (event.target == document.getElementById('negotiationModal')) closeNegotiationModal();
+            if (event.target == document.getElementById('successModal')) closeSuccessModal();
+            if (!event.target.closest('.user-dropdown-container')) {
+                document.querySelectorAll(".dropdown-menu").forEach(d => d.classList.remove('show'));
+            }
+        }
     </script>
 </body>
 </html>

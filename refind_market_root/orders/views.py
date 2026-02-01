@@ -20,7 +20,6 @@ import json
 
 @login_required
 def checkout(request, item_id):
-    # Fetch item and ensure it has stock available
     item = get_object_or_404(Item, id=item_id)
     
     if not item.is_available:
@@ -28,58 +27,54 @@ def checkout(request, item_id):
         return redirect('item_list')
 
     if request.method == 'POST':
-        # Get requested quantity from form, default to 1
+        # --- NEW: Get Negotiated Price from the Popup ---
+        # If for some reason it's missing, fall back to the original item price
+        raw_chosen_base = request.POST.get('chosen_base_price', item.price)
+        chosen_base = Decimal(str(raw_chosen_base))
+        
         try:
             requested_qty = int(request.POST.get('requested_quantity', 1))
         except ValueError:
             requested_qty = 1
 
-        # 1. Validation: Prevent buying own item
         if item.seller == request.user:
             messages.error(request, "You cannot buy your own item.")
             return redirect('item_detail', pk=item.id)
 
-        # 2. Validation: Check if requested amount exceeds available stock
         if requested_qty > item.available_stock:
             messages.error(request, f"Sorry, only {item.available_stock} units are available.")
             return redirect('item_detail', pk=item.id)
 
-        # 3. Validation: Prevent duplicate pending orders for the same item by same user
-        # Note: You might want to allow this if they want to buy more later, 
-        # but for now, we follow your existing logic.
-        existing_order = Order.objects.filter(item=item, buyer=request.user, status='pending_approval').first()
-        if existing_order:
-            messages.info(request, "You already have a pending request for this item.")
-            return redirect('item_detail', pk=item.id)
+        # 1. Calculation: Base + 7.5% Fee
+        platform_fee_per_unit = chosen_base * Decimal('0.075')
+        unit_price_with_fee = chosen_base + platform_fee_per_unit
+        total_price = unit_price_with_fee * requested_qty
 
-        # 4. Calculation: Total price = (Item Price * 1.075) * Quantity
-        unit_price = item.display_price
-        total_price = unit_price * requested_qty
-
-        # 5. Create the Order
-        # Note: You need to add a 'quantity' field to your Order model if it doesn't exist!
+        # 2. Create the Order with Negotiated Price
         new_order = Order.objects.create(
             item=item,
             buyer=request.user,
             seller=item.seller,
-            amount=total_price,
-            quantity=requested_qty, # Add this to your Order model
+            negotiated_base_price=chosen_base, # Saved for record keeping
+            amount=total_price,               # Total user pays (Product + Fee)
+            quantity=requested_qty,
             status='pending_approval'
         )
 
-        # 6. Notify the seller
+        # 3. Notify the seller (Updated to show if it was a discounted offer)
+        offer_type = "Full Price" if chosen_base == item.price else "a Negotiated Offer"
         try:
             send_mail(
                 'Refind Market - New Purchase Request!',
-                f'Hi {item.seller.username}, {request.user.username} wants to buy {requested_qty}x "{item.title}" for a total of R{total_price}. Visit your dashboard to respond.',
+                f'Hi {item.seller.username}, {request.user.username} has sent {offer_type} for {requested_qty}x "{item.title}". Total: R{total_price}. Respond here: https://refindmarket.co.za/orders/manage/',
                 'noreply@refindmarket.co.za',
                 [item.seller.email],
-                fail_silently=False,
+                fail_silently=True,
             )
-        except Exception as e:
-            print(f"Email failed: {e}")
+        except Exception:
+            pass
 
-        messages.success(request, f"Request for {requested_qty} unit(s) sent! Total: R{total_price}")
+        messages.success(request, f"Request sent at R{chosen_base} per unit! Total: R{total_price}")
         return redirect('item_detail', pk=item.id)
 
     return redirect('item_detail', pk=item.id)
@@ -92,42 +87,52 @@ def my_purchases(request):
 
 @login_required
 def finalize_payment(request, order_id):
-    # Fetch order - ensures buyer is the one paying
     order = get_object_or_404(Order, id=order_id, buyer=request.user, status='shipping_set')
 
     if request.method == 'POST':
-        print(f"\n--- PAYMENT PROCESSING START ---")
-        print(f"Order ID: {order.id}")
-        print(f"Buyer: {request.user.username}")
-        
         # 1. Update order status
         order.status = 'paid'
         order.save()
-        print(f"STATUS UPDATED: {order.status}")
 
         # 2. Update the Inventory
         item = order.item
-        # Update the quantity sold count
         item.quantity_sold += order.quantity
         
-        # Direct column comparison to decide visibility
+        # Check if item is now completely sold out
         if item.quantity_sold >= item.total_quantity:
             item.is_sold = True
+            item.show_on_marketplace = False # NEW: Hide from market if truly zero stock
+            
+            # THE CLEANUP: Decline all other pending OR accepted-but-unpaid requests
+            # because the stock is now zero.
+            other_requests = Order.objects.filter(
+                item=item, 
+                status__in=['pending_approval', 'accepted', 'shipping_set']
+            ).exclude(id=order.id)
+
+            for other in other_requests:
+                other.status = 'closed'
+                other.save()
+                
+                try:
+                    send_mail(
+                        'Refind Market - Item No Longer Available',
+                        f'Hi {other.buyer.username}, the item "{item.title}" you were interested in has been sold to another buyer and is now out of stock.',
+                        'noreply@refindmarket.co.za',
+                        [other.buyer.email],
+                        fail_silently=True,
+                    )
+                except Exception:
+                    pass
         else:
-            # Crucial: explicitly keep it available if stock remains
+            # NEW: If there is still stock, ensure it stays visible
             item.is_sold = False 
+            item.show_on_marketplace = True 
             
         item.save()
-        print(f"INVENTORY UPDATED: {item.title} (Sold: {item.quantity_sold}/{item.total_quantity})")
-
-        # 3. Terminal Success Print
-        print(f"PAYMENT SUCCESS: R{order.total_with_shipping} received.")
-        print(f"--- PAYMENT PROCESSING END ---\n")
-
-        # Redirect to the success page
+        
         return render(request, 'orders/payment_success.html', {'order': order})
     
-    # If GET, show the confirmation page with the POST button
     return render(request, 'orders/finalize_confirmation.html', {'order': order})
 
 @login_required
@@ -273,7 +278,7 @@ def get_bobgo_rates_ajax(request):
         "delivery_contact_mobile_number": getattr(order.buyer, 'phone_number', '0123456789'),
         "delivery_contact_email": order.buyer.email,
         "delivery_contact_full_name": order.buyer.get_full_name() or order.buyer.username,
-        "declared_value": float(order.amount),
+        "declared_value": float(order.negotiated_base_price),
         "timeout": 10000
     }
     
@@ -331,7 +336,6 @@ def generate_waybill(request, order_id):
     base_endpoint = f"{settings.BOBGO_BASE_URL}/shipments"
 
     # --- CASE 1: DOWNLOAD FLOW (FOR SHIPPED ORDERS) ---
-    # Accessible by both Seller and Buyer
     if order.status == 'shipped' and order.tracking_number:
         print(f"\n--- DEBUG: PROXY DOWNLOAD START (User: {request.user.username}) ---")
         
@@ -365,11 +369,9 @@ def generate_waybill(request, order_id):
                 time.sleep(2)
         
         messages.warning(request, "Waybill is still generating. Please try again in 10 seconds.")
-        # Redirect based on who is asking
         return redirect('my_listings' if order.seller == request.user else 'my_purchases')
 
     # --- CASE 2: GENERATION FLOW (FOR PAID ORDERS) ---
-    # Strictly for Seller only
     p_weight = float(order.parcel_weight) if order.parcel_weight else 1.0
     p_dims = [
         int(order.parcel_length) if order.parcel_length else 10, 
@@ -425,11 +427,11 @@ def generate_waybill(request, order_id):
             order.status = 'shipped'
             order.save(update_fields=['tracking_number', 'status'])
             
+            # UPDATED: We removed the force 'is_sold = True' here.
+            # Stock is handled by finalize_payment logic.
             item = order.item
-            item.is_sold = True
-            item.save(update_fields=['is_sold'])
+            item.save() 
 
-            # Simulated Terminal Email
             subject = f"Your Re-Find order for {item.title} has shipped!"
             message = (
                 f"Hi {order.buyer.username},\n\n"
@@ -447,3 +449,51 @@ def generate_waybill(request, order_id):
         messages.error(request, f"System error: {str(e)}")
 
     return redirect('my_listings')
+
+@login_required
+def approve_request(request, order_id):
+    # Fetch the order the seller wants to accept
+    order_to_approve = get_object_or_404(Order, id=order_id, seller=request.user)
+    item = order_to_approve.item
+
+    # Just approve this specific order
+    order_to_approve.status = 'accepted'
+    order_to_approve.save()
+
+    # Notify ONLY this buyer
+    try:
+        send_mail(
+            'Refind Market - Offer Approved!',
+            f'Hi {order_to_approve.buyer.username}, your offer for "{item.title}" was approved! Please head to your Purchases to select shipping and pay.',
+            'noreply@refindmarket.co.za',
+            [order_to_approve.buyer.email],
+            fail_silently=True,
+        )
+    except Exception:
+        pass
+
+    messages.success(request, f"Request for {item.title} approved! The buyer has been notified to pay.")
+    return redirect('manage_requests')
+
+from django.views.decorators.csrf import csrf_exempt
+@csrf_exempt
+def bobgo_webhook(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            tracking_number = data.get('tracking_number')
+            status = data.get('status')
+            
+            if status == 'delivered' and tracking_number:
+                # Use filter().first() to avoid 'MultipleObjectsReturned' errors
+                order = Order.objects.filter(tracking_number=tracking_number).first()
+                if order:
+                    order.status = 'delivered'
+                    order.save()
+                    print(f"SUCCESS: Order {order.id} is now Delivered.")
+            
+            return HttpResponse(status=200)
+        except Exception as e:
+            print(f"ERROR in Webhook: {e}")
+            return HttpResponse(status=400)
+    return HttpResponse(status=405)

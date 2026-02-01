@@ -68,19 +68,12 @@
         .logo-text .brand { font-size: 1.6rem; font-weight: 900; color: var(--navy-blue); letter-spacing: -1px; text-transform: uppercase; }
         .logo-text .subtext { font-size: 0.7rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 3px; margin-top: 4px; }
 
-        /* HAMBURGER */
-        .menu-toggle {
-            display: none;
-            flex-direction: column;
-            gap: 5px;
-            cursor: pointer;
-        }
+        .menu-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
         .menu-toggle span { width: 25px; height: 3px; background: var(--navy-blue); border-radius: 3px; }
 
         .nav-links { display: flex; align-items: center; gap: 20px; }
         .nav-links a { text-decoration: none; color: var(--text-muted); font-weight: 600; font-size: 0.9rem; transition: 0.2s; }
 
-        /* DROPDOWN STYLES */
         .user-dropdown-container { position: relative; display: inline-block; }
         .user-trigger {
             display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 8px 16px; border-radius: 12px;
@@ -97,7 +90,6 @@
             text-decoration: none; color: var(--text-dark); font-size: 0.85rem; font-weight: 600;
         }
         .logout-item { width: 100%; background: none; border: none; font-family: inherit; cursor: pointer; color: var(--accent-danger) !important; text-align: left; }
-        .nav-badge { background: var(--accent-orange); color: white; font-size: 0.7rem; font-weight: 900; padding: 2px 6px; border-radius: 6px; }
 
         /* DASHBOARD LAYOUT */
         .dashboard-container { max-width: 900px; margin: 60px auto; padding: 0 24px; }
@@ -107,7 +99,7 @@
 
         .item-strip {
             background: white; padding: 15px 25px; border-radius: 18px; display: inline-flex;
-            align-items: center; justify-content: space-between; min-width: 350px;
+            align-items: center; justify-content: space-between; min-width: 450px;
             margin-top: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.03); border: 1px solid #f1f1f1;
         }
 
@@ -122,6 +114,15 @@
         .verification-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 0.8rem; font-weight: 800; padding: 6px 12px; border-radius: 10px; text-transform: uppercase; }
         .verified { background: #e6f7ed; color: var(--accent-success); }
         .not-verified { background: #f1f5f9; color: var(--text-muted); }
+        
+        /* PRICE TAGS */
+        .offer-badge { 
+            display: inline-block; padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; 
+            font-weight: 800; text-transform: uppercase; margin-top: 8px;
+        }
+        .badge-priority { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+        .badge-negotiated { background: #fef9c3; color: #854d0e; border: 1px solid #fef08a; }
+
         .qty-info { background: #f8fafc; padding: 10px 15px; border-radius: 12px; margin: 15px 0; border-left: 4px solid var(--accent-orange); }
         .msg-btn { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; color: var(--accent-blue); font-weight: 800; font-size: 0.9rem; padding: 10px 18px; border: 2px solid #eef2f6; border-radius: 12px; }
 
@@ -140,7 +141,7 @@
             .dropdown-menu { position: static; box-shadow: none; border: none; width: 100%; padding: 0; }
             .logo-text .subtext { display: none; }
             .header-section h1 { font-size: 2rem; }
-            .item-strip { min-width: 100%; }
+            .item-strip { min-width: 100%; flex-direction: column; align-items: flex-start; gap: 10px; }
             .request-card { flex-direction: column; align-items: flex-start; padding: 20px; }
             .action-column { min-width: 100%; text-align: left; border-top: 1px solid #f1f1f1; padding-top: 20px; }
         }
@@ -157,11 +158,9 @@
                     <span class="subtext">MARKET</span>
                 </div>
             </a>
-
             <div class="menu-toggle" onclick="toggleNav()">
                 <span></span><span></span><span></span>
             </div>
-
             <div class="nav-links" id="navLinks">
                 <a href="{% url 'item_list' %}">Marketplace</a>
                 {% if user.is_authenticated %}
@@ -181,7 +180,7 @@
                             </form>
                         </div>
                     </div>
-                    <a href="{% url 'item_create' %}" class="btn-sell-nav">Sell</a>
+                    <a href="{% url 'item_create' %}" class="btn-sell-nav" style="background: var(--accent-orange); color: white; padding: 8px 20px; border-radius: 12px; text-decoration: none; font-weight: 700;">Sell</a>
                 {% endif %}
             </div>
         </div>
@@ -194,36 +193,51 @@
             <h1>Review Requests</h1>
             <div class="item-strip">
                 <div>
-                    <span style="font-weight: 800; color: var(--navy-blue);">{{ item.title }}</span>
-                    <div style="font-size: 0.7rem; color: var(--text-muted); font-weight: 700; margin-top: 4px;">
+                    <span style="font-weight: 800; color: var(--navy-blue); font-size: 1.1rem;">{{ item.title }}</span>
+                    <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700; margin-top: 4px;">
                         Remaining Stock: {{ item.total_quantity|add:item.quantity_sold|default:"0" }} units
                     </div>
                 </div>
-                <span style="color: var(--accent-success); font-weight: 900; font-size: 1.2rem;">R{{ item.display_price }}</span>
+                <div style="text-align: right;">
+                    <div style="font-size: 0.65rem; text-transform: uppercase; font-weight: 800; color: var(--text-muted);">Base Price (Target)</div>
+                    <span style="color: var(--navy-blue); font-weight: 900; font-size: 1.2rem;">R{{ item.price }}</span>
+                </div>
             </div>
         </div>
 
         {% for req in requests %}
         <div class="request-card">
             <div class="buyer-profile">
-                <h4>{{ req.buyer.username }}</h4>
-                <div style="margin-bottom: 10px;">
+                <h4>@{{ req.buyer.username }}</h4>
+                
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
                     {% if req.buyer.is_dha_verified %}
                         <span class="verification-tag verified">✔ DHA Verified</span>
                     {% else %}
                         <span class="verification-tag not-verified">Not Verified</span>
                     {% endif %}
+
+                    {% if req.negotiated_base_price < item.price %}
+                        <span class="offer-badge badge-negotiated">Negotiated Offer</span>
+                    {% else %}
+                        <span class="offer-badge badge-priority">Full Price (Priority)</span>
+                    {% endif %}
                 </div>
 
                 <div class="qty-info">
                     <span style="font-weight: 800; color: var(--navy-blue);">Requested: {{ req.quantity }} unit(s)</span>
+                    {% if req.negotiated_base_price < item.price %}
+                    <div style="font-size: 0.75rem; color: #854d0e; font-weight: 700; margin-top: 2px;">
+                        Offer: R{{ req.negotiated_base_price }} per unit
+                    </div>
+                    {% endif %}
                 </div>
                 
                 <a href="{% url 'chat' item.id req.buyer.id %}" class="msg-btn">💬 Message Buyer</a>
             </div>
 
             <div class="action-column">
-                <div class="order-total-label">Total Buyer Payout</div>
+                <div class="order-total-label">Total Payout for Seller</div>
                 <div class="order-total-value">R{{ req.amount }}</div>
                 
                 <a href="{% url 'shipping_from' req.id %}" class="btn-shipping">
@@ -234,33 +248,26 @@
                     {% csrf_token %}
                     <input type="hidden" name="order_id" value="{{ req.id }}">
                     <button type="submit" name="action" value="decline" class="btn-decline">
-                        Decline
+                        Decline Request
                     </button>
                 </form>
             </div>
         </div>
         {% empty %}
-        <div class="empty-requests">
-            <p style="font-size: 1.2rem; font-weight: 700;">No pending requests</p>
-            <p>Potential buyers will appear here once they request to buy.</p>
+        <div style="text-align: center; padding: 60px; background: white; border-radius: 28px; border: 2px dashed #cbd5e1;">
+            <p style="font-size: 1.3rem; font-weight: 800; color: var(--navy-blue); margin-bottom: 5px;">No pending requests</p>
+            <p style="color: var(--text-muted);">Potential buyers will appear here once they request to buy.</p>
         </div>
         {% endfor %}
     </div>
 
     <script>
-        function toggleNav() {
-            document.getElementById("navLinks").classList.toggle("active");
-        }
-        function toggleDropdown(event) {
-            event.stopPropagation();
-            document.getElementById("userDropdown").classList.toggle("show");
-        }
+        function toggleNav() { document.getElementById("navLinks").classList.toggle("active"); }
+        function toggleDropdown(event) { event.stopPropagation(); document.getElementById("userDropdown").classList.toggle("show"); }
         window.onclick = function(event) {
             if (!event.target.closest('.user-dropdown-container')) {
                 var dropdowns = document.getElementsByClassName("dropdown-menu");
-                for (var i = 0; i < dropdowns.length; i++) {
-                    dropdowns[i].classList.remove('show');
-                }
+                for (var i = 0; i < dropdowns.length; i++) { dropdowns[i].classList.remove('show'); }
             }
         }
     </script>

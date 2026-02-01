@@ -29,4 +29,5 @@ urlpatterns = [
 
     # --- Utilities ---
     path('ajax/check-id/', views.check_id_availability, name='check_id_availability'),
+    
 ]

@@ -8,16 +8,16 @@
     
     <style>
         :root {
-            --bg-main: #e2edf5ff; 
+            --bg-main: #f0f4f8; 
             --nav-glass: rgba(255, 255, 255, 0.7);
-            --text-dark: #1a1a1b;
-            --text-muted: #6e6d7a;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
             --accent-blue: #007bff;
             --accent-orange: #f39c12; 
             --accent-danger: #ff4d4d;
-            --accent-success: #28a745;
-            --navy-blue: #1c2e4a;     
-            --card-shadow: 0 20px 40px -10px rgba(0,0,0,0.05);
+            --accent-success: #10b981;
+            --navy-blue: #0f172a;     
+            --card-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);
             --radius-lg: 28px;
             --radius-sm: 18px;
         }
@@ -30,9 +30,10 @@
             margin: 0;
             -webkit-font-smoothing: antialiased;
             color: var(--text-dark);
+            line-height: 1.5;
         }
 
-        /* NAVIGATION - RESTORED ICON AND BRANDING */
+        /* NAVIGATION */
         nav {
             background: var(--nav-glass);
             backdrop-filter: blur(25px);
@@ -69,23 +70,12 @@
         .logo-text .brand { font-size: 1.3rem; font-weight: 900; color: var(--navy-blue); letter-spacing: -1px; text-transform: uppercase; }
         .logo-text .subtext { font-size: 0.6rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; }
 
-        /* HAMBURGER */
-        .menu-toggle {
-            display: none;
-            flex-direction: column;
-            gap: 5px;
-            cursor: pointer;
-        }
+        .menu-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
         .menu-toggle span { width: 25px; height: 3px; background: var(--navy-blue); border-radius: 3px; }
 
         .nav-links { display: flex; align-items: center; gap: 20px; }
-        .nav-links a { 
-            text-decoration: none; color: var(--text-muted); 
-            font-weight: 600; font-size: 0.9rem; transition: 0.2s; 
-            display: flex; align-items: center; gap: 5px;
-        }
+        .nav-links a { text-decoration: none; color: var(--text-muted); font-weight: 600; font-size: 0.9rem; transition: 0.2s; display: flex; align-items: center; gap: 5px; }
 
-        /* DROPDOWN MENU - ALIGNED WITH OTHER PAGES */
         .user-dropdown-container { position: relative; display: inline-block; }
         .user-trigger {
             display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 8px 16px; border-radius: 12px;
@@ -97,67 +87,104 @@
             padding: 10px 0; z-index: 2000;
         }
         .dropdown-menu.show { display: block; }
-        .dropdown-menu a, .logout-item {
-            display: flex; justify-content: space-between; align-items: center; padding: 12px 20px;
-            text-decoration: none; color: var(--text-dark); font-size: 0.85rem; font-weight: 600;
-        }
+        .dropdown-menu a, .logout-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; text-decoration: none; color: var(--text-dark); font-size: 0.85rem; font-weight: 600; }
         .logout-item { width: 100%; background: none; border: none; font-family: inherit; cursor: pointer; color: var(--accent-danger) !important; text-align: left; }
         .dropdown-divider { height: 1px; background: #eee; margin: 8px 0; }
         
-        .nav-badge { background: var(--accent-orange); color: white; font-size: 0.7rem; font-weight: 900; padding: 2px 6px; border-radius: 6px; }
-        .notification-dot { width: 8px; height: 8px; background: var(--accent-orange); border-radius: 50%; display: inline-block; }
+        /* DASHBOARD LAYOUT */
+        .container { max-width: 1100px; margin: 40px auto; padding: 0 24px; }
+        h2 { font-size: 2.2rem; font-weight: 900; letter-spacing: -1px; margin: 0; color: var(--navy-blue); }
+        .subtitle { color: var(--text-muted); margin: 5px 0 30px; font-size: 0.95rem; font-weight: 500; }
 
-        /* DASHBOARD CONTENT */
-        .container { max-width: 1000px; margin: 40px auto; padding: 0 24px; }
-        .section-header h2 { font-size: 2.5rem; font-weight: 900; letter-spacing: -1px; margin: 0; }
+        /* ACCORDION WRAPPER */
+        .section-wrapper {
+            background: white;
+            border-radius: 24px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            border: 1px solid rgba(0,0,0,0.03);
+        }
+        .section-header {
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: background 0.2s;
+            user-select: none;
+        }
+        .section-header:hover { background: #fafafa; }
         
-        /* AD LIST STYLES */
-        .ads-list { display: flex; flex-direction: column; gap: 15px; margin-bottom: 50px; }
-        .ad-item { background: white; padding: 15px 25px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: space-between; box-shadow: var(--card-shadow); border: 2px solid transparent; transition: 0.3s; }
-        .ad-item.featured-ad { border-color: var(--accent-orange); background: linear-gradient(to right, #ffffff, #fffdf9); }
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--navy-blue);
+        }
+        .count-badge {
+            background: var(--bg-main);
+            color: var(--accent-blue);
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 900;
+        }
+        .count-badge.priority { background: #fee2e2; color: var(--accent-danger); }
 
-        .ad-info { display: flex; align-items: center; gap: 20px; }
-        .ad-img { width: 80px; height: 80px; object-fit: cover; border-radius: 12px; }
-        .ad-details h4 { margin: 0; font-size: 1.1rem; font-weight: 800; }
-        .ad-details p { margin: 4px 0 0; color: var(--accent-success); font-weight: 700; }
-        .stock-pill { display: inline-block; background: #f1f5f9; color: var(--navy-blue); font-size: 0.7rem; font-weight: 800; padding: 4px 10px; border-radius: 8px; margin-top: 8px; text-transform: uppercase; }
+        .chevron { transition: transform 0.3s; font-size: 1.2rem; color: var(--text-muted); }
+        .section-wrapper.active .chevron { transform: rotate(180deg); }
+        .section-content { display: none; padding: 10px 24px 24px 24px; border-top: 1px solid #f1f1f1; }
+        .section-wrapper.active .section-content { display: block; }
 
-        .ad-actions { display: flex; align-items: center; gap: 12px; }
-        .btn-action { text-decoration: none; font-weight: 700; font-size: 0.85rem; padding: 8px 16px; border-radius: 10px; transition: 0.2s; border: none; cursor: pointer; }
-        
-        .feature-btn { background: #fff8eb; color: var(--accent-orange); border: 1px solid #ffeeba; }
+        /* ITEM CARDS */
+        .ad-item {
+            background: #fdfdfd;
+            border-radius: 18px;
+            padding: 18px;
+            margin-bottom: 12px;
+            display: grid;
+            grid-template-columns: 3fr 1fr 2fr;
+            align-items: center;
+            border: 1px solid #f1f1f1;
+            gap: 20px;
+        }
+        .ad-item.featured-ad { border-color: var(--accent-orange); background: #fffcf5; }
+
+        .ad-info { display: flex; align-items: center; gap: 15px; }
+        .ad-img { width: 65px; height: 65px; object-fit: cover; border-radius: 12px; }
+        .ad-details h4 { margin: 0; font-size: 1rem; font-weight: 800; color: var(--navy-blue); }
+        .ad-details p { margin: 2px 0 0; color: var(--accent-success); font-weight: 800; font-size: 0.9rem; }
+
+        .stock-pill { display: inline-block; background: #f1f5f9; color: var(--text-muted); font-size: 0.65rem; font-weight: 800; padding: 3px 8px; border-radius: 6px; margin-top: 5px; text-transform: uppercase; }
+
+        /* ACTIONS */
+        .btn-action { text-decoration: none; font-weight: 700; font-size: 0.8rem; padding: 8px 16px; border-radius: 10px; transition: 0.2s; border: none; cursor: pointer; text-align: center; }
+        .feature-btn { background: white; color: var(--accent-orange); border: 1.5px solid #ffeeba; }
         .feature-btn.active { background: var(--accent-orange); color: white; border-color: var(--accent-orange); }
-        .edit-btn { background: #f0f7ff; color: var(--accent-blue); }
-        .request-btn { background: var(--navy-blue); color: white; display: flex; align-items: center; gap: 8px; }
-
-        /* REVENUE & HISTORY */
-        .action-card { background: #ffffff; padding: 25px; border-radius: 22px; border: 2px solid #28a745; margin-bottom: 40px; box-shadow: 0 10px 30px rgba(40, 167, 69, 0.1); }
-        .waybill-btn { background: var(--accent-success); color: white !important; font-weight: 800; border-radius: 12px; }
-        .history-section { background: #ffffff; padding: 30px; border-radius: var(--radius-lg); box-shadow: var(--card-shadow); overflow: hidden; }
-        .revenue-pill { background: #e9f5e9; color: var(--accent-success); padding: 10px 20px; border-radius: 12px; font-weight: 900; font-size: 1.2rem; display: inline-block; margin-bottom: 25px; }
+        .request-btn { background: var(--navy-blue); color: white; }
+        .edit-btn { background: #f1f5f9; color: var(--text-muted); }
         
-        .table-responsive { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-        .history-table { width: 100%; border-collapse: collapse; min-width: 600px; }
-        .history-table th { text-align: left; padding: 15px; color: var(--text-muted); font-size: 0.7rem; text-transform: uppercase; border-bottom: 2px solid #f1f1f1; }
-        .history-table td { padding: 15px; border-bottom: 1px solid #f9f9f9; font-weight: 600; font-size: 0.9rem; }
-        .qty-badge { background: var(--navy-blue); color: white; width: 24px; height: 24px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 0.7rem; margin-right: 8px; }
+        .waybill-btn { background: var(--accent-success); color: white; }
 
-        /* PULSE ANIMATION */
-        .pulse-dot { width: 8px; height: 8px; background-color: var(--accent-danger); border-radius: 50%; display: inline-block; animation: pulse-red 2s infinite; }
-        @keyframes pulse-red { 0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 77, 77, 0.7); } 70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(255, 77, 77, 0); } 100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 77, 77, 0); } }
+        /* HISTORY TABLE */
+        .history-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        .history-table th { text-align: left; padding: 12px; color: var(--text-muted); font-size: 0.7rem; text-transform: uppercase; border-bottom: 2px solid #f1f1f1; }
+        .history-table td { padding: 12px; border-bottom: 1px solid #f9f9f9; font-weight: 600; font-size: 0.85rem; }
+        .qty-badge { background: var(--navy-blue); color: white; width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 0.65rem; margin-right: 8px; }
 
-        @media (max-width: 768px) {
-            nav { margin: 10px 15px; }
-            .menu-toggle { display: flex; }
-            .nav-links { display: none; width: 100%; flex-direction: column; padding-top: 20px; gap: 15px; align-items: flex-start; }
-            .nav-links.active { display: flex; }
-            .logo-text .subtext { display: none; }
-            .container { margin: 20px auto; padding: 0 15px; }
-            .section-header h2 { font-size: 1.8rem; }
-            .ad-item { flex-direction: column; align-items: flex-start; padding: 20px; gap: 20px; }
-            .ad-actions { width: 100%; flex-wrap: wrap; }
-            .ad-actions .btn-action { flex: 1; text-align: center; justify-content: center; min-width: 100px; }
-            .dropdown-menu { position: static; box-shadow: none; border: none; width: 100%; }
+        /* PULSE */
+        .pulse-dot { width: 7px; height: 7px; background-color: var(--accent-danger); border-radius: 50%; display: inline-block; animation: pulse-red 2s infinite; margin-left: 5px; }
+        @keyframes pulse-red { 0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 77, 77, 0.7); } 70% { transform: scale(1); box-shadow: 0 0 0 5px rgba(255, 77, 77, 0); } 100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 77, 77, 0); } }
+
+        @media (max-width: 900px) {
+            .ad-item { grid-template-columns: 1fr; padding: 15px; }
+            .ad-actions { justify-content: flex-start; }
+            .history-table th:nth-child(3), .history-table td:nth-child(3) { display: none; }
         }
     </style>
 </head>
@@ -172,32 +199,21 @@
                     <span class="subtext">MARKET</span>
                 </div>
             </a>
-
             <div class="menu-toggle" onclick="toggleNav()">
                 <span></span><span></span><span></span>
             </div>
-
             <div class="nav-links" id="navLinks">
                 <a href="{% url 'timeline_feed' %}">🏘️ Town Square</a>
                 <a href="{% url 'item_list' %}">🛒 Marketplace</a>
                 <a href="{% url 'vendor_list' %}">🏪 Vendors</a>
-
                 {% if user.is_authenticated %}
-                    {% if user.vendor_profile %}
-                        <a href="{% url 'vendor_storefront' user.vendor_profile.store_slug %}" style="color: var(--accent-orange); font-weight: 800;">🏬 My Store</a>
-                    {% endif %}
-
                     <div class="user-dropdown-container">
                         <div class="user-trigger" onclick="toggleDropdown(event)">
                             <strong>@{{ user.username }}</strong>
-                            {% if unread_count > 0 or pending_requests_count > 0 or accepted_purchases_count > 0 %}
-                                <span class="notification-dot"></span>
-                            {% endif %}
                             <span style="font-size: 0.6rem; opacity: 0.5;">▼</span>
                         </div>
-
                         <div id="userDropdown" class="dropdown-menu">
-                            <a href="{% url 'profile' %}">👤 My Account</a>
+                            <a href="{% url 'profile' %}">👤 My Profile</a>
                             <a href="{% url 'inbox' %}">📩 Inbox {% if unread_count > 0 %}<span class="nav-badge">{{ unread_count }}</span>{% endif %}</a>
                             <a href="{% url 'my_listings' %}">📢 My Ads {% if pending_requests_count > 0 %}<span class="nav-badge">{{ pending_requests_count }}</span>{% endif %}</a>
                             <a href="{% url 'my_purchases' %}">🛍️ Purchases {% if accepted_purchases_count > 0 %}<span class="nav-badge">{{ accepted_purchases_count }}</span>{% endif %}</a>
@@ -215,102 +231,143 @@
     </nav>
 
     <div class="container">
-        {% if paid_orders %}
-        <div class="action-card">
-            <h3 style="margin: 0 0 15px 0; color: var(--accent-success);">📦 Action Required: Paid Orders</h3>
-            <div style="display: flex; flex-direction: column; gap: 15px;">
-                {% for order in paid_orders %}
-                <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #f8fafc; border-radius: 14px; border: 1px solid #edf2f7; flex-wrap: wrap; gap: 10px;">
-                    <div style="display: flex; align-items: center; gap: 15px;">
-                        <span class="qty-badge">{{ order.quantity }}</span>
-                        <div><strong>{{ order.item.title }}</strong><br><span style="color: var(--text-muted); font-size: 0.75rem;">Order #{{ order.id }}</span></div>
-                    </div>
-                    <a href="{% url 'generate_waybill' order.id %}" class="btn-action waybill-btn">Waybill PDF</a>
+        <h2>Seller Dashboard</h2>
+        <p class="subtitle">Manage orders, listings, and track your performance.</p>
+
+        <div class="section-wrapper" id="sec-orders">
+            <div class="section-header" onclick="toggleSection('sec-orders')">
+                <div class="section-title">
+                    <span>📦 Paid Orders (Action Required)</span>
+                    <span class="count-badge priority" id="paid-count">0</span>
                 </div>
+                <div class="chevron">▾</div>
+            </div>
+            <div class="section-content">
+                {% for order in paid_orders %}
+                <div class="ad-item" data-category="paid">
+                    <div class="ad-info">
+                        <span class="qty-badge">{{ order.quantity }}</span>
+                        <div class="ad-details">
+                            <h4>{{ order.item.title }}</h4>
+                            <span style="font-size: 0.7rem; color: var(--text-muted);">Order #{{ order.id }}</span>
+                        </div>
+                    </div>
+                    <div style="font-weight: 800;">R{{ order.amount }}</div>
+                    <div style="text-align: right;">
+                        <a href="{% url 'generate_waybill' order.id %}" class="btn-action waybill-btn">Generate Waybill PDF</a>
+                    </div>
+                </div>
+                {% empty %}
+                <p style="text-align: center; color: var(--text-muted); font-size: 0.85rem;">No orders awaiting shipment.</p>
                 {% endfor %}
             </div>
         </div>
-        {% endif %}
 
-        <div class="section-header">
-            <h2>Active Ads</h2>
-            <p style="color: var(--text-muted);">Manage your current marketplace listings.</p>
-        </div>
-
-        <div class="ads-list">
-            {% for item in items %}
-            <div class="ad-item {% if item.is_featured_on_profile %}featured-ad{% endif %}">
-                <div class="ad-info">
-                    {% if item.image1 %}<img src="{{ item.image1.url }}" class="ad-img">{% else %}<div class="ad-img" style="background: #eee;"></div>{% endif %}
-                    <div class="ad-details">
-                        <h4>{{ item.title }} {% if item.is_featured_on_profile %}<span style="color: var(--accent-orange);">★</span>{% endif %}</h4>
-                        <p>R{{ item.price }}</p>
-                        <div class="stock-pill">📦 Stock: {{ item.total_quantity }}</div>
-                    </div>
+        <div class="section-wrapper" id="sec-ads">
+            <div class="section-header" onclick="toggleSection('sec-ads')">
+                <div class="section-title">
+                    <span>📢 Active Ads</span>
+                    <span class="count-badge" id="ads-count">0</span>
                 </div>
-                <div class="ad-actions">
-                    {% if user.vendor_profile %}
-                        <form action="{% url 'toggle_featured' item.id %}" method="POST" style="display:inline; flex: 1;">
+                <div class="chevron">▾</div>
+            </div>
+            <div class="section-content">
+                {% for item in items %}
+                <div class="ad-item {% if item.is_featured_on_profile %}featured-ad{% endif %}" data-category="ads">
+                    <div class="ad-info">
+                        {% if item.image1 %}<img src="{{ item.image1.url }}" class="ad-img">{% else %}<div class="ad-img" style="background: #eee;"></div>{% endif %}
+                        <div class="ad-details">
+                            <h4>{{ item.title }}</h4>
+                            <p>R{{ item.price }}</p>
+                            <div class="stock-pill">Stock: {{ item.total_quantity }}</div>
+                        </div>
+                    </div>
+                    <div style="text-align: center;">
+                        {% if user.vendor_profile %}
+                        <form action="{% url 'toggle_featured' item.id %}" method="POST">
                             {% csrf_token %}
                             <button type="submit" class="btn-action feature-btn {% if item.is_featured_on_profile %}active{% endif %}" style="width: 100%;">
                                 {% if item.is_featured_on_profile %}★ Featured{% else %}☆ Feature{% endif %}
                             </button>
                         </form>
-                    {% endif %}
-
-                    <a href="{% url 'manage_requests' item.id %}" class="btn-action request-btn">
-                        Requests {% if item.order_set.exists %}<span class="pulse-dot"></span>{% endif %}
-                    </a>
-                    <a href="{% url 'item_edit' item.id %}" class="btn-action edit-btn">Edit</a>
+                        {% endif %}
+                    </div>
+                    <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                        <a href="{% url 'manage_requests' item.id %}" class="btn-action request-btn">
+                            Requests {% if item.order_set.exists %}<span class="pulse-dot"></span>{% endif %}
+                        </a>
+                        <a href="{% url 'item_edit' item.id %}" class="btn-action edit-btn">Edit</a>
+                    </div>
                 </div>
+                {% endfor %}
             </div>
-            {% empty %}
-            <div style="text-align: center; padding: 40px; color: var(--text-muted); background: white; border-radius: 18px;">No active ads.</div>
-            {% endfor %}
         </div>
 
-        <div class="history-section">
-            <h3 style="margin: 0 0 10px 0; font-size: 1.8rem; font-weight: 900;">Sales History</h3>
-            <div class="revenue-pill">Total Revenue: R{{ total_earnings }}</div>
-            
-            <div class="table-responsive">
-                <table class="history-table">
-                    <thead>
-                        <tr><th style="width: 40%;">Item</th><th>Status</th><th>Buyer Paid</th><th>Logistics</th></tr>
-                    </thead>
-                    <tbody>
-                        {% for order in sold_orders %}
-                        <tr>
-                            <td><div style="display:flex; align-items:center; gap:15px;"><span class="qty-badge">{{ order.quantity }}</span><span>{{ order.item.title }}</span></div></td>
-                            <td>{% if order.status == 'paid' %}<span style="color: var(--accent-orange);">Awaiting Waybill</span>{% elif order.status == 'shipped' %}<span style="color: var(--accent-blue);">Shipped</span>{% else %}<span>{{ order.status|title }}</span>{% endif %}</td>
-                            <td>R{{ order.amount }}</td>
-                            <td>{% if order.status == 'shipped' %}<a href="{% url 'generate_waybill' order.id %}" style="text-decoration:none; font-weight:800; color:var(--accent-blue);">📄 PDF</a>{% else %}<span style="color: #ccc;">Pending</span>{% endif %}</td>
-                        </tr>
-                        {% empty %}
-                        <tr><td colspan="4" style="text-align:center; padding: 30px; color: var(--text-muted);">No sales recorded yet.</td></tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+        <div class="section-wrapper" id="sec-history">
+            <div class="section-header" onclick="toggleSection('sec-history')">
+                <div class="section-title">
+                    <span>💰 Sales History & Revenue</span>
+                    <span class="count-badge" id="history-count">0</span>
+                </div>
+                <div class="chevron">▾</div>
+            </div>
+            <div class="section-content">
+                <div style="background: #ecfdf5; color: #047857; padding: 15px; border-radius: 14px; font-weight: 800; margin-bottom: 20px; display: inline-block;">
+                    Lifetime Earnings: R{{ total_earnings }}
+                </div>
+                <div style="overflow-x: auto;">
+                    <table class="history-table">
+                        <thead>
+                            <tr><th>Item</th><th>Status</th><th>Revenue</th><th>Waybill</th></tr>
+                        </thead>
+                        <tbody>
+                            {% for order in sold_orders %}
+                            <tr data-category="history">
+                                <td><div style="display:flex; align-items:center;"><span class="qty-badge">{{ order.quantity }}</span>{{ order.item.title }}</div></td>
+                                <td>
+                                    {% if order.status == 'paid' %}<span style="color: var(--accent-orange);">Pending Shipment</span>
+                                    {% elif order.status == 'shipped' %}<span style="color: var(--accent-blue);">Shipped</span>
+                                    {% else %}<span>{{ order.status|title }}</span>{% endif %}
+                                </td>
+                                <td>R{{ order.amount }}</td>
+                                <td>
+                                    {% if order.status == 'shipped' %}
+                                    <a href="{% url 'generate_waybill' order.id %}" style="text-decoration:none; font-weight:800; color:var(--accent-blue);">📄 PDF</a>
+                                    {% else %}-{% endif %}
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="4" style="text-align:center; padding: 30px; color: var(--text-muted);">No sales recorded yet.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        function toggleNav() {
-            document.getElementById("navLinks").classList.toggle("active");
+        function toggleSection(id) {
+            document.getElementById(id).classList.toggle('active');
         }
-        function toggleDropdown(event) {
-            event.stopPropagation();
-            document.getElementById("userDropdown").classList.toggle("show");
-        }
-        window.onclick = function(event) {
-            if (!event.target.closest('.user-dropdown-container')) {
-                var dropdowns = document.getElementsByClassName("dropdown-menu");
-                for (var i = 0; i < dropdowns.length; i++) {
-                    dropdowns[i].classList.remove('show');
-                }
-            }
-        }
+
+        window.addEventListener('load', () => {
+            const paidCount = document.querySelectorAll('.ad-item[data-category="paid"]').length;
+            const adsCount = document.querySelectorAll('.ad-item[data-category="ads"]').length;
+            const historyCount = document.querySelectorAll('tr[data-category="history"]').length;
+
+            document.getElementById('paid-count').innerText = paidCount;
+            document.getElementById('ads-count').innerText = adsCount;
+            document.getElementById('history-count').innerText = historyCount;
+
+            // Priority opening: Open Paid Orders if they exist, otherwise Active Ads
+            if (paidCount > 0) document.getElementById('sec-orders').classList.add('active');
+            else if (adsCount > 0) document.getElementById('sec-ads').classList.add('active');
+        });
+
+        function toggleNav() { document.getElementById("navLinks").classList.toggle("active"); }
+        function toggleDropdown(event) { event.stopPropagation(); document.getElementById("userDropdown").classList.toggle("show"); }
+        window.onclick = function(event) { if (!event.target.closest('.user-dropdown-container')) { var dropdowns = document.getElementsByClassName("dropdown-menu"); for (var i = 0; i < dropdowns.length; i++) { dropdowns[i].classList.remove('show'); } } }
     </script>
 </body>
 </html>

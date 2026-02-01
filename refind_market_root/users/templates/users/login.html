@@ -13,6 +13,7 @@
             --text-dark: #1a1a1b;
             --text-muted: #6e6d7a;
             --accent-blue: #007bff;
+            --accent-orange: #f39c12; /* Added for Omega Branding */
             --navy-blue: #1c2e4a;     
             --card-shadow: 0 20px 40px -10px rgba(0,0,0,0.05);
             --radius-lg: 28px;
@@ -64,6 +65,8 @@
         .logo-text .brand { font-size: 1.6rem; font-weight: 900; color: var(--navy-blue); letter-spacing: -1px; text-transform: uppercase; }
         .logo-text .subtext { font-size: 0.7rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 3px; margin-top: 4px; }
 
+        .nav-actions { display: flex; align-items: center; gap: 15px; }
+
         .btn-register-nav {
             text-decoration: none;
             color: var(--accent-blue);
@@ -76,7 +79,7 @@
         }
         .btn-register-nav:hover { background: var(--accent-blue); color: white; }
 
-        /* LOGIN CARD */
+        /* AUTH CONTAINER */
         .auth-container {
             flex: 1;
             display: flex;
@@ -111,11 +114,8 @@
             font-weight: 500;
         }
 
-        /* Styling the Django Form specifically */
-        .auth-card form p {
-            margin-bottom: 20px;
-        }
-
+        /* FORM STYLING */
+        .auth-card form p { margin-bottom: 20px; }
         .auth-card form label {
             display: block;
             font-weight: 800;
@@ -198,7 +198,13 @@
                     </div>
                 </div>
             </a>
-            <a href="{% url 'register' %}" class="btn-register-nav">Create Account</a>
+
+            <div class="nav-actions">
+                {% if user.is_authenticated and user.username|lower == 'omega' %}
+                    <a href="{% url 'admin_dashboard' %}" style="color: var(--accent-orange); font-weight: 900; text-decoration: none; font-size: 0.8rem;">🛡️ COMMAND CENTER</a>
+                {% endif %}
+                <a href="{% url 'register' %}" class="btn-register-nav">Create Account</a>
+            </div>
         </div>
     </nav>
 

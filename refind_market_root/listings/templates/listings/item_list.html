@@ -1,6 +1,3 @@
-
-
-
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -72,16 +69,13 @@
         .logo-text .brand { font-size: 1.3rem; font-weight: 900; color: var(--navy-blue); letter-spacing: -1px; text-transform: uppercase; }
         .logo-text .subtext { font-size: 0.6rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; }
 
-        /* HAMBURGER */
         .menu-toggle {
             display: none;
             flex-direction: column;
             gap: 5px;
             cursor: pointer;
         }
-        .menu-toggle span {
-            width: 25px; height: 3px; background: var(--navy-blue); border-radius: 3px;
-        }
+        .menu-toggle span { width: 25px; height: 3px; background: var(--navy-blue); border-radius: 3px; }
 
         .nav-links { display: flex; align-items: center; gap: 20px; }
         .nav-links a { 
@@ -91,7 +85,6 @@
         .nav-timeline-link { color: var(--navy-blue) !important; font-weight: 800 !important; }
         .nav-store-link { color: var(--accent-orange) !important; font-weight: 800 !important; }
 
-        /* USER DROPDOWN */
         .user-dropdown-container { position: relative; display: inline-block; }
         .user-trigger {
             display: flex; align-items: center; gap: 8px; cursor: pointer;
@@ -110,17 +103,13 @@
             padding: 12px 20px; text-decoration: none; color: var(--text-dark);
             font-size: 0.85rem; font-weight: 600;
         }
-        .logout-item {
-            width: 100%; background: none; border: none; font-family: inherit;
-            cursor: pointer; color: var(--accent-danger) !important;
-        }
+        .logout-item { width: 100%; background: none; border: none; font-family: inherit; cursor: pointer; color: var(--accent-danger) !important; text-align: left; }
         .dropdown-divider { height: 1px; background: #eee; margin: 8px 0; }
         .nav-badge { background: var(--accent-orange); color: white; font-size: 0.7rem; font-weight: 900; padding: 2px 6px; border-radius: 6px; }
         .notification-dot { width: 8px; height: 8px; background: var(--accent-orange); border-radius: 50%; display: inline-block; }
 
         .main-container { max-width: 1400px; margin: 30px auto; padding: 0 32px; }
 
-        /* FILTER BAR */
         .filter-bar {
             background: white; padding: 12px 20px; border-radius: 20px; box-shadow: var(--card-shadow);
             margin: 20px 0 40px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
@@ -131,10 +120,9 @@
         .btn-filter { background: var(--navy-blue); color: white; border: none; padding: 10px 24px; border-radius: 12px; font-weight: 700; cursor: pointer; }
         .btn-clear { text-decoration: none; color: var(--text-muted); font-size: 0.8rem; font-weight: 700; padding: 10px 15px; border-radius: 12px; background: #f1f5f9; display: flex; align-items: center; gap: 5px; }
 
-        /* GRID SYSTEM */
         .market-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 24px; 
         }
 
@@ -148,42 +136,43 @@
         .image-container { position: relative; padding: 12px; } 
         .item-card img { width: 100%; height: 220px; object-fit: cover; border-radius: 18px; display: block; }
 
-        /* BADGES */
+        /* BADGES - RELOCATED TO PREVENT OVERLAP */
         .stock-badge { position: absolute; top: 22px; right: 22px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(4px); color: var(--navy-blue); padding: 4px 10px; border-radius: 6px; font-size: 0.65rem; font-weight: 800; z-index: 10; }
         .stock-warning { background: var(--accent-orange); color: white; }
         .stock-soldout { background: var(--accent-danger); color: white; }
         .new-badge { position: absolute; top: 22px; left: 22px; background: var(--accent-success); color: white; padding: 4px 10px; border-radius: 6px; font-size: 0.65rem; font-weight: 800; z-index: 10; }
-        .badge-verified { background: #f0fff4; color: var(--accent-success); border: 1px solid #c6f6d5; padding: 2px 8px; border-radius: 8px; font-size: 0.6rem; font-weight: 900; }
-
+        
+        /* Moved Negotiable Pill to top-left area but lower than badges to avoid stacking */
+        .negotiable-pill { position: absolute; top: 55px; left: 22px; background: var(--navy-blue); color: white; padding: 3px 8px; border-radius: 5px; font-size: 0.6rem; font-weight: 700; text-transform: uppercase; z-index: 10; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        
         .card-body { padding: 4px 20px 20px; flex-grow: 1; display: flex; flex-direction: column; gap: 4px; } 
+        .category-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px; }
         .category-label { text-transform: uppercase; font-size: 0.6rem; font-weight: 800; color: var(--accent-blue); letter-spacing: 0.8px; }
+        .item-condition { font-size: 0.6rem; font-weight: 900; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; }
+        .cond-new { background: #ecfdf5; color: #065f46; }
+        .cond-used { background: #f1f5f9; color: var(--navy-blue); }
+        
         .item-title { margin: 0; font-size: 1.1rem; font-weight: 800; line-height: 1.3; color: var(--text-dark); }
+        .seller-info { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; display: flex; align-items: center; gap: 4px; margin: 2px 0; }
         .price-tag { font-size: 1.25rem; font-weight: 900; color: var(--text-dark); margin: 6px 0; }
-        .location-meta { font-size: 0.75rem; color: var(--text-muted); display: flex; justify-content: space-between; margin-bottom: 8px; }
-        .card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; padding-top: 12px; border-top: 1px solid #f3f4f6; }
-        .seller-handle { color: var(--text-muted); font-size: 0.75rem; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 4px; }
-        .visit-shop-link { font-size: 0.65rem; color: var(--accent-orange); text-decoration: none; font-weight: 800; text-transform: uppercase; }
+        
+        /* Updated Location Meta to prevent text overlap */
+        .location-meta { font-size: 0.75rem; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center; margin-top: auto; padding-top: 10px; gap: 8px; }
+        .location-meta span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        /* RESPONSIVE BREAKPOINT */
         @media (max-width: 768px) {
             nav { margin: 10px 15px; }
             .menu-toggle { display: flex; }
-            .nav-links {
-                display: none; width: 100%; flex-direction: column;
-                padding-top: 20px; gap: 15px; align-items: flex-start;
-            }
+            .nav-links { display: none; width: 100%; flex-direction: column; padding-top: 20px; gap: 15px; align-items: flex-start; }
             .nav-links.active { display: flex; }
-            .user-dropdown-container { width: 100%; }
-            .dropdown-menu { position: static; box-shadow: none; width: 100%; border: none; }
-            .logo-text .subtext { display: none; }
-
             .main-container { padding: 0 15px; }
             .market-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-            .item-card img { height: 140px; }
+            .item-card img { height: 160px; }
             .item-title { font-size: 0.9rem; }
             .price-tag { font-size: 1rem; }
             .card-body { padding: 4px 10px 15px; }
-            .location-meta { flex-direction: column; gap: 2px; }
+            /* Keep Negotiable Pill on mobile but maybe slightly smaller */
+            .negotiable-pill { font-size: 0.5rem; top: 45px; left: 15px; }
         }
     </style>
 </head>
@@ -270,42 +259,56 @@
                 {% if item.is_featured_on_profile %}
                     <div class="stock-badge" style="left: 22px; right: auto; background: var(--accent-orange); color: white;">Featured</div>
                 {% elif item.is_new %}
-                    <div class="new-badge">New</div>
+                    <div class="new-badge">New Listing</div>
                 {% endif %}
 
-                {% if item.remaining_stock <= 0 %}
+                {% if not item.is_available %}
                     <div class="stock-badge stock-soldout">Sold Out</div>
-                {% elif item.remaining_stock == 1 %}
-                    <div class="stock-badge stock-warning">🔥 1 Left</div>
+                {% elif item.available_stock == 1 %}
+                    <div class="stock-badge stock-warning">🔥 Last One</div>
                 {% else %}
-                    <div class="stock-badge">{{ item.remaining_stock }} In Stock</div>
+                    <div class="stock-badge">{{ item.available_stock }} In Stock</div>
+                {% endif %}
+
+                {% if item.negotiation_limit > 0 %}
+                    <div class="negotiable-pill">🤝 Negotiable</div>
                 {% endif %}
 
                 <div class="image-container">
                     {% if item.images.all %}
                         <img src="{{ item.images.first.image.url }}" alt="{{ item.title }}" loading="lazy">
                     {% else %}
-                        <div style="width:100%; height:140px; background:#f3f4f6; border-radius:18px; display: flex; align-items: center; justify-content: center; color: #d1d5db;">No Image</div>
+                        <div style="width:100%; height:220px; background:#f3f4f6; border-radius:18px; display: flex; align-items: center; justify-content: center; color: #d1d5db;">No Image</div>
                     {% endif %}
                 </div>
                 
                 <div class="card-body">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div class="category-row">
                         <span class="category-label">{{ item.get_category_display }}</span>
-                        {% if item.seller.id_number %}<span class="badge-verified">🛡️</span>{% endif %}
+                        <span class="item-condition {% if item.condition == 'new' %}cond-new{% else %}cond-used{% endif %}">
+                            {{ item.get_condition_display }}
+                        </span>
                     </div>
+
                     <h3 class="item-title">{{ item.title }}</h3>
+
+                    <div class="seller-info">
+                        👤 by @{{ item.seller.username }}
+                        {% if item.seller.id_number %}<span style="font-size: 0.6rem; color: var(--accent-success);">🛡️ Verified</span>{% endif %}
+                    </div>
+
+                    <div class="price-tag">R{{ item.display_price|floatformat:2 }}</div>
+
                     <div class="location-meta">
                         <span>📍 {{ item.city|default:"Local" }}</span>
-                        <span>{{ item.created_at|timesince }}</span>
+                        <span>{{ item.created_at|timesince }} ago</span>
                     </div>
-                    <div class="price-tag">R{{ item.display_price|floatformat:2 }}</div>
                 </div>
             </a>
             {% empty %}
             <div style="grid-column: 1/-1; text-align: center; padding: 60px; background: white; border-radius: 28px; color: var(--text-muted);">
-                <p>No items found.</p>
-                <a href="{% url 'item_list' %}" style="color: var(--accent-blue);">View all items</a>
+                <p>No items found in the marketplace.</p>
+                <a href="{% url 'item_list' %}" style="color: var(--accent-blue); font-weight: 700;">Clear Filters</a>
             </div>
             {% endfor %}
         </div>
